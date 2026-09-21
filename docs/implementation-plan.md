@@ -2,7 +2,7 @@
 
 まずデータの整合性を実Workerで証明し、その上にCLIとWebを載せる。
 製品完成の判定は [verification.md](verification.md) に従う。
-現在は段階0の調査・設計まで。段階1以降は未実施。
+現在は段階1〜7の実装・ローカル検証を進めている。実行済みの結果と未検証項目は [development-status.md](development-status.md) を参照。
 
 個人・小チームでの利用に合わせ、まれな非破壊的エラーは手動再試行で対応する。
 初期案の永続ブラウザーcommand queueと、稼働中のLinearを追跡する移行処理は取りやめる。

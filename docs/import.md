@@ -117,3 +117,9 @@ records. The command exits nonzero when any of those checks fail.
 - Missing source files and unsupported content remain in the report. Resolve
   the reported source problem and export again before treating verification as
   complete.
+
+This is a one-time migration with resumable retries, not continuous two-way
+synchronization. A later export of an already imported record does not overwrite
+its Linc content. If Linear changed in the meantime, destination verification
+reports the difference; choose a fresh destination workspace for a new full
+migration or resolve those differences manually.

@@ -1,21 +1,74 @@
-# linear_clone
+# Linc
 
-3〜5人のチーム向けに、Linearのチケットを引き継げるWeb UIとCLIを作るプロジェクト。
-Cloudflare Workers、SQLite Durable Object、R2を使う設計。
+3〜5人のチーム向けの、Linear互換チケット管理ツールです。WebとCLIは同じHTTP APIを使い、Cloudflare Worker内のSQLite Durable Objectに保存します。添付ファイルは非公開R2に保存します。
 
-現在は調査・設計段階。Webアプリと `linc` CLIはまだ実装していない。
+## ローカルで起動
 
-- [調査結果](docs/research.md)
-- [採用アーキテクチャ](docs/architecture.md)
-- [データとモジュールの契約](docs/modules.md)
-- [検証条件](docs/verification.md)
-- [実装順序](docs/implementation-plan.md)
-- [構成案の比較](docs/design-comparison.md)
-- [判断記録](docs/decisions.tsv)
+Node.js 24以降とpnpmを使用します。
 
-認証済みの `linear` CLIがあれば、既存チケットの集計を再実行できる。
-本文や認証情報は出力しない。
+```sh
+pnpm install --frozen-lockfile
+pnpm build
+pnpm dev
+```
+
+表示されたlocalhostのURLを開き、最初のワークスペースを作成します。設定画面でチームを作成すると、チケットを登録できます。
+
+開発中のWebを自動更新する場合は、別ターミナルで `pnpm dev:web` を起動します。ローカル環境は `owner@example.test` として動作します。本番bundleにはこのテスト認証を含めません。
+
+## CLI
+
+```sh
+pnpm linc --workspace development team list
+pnpm linc --workspace development issue create --team DEV --title '最初のチケット'
+pnpm linc --workspace development issue get DEV-1
+pnpm linc --workspace development issue update DEV-1 --title '更新したチケット'
+pnpm linc --workspace development --json issue list
+```
+
+`--workspace` は作成したワークスペースのslugまたはID、`--team` は実際のチームキーに置き換えてください。既定の接続先は `http://localhost:8787`。`--url` または `LINC_URL` で変更できます。利用できる操作は `pnpm linc --help` で確認します。 ローカルビルドを任意のディレクトリから使う場合は、PATH内にある `~/.local/bin` などから実行ファイルへリンクできます。
+
+```sh
+mkdir -p ~/.local/bin
+ln -s "$PWD/dist/cli/linc.mjs" ~/.local/bin/linc
+linc --help
+```
+
+## CloudflareとLinearからの移行
+
+本番の配置先は `https://linc.kazumasa.workers.dev`。利用する本人をCloudflare Accessで確認し、Linc内の所属でデータへのアクセスを制限します。
+
+[デプロイとログイン](docs/deployment.md)、[Linearからのインポート](docs/import.md) に操作手順があります。移行は元のLinearデータを変更しません。
+
+## 検証
+
+```sh
+pnpm exec playwright install chromium
+pnpm check
+pnpm test:hooks
+pnpm test:e2e
+```
+
+API・CLI・ブラウザーテストは、実際のWorker runtimeとSQLite/R2を使います。テストごとに一時ディレクトリへデータを隔離し、終了後に削除します。負荷テストは100件の同時登録・更新・再送と、1件への100件の競合更新を確認します。
+
+pre-commitは変更ファイルのformatter/linterと全体の型検査を実行します。ファイル長・関数長・複雑度・モジュールの依存方向をlintで制限します。CIはこれにビルド、API/CLI、ブラウザー、負荷試験を加えます。
+
+## 構成
+
+- `apps/worker`: 本人確認、HTTP、権限、永続化、チケット・組織管理
+- `apps/web`: Reactの画面とブラウザー内の状態
+- `apps/cli`: CLI引数・認証・表示
+- `packages/contracts`: HTTP入出力の型と検証
+- `packages/client`: WebとCLIで共有するHTTPクライアント
+- `packages/linear-import`: Linearの取得・移行・照合
+- `tests`: 利用者が触る入口からの実動作検証
+
+設計と受入条件は [docs/architecture.md](docs/architecture.md)、[docs/modules.md](docs/modules.md)、[docs/verification.md](docs/verification.md) にあります。実装・移行・本番検証の進捗は [docs/development-status.md](docs/development-status.md) を参照してください。
+
+認証済みの既存 `linear` CLIがあれば、本文や認証情報を出力せずにチケットの集計を再実行できます。
 
 ```sh
 node scripts/inspect-linear.mjs --workspace '<workspace-slug>'
 ```
+
+調査の根拠は [docs/research.md](docs/research.md)、構成案の比較は [docs/design-comparison.md](docs/design-comparison.md)、判断の記録は [docs/decisions.tsv](docs/decisions.tsv) に残しています。

@@ -7,3 +7,10 @@ ts	phase	decision	why	evidence	result
 2026-09-21T17:30:59Z	research-commit	調査結果と集計スクリプトをcommitした	設計判断の根拠を後から再確認できるようにするため	e94dd66	lint・format・実API集計一致を確認済み
 2026-09-21T17:39:50Z	design-review	共通更新契約・初期管理者登録・移行原本と履歴の保存先を具体化した	独立レビューで実装を妨げる契約の不足が見つかったため	docs/modules.md;docs/architecture.md;docs/verification.md;docs/design-comparison.md	設計へ反映、runtimeでの証明は未実施
 2026-09-21T17:40:32Z	design-validation	独立再確認後、installation操作を含むsequenceの範囲を統一した	bootstrapのreceiptにも定義済みの変更番号が必要なため	docs/modules.md;docs/design-comparison.md	元の3件は設計上解消、formatと文書リンクを確認、製品テストは未実施
+2026-09-21T18:44:22.393601+00:00	patch-contract	作成時のdefaultを部分更新の入力へ適用しない	タイトルのみの更新が既存本文をnullにする不具合を実負荷試験で検出	tests/load.test.mjs;packages/contracts/src/index.ts	100件の本文保持と同時更新を確認
+2026-09-21T18:44:22.393627+00:00	pagination	権限条件とkeysetページングをSQLへ適用	LIMIT後のoffset処理で201件より後のチケットを取得できなかった	tests/api.test.mjs;apps/worker/src/issues/queries.ts	405件の全件取得と不正cursor400を確認
+2026-09-21T18:44:22.393630+00:00	files	添付はサイズを制限した同期アップロードと内容hashキーで保存	個人利用で永続キューや修復daemonを増やさずに再送を扱う	apps/worker/src/files/routes.ts;tests/api.test.mjs	10MB上限、private R2、権限、bytes保持を実runtimeで確認
+2026-09-21T19:44:52.968281+00:00	notifications	変更通知はhibernating WebSocketを使用、切断時だけ60秒pollへ戻す	3〜5人の常時5秒pollで無料枠の要求数を浪費しないため	apps/web/src/app/useWorkspaceEvents.ts;tests/e2e/sync.spec.ts	2画面への通知と実409でのdraft保持を確認
+2026-09-21T19:44:52.968299+00:00	import-fidelity	移行teamには固定default stateを作らずLinearの状態を取り込む	既定名との衝突で色と並び順が変わる問題を実データ照合で検出	apps/worker/src/imports/organization.ts;reports/real-import-summary.json	2428レコードと添付6ファイルの照合差分0
+2026-09-21T19:44:52.968302+00:00	source-members	元データの担当者・投稿者はsource identityとして保存	移行だけでログイン権限を付与せず元の表示名を保持するため	apps/worker/src/imports/secondary.ts;tests/import.test.mjs	実データの著者保持、合成データでログインmemberが増えないことを確認
+2026-09-21T19:50:43.700299+00:00	socket-verification	メンバー除外時のWebSocket終了はChromiumで検証する	Node内蔵WebSocketでは終了を受信しない一方、同じWorkerに接続したChromiumは1008を受信した	tests/events.test.mjs	不要なclose handler追加では改善せず撤回。実ブラウザーで通知秘匿・除外後のHTTP拒否と1008を確認

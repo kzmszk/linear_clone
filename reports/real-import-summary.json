@@ -1,0 +1,24 @@
+{
+  "verifiedAt": "2026-09-21T19:43:36.524109+00:00",
+  "environment": "local workerd + SQLite Durable Object + R2",
+  "records": 2428,
+  "kinds": {
+    "attachment": 111,
+    "comment": 239,
+    "history": 1717,
+    "issue": 289,
+    "label": 11,
+    "member": 7,
+    "project": 17,
+    "relation": 26,
+    "state": 10,
+    "team": 1
+  },
+  "unresolved": 0,
+  "verifiedFiles": 6,
+  "totalBytes": 13589221,
+  "normalizedVerification": true,
+  "mismatches": 0,
+  "missing": 0,
+  "unsupported": 0
+}

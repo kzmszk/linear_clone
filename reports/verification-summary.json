@@ -1,0 +1,24 @@
+{
+  "verifiedAt": "2026-09-21T19:54:27.836138+00:00",
+  "sourceCommit": "da7f2a7",
+  "qualityCheck": "passed",
+  "behaviorTests": 16,
+  "browserTests": 4,
+  "hooks": "valid accepted; invalid TypeScript rejected",
+  "localLoad": {
+    "creates": 100,
+    "updates": 100,
+    "replays": 100,
+    "contentionSuccesses": 1,
+    "contentionConflicts": 99,
+    "elapsedMs": 1259
+  },
+  "deployment": {
+    "url": "https://linc.kazumasa.workers.dev",
+    "version": "97666caf-0c22-4a81-9c0b-cbf99717d7d5",
+    "unauthenticatedWebStatus": 302,
+    "unauthenticatedApiStatus": 302,
+    "authenticatedChecks": "waiting for owner email OTP"
+  },
+  "linearLatencyComparison": "not measured"
+}

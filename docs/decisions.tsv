@@ -1,0 +1,9 @@
+ts	phase	decision	why	evidence	result
+2026-09-21T17:27:44Z	frame	現在のLinearから289件を読み取り、再実行可能な集計スクリプトを作成	archiveと親子関係を移行対象から落とさないため	docs/research/linear-inventory.json;scripts/inspect-linear.mjs	実APIと保存済み入力の集計が一致
+2026-09-21T17:27:44Z	constraints	gisの品質ツールを参照し、aha-setupは適用しない	ユーザーが品質の同等性を要求し、aha-setup除外を明示したため	docs/research.md	参照先HEADと品質設定を確認
+2026-09-21T17:27:44Z	architecture	3案を独立比較し、インストール単位のSQLite DO案を採用	所属・採番・変更記録を同じtransactionで扱えるため	docs/design-comparison.md;docs/architecture.md	独立judgeと採用案が一致、runtime検証は未実施
+2026-09-21T17:27:44Z	verification	表示反応・保存確定・別セッション反映を分けて測定する	楽観的更新を永続化性能と取り違えないため	docs/verification.md	受入条件を定義、製品性能は未測定
+2026-09-21T17:27:44Z	import	source mapping・identity・ファイル状態と再開規則を定義	再importでの重複、権限付与、画像欠落を防ぐため	docs/modules.md	契約を設計、実移行は未実施
+2026-09-21T17:30:59Z	research-commit	調査結果と集計スクリプトをcommitした	設計判断の根拠を後から再確認できるようにするため	e94dd66	lint・format・実API集計一致を確認済み
+2026-09-21T17:39:50Z	design-review	共通更新契約・初期管理者登録・移行原本と履歴の保存先を具体化した	独立レビューで実装を妨げる契約の不足が見つかったため	docs/modules.md;docs/architecture.md;docs/verification.md;docs/design-comparison.md	設計へ反映、runtimeでの証明は未実施
+2026-09-21T17:40:32Z	design-validation	独立再確認後、installation操作を含むsequenceの範囲を統一した	bootstrapのreceiptにも定義済みの変更番号が必要なため	docs/modules.md;docs/design-comparison.md	元の3件は設計上解消、formatと文書リンクを確認、製品テストは未実施

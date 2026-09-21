@@ -216,3 +216,19 @@ export type Comment = z.infer<typeof commentSchema>;
 export type Metadata = z.infer<typeof metadataSchema>;
 export type NewIssue = z.input<typeof newIssueSchema>;
 export type IssuePatch = z.input<typeof issuePatchSchema>;
+
+export const attachmentSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  url: z.string(),
+  contentType: z.string().nullable(),
+});
+
+export const issueRelationSchema = z.object({
+  id: z.string(),
+  type: z.string(),
+  issueId: z.string(),
+  identifier: z.string(),
+  title: z.string(),
+  direction: z.enum(['outgoing', 'incoming']),
+});

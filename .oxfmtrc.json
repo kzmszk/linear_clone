@@ -1,0 +1,19 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 80,
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    "pnpm-lock.yaml",
+    "package-lock.json",
+    "skills-lock.json",
+    ".agents/**",
+    ".claude/**",
+    ".hermes/**",
+    ".pi/**",
+    "dist/**",
+    ".wrangler/**",
+    "playwright-report/**",
+    "test-results/**"
+  ]
+}

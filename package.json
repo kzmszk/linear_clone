@@ -1,0 +1,63 @@
+{
+  "allowScripts": {
+    "@schpet/linear-cli@2.6.0": true
+  },
+  "name": "linear-clone",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.24.0",
+  "scripts": {
+    "dev": "wrangler dev --config wrangler.local.jsonc",
+    "dev:web": "vite --config apps/web/vite.config.ts",
+    "build": "pnpm build:web && pnpm build:cli && wrangler deploy --dry-run --outdir dist/worker && node scripts/check-production-bundle.mjs",
+    "build:web": "vite build --config apps/web/vite.config.ts",
+    "build:cli": "node scripts/build-cli.mjs",
+    "typecheck": "tsc -p apps/worker/tsconfig.json && tsc -p apps/web/tsconfig.json && tsc -p apps/cli/tsconfig.json && tsc -p tests/tsconfig.json",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "lint": "oxlint . --deny-warnings",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm build && pnpm test",
+    "test": "node --test --test-concurrency=1 tests/api.test.mjs tests/cli.test.mjs tests/auth.test.mjs",
+    "test:e2e": "playwright test",
+    "test:load": "node --test tests/load.test.mjs",
+    "prepare": "husky",
+    "test:hooks": "node scripts/verify-hooks.mjs",
+    "linc": "node dist/cli/linc.mjs"
+  },
+  "dependencies": {
+    "zod": "^4.0.0",
+    "hono": "^4.0.0",
+    "jose": "^6.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@tanstack/react-query": "^5.0.0",
+    "lucide-react": "^0.468.0",
+    "react-markdown": "^10.0.0",
+    "remark-gfm": "^4.0.0",
+    "commander": "^14.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@cloudflare/workers-types": "5.20260921.1",
+    "wrangler": "4.136.1",
+    "vite": "^7.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "esbuild": "^0.25.0",
+    "@playwright/test": "^1.55.0",
+    "oxlint": "^1.76.0",
+    "oxfmt": "^0.61.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0"
+  },
+  "lint-staged": {
+    "*.{js,mjs,ts,tsx}": [
+      "oxfmt",
+      "oxlint --deny-warnings"
+    ],
+    "*.{json,jsonc,md,yaml,yml,css,html}": "oxfmt"
+  }
+}

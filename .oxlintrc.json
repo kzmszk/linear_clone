@@ -7,13 +7,72 @@
   "rules": {
     "max-lines": [
       "error",
-      { "max": 350, "skipBlankLines": true, "skipComments": true }
+      {
+        "max": 350,
+        "skipBlankLines": true,
+        "skipComments": true
+      }
     ],
     "max-lines-per-function": [
       "error",
-      { "max": 80, "skipBlankLines": true, "skipComments": true }
+      {
+        "max": 80,
+        "skipBlankLines": true,
+        "skipComments": true
+      }
     ],
     "complexity": ["error", 12],
     "max-depth": ["error", 4]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["packages/contracts/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["**/apps/**", "**/client/**", "**/linear-import/**"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["packages/client/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["**/apps/**", "**/linear-import/**"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["apps/worker/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              "**/web/**",
+              "**/cli/**",
+              "**/client/**",
+              "**/linear-import/**"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["apps/web/**", "apps/cli/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["**/worker/**"]
+          }
+        ]
+      }
+    }
+  ]
 }

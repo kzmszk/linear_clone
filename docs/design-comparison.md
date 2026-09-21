@@ -38,7 +38,7 @@ D1 + WorkerとLinux常駐APIも各案の代替案として検討した。
 
 - Aの同一DBでの更新・所属管理・通知順序を基礎にする。
 - Bの1チケットへの100競合試験と、共有schemaによるWeb/CLIの契約を取り込む。
-- Cの送信済みcommandのreload後再送を取り込む。汎用offline編集は追加しない。
+- Cのreload後再送は初期案で採用したが、個人利用向けに簡素化する指示を受けて取りやめた。画面内の再試行に限定する。
 - Cの移行前の容量・欠損確認と、R2ファイルのpending/ready/missing管理を取り込む。
 - Aの大きなstoreを、issues、organization、imports、changes、filesの責任へ分解する。
 - 再送receiptに本文全体を永久複製せず、不変の小さなreceiptと現在のentityを分ける。
@@ -51,7 +51,7 @@ D1 + WorkerとLinux常駐APIも各案の代替案として検討した。
 | composite FKの親キーと有効化が曖昧         | schema実装で対応するUNIQUE/FKを置き、実runtimeで不正参照の拒否を確認                 |
 | private teamの権限が曖昧                   | list/detail/file/changes/receiptで同じ閲覧判定を使う                                 |
 | R2とDBの二重書き込み失敗                   | pending状態・hash照合・orphan報告を追加                                              |
-| 変更し続けるLinearはsnapshotにならない     | exportのwatermarkと最終切替の静止期間を明記                                          |
+| 変更し続けるLinearはsnapshotにならない     | exportから照合まで元の編集を止める運用とし、変更追跡は実装しない                     |
 | runIdをsource mappingに含めると別runで重複 | sourceWorkspaceId/kind/sourceIdを永続キーにする                                      |
 | project-teamとnested paginationの適用順序  | metadataの適用後にissue、各connectionの完了状態をmanifestへ記録                      |
 | 無料枠・Access・R2契約・復元               | 対象アカウントでの確認と実復元をリリース条件にする                                   |

@@ -21,7 +21,7 @@
 | `apps/web/src/features/issues/`   | 一覧・詳細・作成・プロパティ・draft                         | 独自のHTTP再試行規則                       |
 | `apps/web/src/features/settings/` | workspace/team/project/member管理                           | 認証サービス自体                           |
 | `apps/web/src/editor/`            | Markdown表示・編集・ファイルURL解決                         | Linearの内部データモデル全体               |
-| `apps/web/src/sync/`              | Query cacheとpending edit、イベント適用、再接続             | 任意のアプリに使うoffline同期基盤          |
+| `apps/web/src/sync/`              | Query cacheと画面内draft、イベント適用、再接続              | 永続command queue、汎用offline同期基盤     |
 | `apps/web/src/ui/`                | 色・密度・dialog・menu・フォーカス・キーボード操作          | チケットの保存規則                         |
 | `apps/cli/src/`                   | コマンド引数、設定、table/JSON出力、終了コード              | SQL、Webのstate                            |
 | `tests/e2e/`、`tests/load/`       | ブラウザーと実CLIからの受入試験                             | モックDB、関数の呼び出し回数の検証         |
@@ -301,8 +301,8 @@ DB参照のないR2オブジェクトはorphanとして報告し、直ちに自�
 URL添付は外部リンクとして保存し、外部サイトの内容を勝手に取得しない。
 partial download、redirect、HTTP 200のGraphQL error、source更新、checkpoint後の中断を扱う。
 
-原本は単一時点のsnapshotとは限らない。
-export開始・終了時刻を記録し、期間内に更新されたentityを再取得する。
-最終切替時にはsourceの編集を止めた短い照合期間を設ける。
+exportから最終照合まで元のLinearでの編集を一時停止する。
+export開始・終了時刻を記録する。途中で編集した場合は再exportし、新しい取得原本からやり直す。
+sourceを更新し続けながら変更を追跡する仕組みや無停止の切替は初期実装に含めない。
 全connectionと全hashの照合が終わるまでは「移行完了」にしない。
 APIから取得できない過去履歴やprivate dataは欠損一覧に残す。

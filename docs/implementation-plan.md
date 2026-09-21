@@ -4,6 +4,10 @@
 製品完成の判定は [verification.md](verification.md) に従う。
 現在は段階0の調査・設計まで。段階1以降は未実施。
 
+個人・小チームでの利用に合わせ、まれな非破壊的エラーは手動再試行で対応する。
+初期案の永続ブラウザーcommand queueと、稼働中のLinearを追跡する移行処理は取りやめる。
+画面を開いている間のdraft保持と、元データの編集を一時停止する移行手順で十分とする。
+
 ## 今回の設計手順
 
 Poteto ModeのPrinciplesを読み、以下の順で進める。
@@ -47,7 +51,7 @@ arenaではFrame、Fan out、Cross-judge、Pick、Graft、Verifyを使う。
 | 4    | チケットCRUD、filter、label、comment、parent/relation、CLI                                  | CLIとHTTPの全往復、nullableフィールドと失敗終了コード                             | チケットAPIとCLI                         |
 | 5    | Linear export/plan/apply/verify、原本・履歴保持、identity mapping、R2コピー、backup/restore | archive・本文・rich text・履歴・関係・全nested page・hash照合、中断再開と重複防止 | 原本export、移行適用、ファイル保持に分割 |
 | 6    | Linear風shell、一覧、詳細、作成dialog、editor、プロパティ、管理画面                         | E1/E3/E6/E8、UI比較、warm表示p95の計測                                            | 画面単位で動作する増分                   |
-| 7    | 楽観的更新、socket通知、再接続、削除復元、draft回復                                         | 2セッションE2E、競合・通信失敗・古い応答の試験                                    | 同期と障害回復                           |
+| 7    | 楽観的更新、socket通知、再接続、削除復元、画面内draft保持                                   | 2セッションE2E、競合・通信失敗・古い応答の試験                                    | 同期と通信失敗への対応                   |
 | 8    | Cloudflare検証環境、実import照合、100件負荷、Linear比較、復旧手順                           | 全受入結果の証拠と未検証項目を明示                                                | 測定とリリース準備                       |
 
 各行は必ず1commitに押し込むという意味ではない。

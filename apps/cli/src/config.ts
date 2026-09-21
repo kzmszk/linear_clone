@@ -10,6 +10,7 @@ const profileSchema = z.object({
 });
 const configSchema = z.object({
   profiles: z.record(z.string(), profileSchema).default({}),
+  defaultUrl: z.string().url().optional(),
 });
 
 export type AuthProfile = z.infer<typeof profileSchema>;
@@ -63,11 +64,21 @@ async function writeConfig(config: Config): Promise<void> {
 
 export async function saveProfile(profile: AuthProfile): Promise<void> {
   const config = await readConfig();
-  config.profiles[normalizeUrl(profile.url)] = {
+  const url = normalizeUrl(profile.url);
+  config.profiles[url] = {
     ...profile,
-    url: normalizeUrl(profile.url),
+    url,
   };
+  config.defaultUrl = url;
   await writeConfig(config);
+}
+
+export async function defaultUrl(): Promise<string> {
+  if (process.env.LINC_URL) return normalizeUrl(process.env.LINC_URL);
+  const config = await readConfig();
+  if (config.defaultUrl) return config.defaultUrl;
+  const urls = Object.keys(config.profiles);
+  return (urls.length === 1 ? urls[0] : undefined) ?? 'http://localhost:8787';
 }
 
 export async function loadProfile(

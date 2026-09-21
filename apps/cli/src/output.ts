@@ -2,7 +2,7 @@ import { ApiError } from '../../../packages/client/src/index.ts';
 import { z } from 'zod';
 
 export const globalOptionsSchema = z.object({
-  url: z.string().default(process.env.LINC_URL ?? 'http://localhost:8787'),
+  url: z.string(),
   workspace: z.string().optional(),
   json: z.boolean().default(false),
   testEmail: z.string().optional(),

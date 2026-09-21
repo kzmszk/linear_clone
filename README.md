@@ -26,7 +26,7 @@ pnpm linc --workspace development issue update DEV-1 --title '更新したチケ
 pnpm linc --workspace development --json issue list
 ```
 
-`--workspace` は作成したワークスペースのslugまたはID、`--team` は実際のチームキーに置き換えてください。既定の接続先は `http://localhost:8787`。`--url` または `LINC_URL` で変更できます。利用できる操作は `pnpm linc --help` で確認します。 ローカルビルドを任意のディレクトリから使う場合は、PATH内にある `~/.local/bin` などから実行ファイルへリンクできます。
+`--workspace` は作成したワークスペースのslugまたはID、`--team` は実際のチームキーに置き換えてください。接続先は `--url`、`LINC_URL`、最後にログインしたURLの順に選びます。ログイン先がなければ `http://localhost:8787` を使用します。利用できる操作は `pnpm linc --help` で確認します。 ローカルビルドを任意のディレクトリから使う場合は、PATH内にある `~/.local/bin` などから実行ファイルへリンクできます。
 
 ```sh
 mkdir -p ~/.local/bin

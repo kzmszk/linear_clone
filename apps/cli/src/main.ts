@@ -1,5 +1,6 @@
 import { Command, CommanderError } from 'commander';
 import { login } from './auth.ts';
+import { defaultUrl } from './config.ts';
 import { registerIssueCommands } from './issues.ts';
 import { registerImportCommands } from './import-commands.ts';
 import { registerManagementCommands } from './management.ts';
@@ -9,11 +10,7 @@ const program = new Command();
 program
   .name('linc')
   .description('A small Linear-compatible issue tracker client')
-  .option(
-    '--url <url>',
-    'Linc URL',
-    process.env.LINC_URL ?? 'http://localhost:8787',
-  )
+  .option('--url <url>', 'Linc URL (defaults to the saved login destination)')
   .option('--workspace <slug-or-id>', 'workspace slug or UUID')
   .option('--json', 'print machine-readable JSON', false)
   .option(
@@ -21,6 +18,11 @@ program
     'local development identity; only accepted for localhost URLs',
   )
   .showHelpAfterError();
+
+program.hook('preAction', async () => {
+  if (program.opts().url === undefined)
+    program.setOptionValue('url', await defaultUrl());
+});
 
 const auth = program.command('auth').description('Manage authentication');
 auth

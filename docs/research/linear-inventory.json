@@ -1,0 +1,23 @@
+{
+  "issues": 289,
+  "archived": 245,
+  "referencedProjects": 14,
+  "issuesWithParent": 102,
+  "issuesWithComments": 109,
+  "issuesWithAttachmentMetadata": 99,
+  "issuesWithEstimate": 0,
+  "issuesWithDueDate": 0,
+  "descriptionBytes": 266220,
+  "largestDescriptionBytes": 9632,
+  "issuesWithInlineImages": 5,
+  "issuesWithLinearFileUrls": 5,
+  "issuesWithCollapsibleSections": 0,
+  "incompleteLabelPages": 0,
+  "stateTypes": {
+    "backlog": 16,
+    "canceled": 68,
+    "completed": 201,
+    "duplicate": 2,
+    "started": 2
+  }
+}

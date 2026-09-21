@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.wrangler/
+.dev.vars*
+.env*
+!.env.example
+playwright-report/
+test-results/
+artifacts/private/
+imports/
+backups/
+.linear.toml
+.agents/
+.claude/
+.hermes/
+.pi/

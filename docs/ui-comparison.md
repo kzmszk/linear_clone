@@ -25,6 +25,6 @@ The previous deletion test automatically accepted the browser's native confirmat
 
 The comparison concerns the implemented features and their interaction patterns. Linc omits Linear's templates, cycles, initiatives, agents, custom views, milestones, and project updates. Cloudflare Access owns sign-in; Linc's initial workspace bootstrap has no equivalent authenticated Linear screen.
 
-Reference create dialogs and pickers were opened and dismissed without submitting. Destructive reference actions were not tested. Linc's delete/restore behavior is verified against its real Worker using disposable local records.
+Reference create dialogs and pickers were opened and dismissed without submitting. Destructive reference actions were not tested. Linc's delete/restore behavior is verified against its real Worker using disposable local records and one disposable production issue. Production verification includes cancellation, deletion, reload, finding the issue in Trash, restoration, and another reload; the verification issue was returned to Trash afterward.
 
 The E2E tests use a real Worker and SQLite Durable Object. Request interception only introduces delay or a failed response for recovery checks. It does not replace successful CRUD with a mock server. The local timings demonstrate that cached opening and optimistic comments do not wait for the network. They do not prove identical p95 latency to Linear or pixel-identical rendering.

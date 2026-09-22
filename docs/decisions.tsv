@@ -18,3 +18,4 @@ ts	phase	decision	why	evidence	result
 2026-09-22T02:22:40Z	ui-audit	詳細は一覧を置き換える全幅表示としURLとブラウザ履歴へ選択状態を保存	Linear本家は左半分に一覧を残さず本文と右プロパティを表示する	Linear実画面;docs/ui-comparison.md;tests/e2e/navigation-layout.spec.ts	長い識別子の重なりとbodyの960px固定幅を修正
 2026-09-22T02:22:40Z	ui-audit	コメントを送信直後に表示してdraftを空にし、失敗時は同じoperationIdで再試行	通信完了を待つ旧UIが操作を遅く見せていた。応答だけが失われても重複投稿を避ける	tests/e2e/detail-behavior.spec.ts;apps/web/src/app/useCommentMutation.ts	遅延・失敗・再送と確定件数を実APIで検証
 2026-09-22T02:22:40Z	maintainability	CSSをナビ・一覧・詳細・編集・dialogなど画面の責任ごとに分割	base.cssとdetail.cssへさらに機能を集めず、読者が対象画面の定義を追えるようにする	apps/web/src/styles.css;AGENTS.md	関数・ファイルのlint制限を変更せずに実装
+2026-09-22T02:44:16Z	ui-audit	作成フォームから汎用2列gridのクラスを除き、専用CSSでプロパティ配置とpopup表示を管理	目視確認でCSS順序に依存する縦長フォームとメニュー見切れを検出	tests/e2e/creation-behavior.spec.ts;reports/screenshots/issue-create.png	29件E2E成功。本番で作成から削除・復元まで9項目成功

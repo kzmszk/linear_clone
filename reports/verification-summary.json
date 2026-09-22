@@ -1,9 +1,9 @@
 {
-  "verifiedAt": "2026-09-21T19:54:27.836138+00:00",
-  "sourceCommit": "da7f2a7",
+  "verifiedAt": "2026-09-22T02:44:16.418Z",
+  "sourceCommit": "e3d6ef5",
   "qualityCheck": "passed",
-  "behaviorTests": 16,
-  "browserTests": 4,
+  "behaviorTests": 17,
+  "browserTests": 29,
   "hooks": "valid accepted; invalid TypeScript rejected",
   "localLoad": {
     "creates": 100,
@@ -11,14 +11,27 @@
     "replays": 100,
     "contentionSuccesses": 1,
     "contentionConflicts": 99,
-    "elapsedMs": 1259
+    "elapsedMs": 1267
   },
   "deployment": {
     "url": "https://linc.kazumasa.workers.dev",
-    "version": "97666caf-0c22-4a81-9c0b-cbf99717d7d5",
+    "version": "3f4d0d26-f82f-4e66-b966-0dafbc0d7195",
     "unauthenticatedWebStatus": 302,
     "unauthenticatedApiStatus": 302,
-    "authenticatedChecks": "waiting for owner email OTP"
+    "authenticatedChecks": [
+      "create",
+      "edit",
+      "comment",
+      "cancel deletion",
+      "delete",
+      "reload deleted",
+      "find in Trash",
+      "restore",
+      "reload restored"
+    ],
+    "authenticatedChecksPassed": true,
+    "productionLoadTest": "not performed"
   },
-  "linearLatencyComparison": "not measured"
+  "linearLatencyComparison": "not measured",
+  "uiComparison": "docs/ui-comparison.md"
 }

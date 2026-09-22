@@ -1,0 +1,16 @@
+{
+  "verifiedAt": "2026-09-22T02:44:16.418Z",
+  "target": "https://linc.kazumasa.workers.dev",
+  "checks": [
+    "create",
+    "edit",
+    "comment",
+    "cancel deletion",
+    "delete",
+    "reload deleted",
+    "find in Trash",
+    "restore",
+    "reload restored"
+  ],
+  "passed": true
+}

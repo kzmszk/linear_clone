@@ -1,0 +1,175 @@
+{
+  "measuredAt": "2026-09-22T15:10:47.165Z",
+  "sourceCommit": "b05ac182a2f6fe0c03b766b02b55eb8cd3903405",
+  "wranglerVersion": "4.136.1",
+  "method": "Sequential real HTTP requests to local workerd; sum SqlStorageCursor.rowsWritten after handlers complete. No production requests or latency measurements.",
+  "scope": "Existing workspace, team and authenticated member; one issue without labels, attachments or project; one status change; three comments. Initialization and fixture setup excluded.",
+  "workflowRowsWritten": 69,
+  "measurements": [
+    {
+      "operation": "create issue",
+      "rowsWritten": 17,
+      "sqlCalls": 23,
+      "writes": [
+        {
+          "query": "UPDATE teams SET next_issue_number = next_issue_number + 1 WHERE id = ?",
+          "rowsWritten": 1
+        },
+        {
+          "query": "INSERT INTO issues (id, workspace_id, team_id, issue_number, title, description, state_id, priority, assignee_id, project_id, parent_id, estimate, due_date, version, created_at, updated_at, archived_at, deleted_at, completed_at, canceled_at, source_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, NULL, NULL, NULL, NULL, NULL)",
+          "rowsWritten": 6
+        },
+        {
+          "query": "UPDATE issues SET completed_at = ?, canceled_at = ? WHERE id = ?",
+          "rowsWritten": 1
+        },
+        {
+          "query": "INSERT INTO activities (id, workspace_id, issue_id, actor, action, created_at, source) VALUES (?, ?, ?, ?, ?, ?, 0)",
+          "rowsWritten": 4
+        },
+        {
+          "query": "UPDATE installation_settings SET sequence = sequence + 1 WHERE id = 1",
+          "rowsWritten": 1
+        },
+        {
+          "query": "INSERT INTO changes (sequence, workspace_id, entity_kind, entity_id, version, actor_key, operation_id, payload_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "rowsWritten": 2
+        },
+        {
+          "query": "INSERT INTO operations (actor_key, operation_id, request_hash, entity_kind, entity_id, version, sequence, workspace_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "rowsWritten": 2
+        }
+      ]
+    },
+    {
+      "operation": "change status to started",
+      "rowsWritten": 16,
+      "sqlCalls": 31,
+      "writes": [
+        {
+          "query": "UPDATE issues SET title = ?, description = ?, state_id = ?, priority = ?, assignee_id = ?, project_id = ?, parent_id = ?, estimate = ?, due_date = ?, archived_at = ?, version = version + 1, updated_at = ? WHERE id = ? AND version = ?",
+          "rowsWritten": 6
+        },
+        {
+          "query": "UPDATE issues SET completed_at = ?, canceled_at = ? WHERE id = ?",
+          "rowsWritten": 1
+        },
+        {
+          "query": "INSERT INTO activities (id, workspace_id, issue_id, actor, action, created_at, source) VALUES (?, ?, ?, ?, ?, ?, 0)",
+          "rowsWritten": 4
+        },
+        {
+          "query": "UPDATE installation_settings SET sequence = sequence + 1 WHERE id = 1",
+          "rowsWritten": 1
+        },
+        {
+          "query": "INSERT INTO changes (sequence, workspace_id, entity_kind, entity_id, version, actor_key, operation_id, payload_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "rowsWritten": 2
+        },
+        {
+          "query": "INSERT INTO operations (actor_key, operation_id, request_hash, entity_kind, entity_id, version, sequence, workspace_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "rowsWritten": 2
+        }
+      ]
+    },
+    {
+      "operation": "add comment 1",
+      "rowsWritten": 12,
+      "sqlCalls": 27,
+      "writes": [
+        {
+          "query": "INSERT INTO comments (id, workspace_id, issue_id, body, author_id, author_name, parent_comment_id, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?)",
+          "rowsWritten": 3
+        },
+        {
+          "query": "INSERT INTO activities (id, workspace_id, issue_id, actor, action, created_at, source) VALUES (?, ?, ?, ?, ?, ?, 0)",
+          "rowsWritten": 4
+        },
+        {
+          "query": "UPDATE installation_settings SET sequence = sequence + 1 WHERE id = 1",
+          "rowsWritten": 1
+        },
+        {
+          "query": "INSERT INTO changes (sequence, workspace_id, entity_kind, entity_id, version, actor_key, operation_id, payload_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "rowsWritten": 2
+        },
+        {
+          "query": "INSERT INTO operations (actor_key, operation_id, request_hash, entity_kind, entity_id, version, sequence, workspace_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "rowsWritten": 2
+        }
+      ]
+    },
+    {
+      "operation": "add comment 2",
+      "rowsWritten": 12,
+      "sqlCalls": 27,
+      "writes": [
+        {
+          "query": "INSERT INTO comments (id, workspace_id, issue_id, body, author_id, author_name, parent_comment_id, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?)",
+          "rowsWritten": 3
+        },
+        {
+          "query": "INSERT INTO activities (id, workspace_id, issue_id, actor, action, created_at, source) VALUES (?, ?, ?, ?, ?, ?, 0)",
+          "rowsWritten": 4
+        },
+        {
+          "query": "UPDATE installation_settings SET sequence = sequence + 1 WHERE id = 1",
+          "rowsWritten": 1
+        },
+        {
+          "query": "INSERT INTO changes (sequence, workspace_id, entity_kind, entity_id, version, actor_key, operation_id, payload_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "rowsWritten": 2
+        },
+        {
+          "query": "INSERT INTO operations (actor_key, operation_id, request_hash, entity_kind, entity_id, version, sequence, workspace_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "rowsWritten": 2
+        }
+      ]
+    },
+    {
+      "operation": "add comment 3",
+      "rowsWritten": 12,
+      "sqlCalls": 27,
+      "writes": [
+        {
+          "query": "INSERT INTO comments (id, workspace_id, issue_id, body, author_id, author_name, parent_comment_id, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?)",
+          "rowsWritten": 3
+        },
+        {
+          "query": "INSERT INTO activities (id, workspace_id, issue_id, actor, action, created_at, source) VALUES (?, ?, ?, ?, ?, ?, 0)",
+          "rowsWritten": 4
+        },
+        {
+          "query": "UPDATE installation_settings SET sequence = sequence + 1 WHERE id = 1",
+          "rowsWritten": 1
+        },
+        {
+          "query": "INSERT INTO changes (sequence, workspace_id, entity_kind, entity_id, version, actor_key, operation_id, payload_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "rowsWritten": 2
+        },
+        {
+          "query": "INSERT INTO operations (actor_key, operation_id, request_hash, entity_kind, entity_id, version, sequence, workspace_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "rowsWritten": 2
+        }
+      ]
+    },
+    {
+      "operation": "read issues",
+      "rowsWritten": 0,
+      "sqlCalls": 13,
+      "writes": []
+    },
+    {
+      "operation": "read comments",
+      "rowsWritten": 0,
+      "sqlCalls": 11,
+      "writes": []
+    },
+    {
+      "operation": "replay issue creation",
+      "rowsWritten": 0,
+      "sqlCalls": 17,
+      "writes": []
+    }
+  ]
+}

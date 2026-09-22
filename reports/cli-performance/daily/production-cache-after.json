@@ -1,0 +1,1073 @@
+{
+  "schemaVersion": 1,
+  "phase": "final",
+  "capturedAt": "2026-09-22T10:08:45.745Z",
+  "target": "https://linc.kazumasa.workers.dev",
+  "timingBoundary": "performance.now() immediately before the timed CLI spawn through process close; cache prime, API update and verification are excluded",
+  "httpTrace": "Omitted for cache scenarios. Each timed run uses an isolated cache home so a later diagnostic request cannot change cold or warm state.",
+  "environment": {
+    "node": "v26.8.1",
+    "nodeBinary": "/home/kazu/.hermes/node/bin/node",
+    "platform": "linux",
+    "release": "7.0.0-31-generic",
+    "architecture": "x64"
+  },
+  "sourceBaseline": {
+    "gitCommit": "36ae33e49f2a40438504c970f77e2a3b4948ae7c",
+    "workingTree": "dirty"
+  },
+  "artifacts": {
+    "before": {
+      "sourcePath": "dist/cli/linc-daily-before.mjs",
+      "resolvedPath": "/home/kazu/work/linear_clone/dist/cli/linc-daily-before.mjs",
+      "bytes": 461549,
+      "sha256": "2b8d160013b172cbe00d2d98e31f591176442806539a882b0de10f5412a322a4"
+    },
+    "after": {
+      "sourcePath": "dist/cli/linc.mjs",
+      "resolvedPath": "/home/kazu/work/linear_clone/dist/cli/linc.mjs",
+      "bytes": 465590,
+      "sha256": "f1e2b3b23d8b1f613832efd5333682d1df76e68011e7d6e03ac9c56efa6648c8"
+    }
+  },
+  "trialsPerScenario": 10,
+  "status": "complete",
+  "failures": [],
+  "fixture": {
+    "counts": {
+      "open": 20,
+      "closed": 200
+    },
+    "teamKey": "BENCH",
+    "projectName": "Daily benchmark project",
+    "workspaceForm": "slug",
+    "states": {
+      "open": "Backlog",
+      "closed": "Done"
+    },
+    "workspaceIds": {
+      "before": "c6541aed-f92e-4b14-9cb0-a06bd4805703",
+      "after": "bdb90bef-fadd-4637-b8e2-9e331d5f67b4"
+    }
+  },
+  "scenarios": {
+    "cold": "Empty XDG_CACHE_HOME before the timed read.",
+    "warmUnchanged": "Prime the isolated cache, then time an unchanged read.",
+    "warmAfterRemoteUpdate": "Prime the isolated cache, update one open issue through the API, then time the read and require the new title/version."
+  },
+  "workloads": [
+    {
+      "name": "list-cache-cold",
+      "command": "linc issue list --state Backlog",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 251.639,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 158.131,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 229.992,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 164.481,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 230.945,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 162.532,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 223.105,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 157.537,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 264.588,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 183.359,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 232.72,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 163.166,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 242.408,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 167.929,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 255.893,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 173.154,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 230.953,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 176.979,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 232.713,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 165.633,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 232.7165,
+          "p95Ms": 264.588
+        },
+        "after": {
+          "medianMs": 165.05700000000002,
+          "p95Ms": 183.359
+        },
+        "ratioOfMedians": 1.4099159684230294,
+        "ratioOfP95": 1.4430052519919938
+      }
+    },
+    {
+      "name": "list-cache-warm-unchanged",
+      "command": "linc issue list --state Backlog",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 260.648,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 170.238,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 226.58,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 148.563,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 232.103,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 157.744,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 242.853,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 157.677,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 225.18,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 147.488,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 243.79,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 162.335,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 233.838,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 166.231,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 224.471,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 147.979,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 245.836,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 163.464,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 271.09,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "d7bf3e87c4ca08dc02cbf30431a352040278e0a3e4de5eee23cd5ba3f3cdfe58"
+            }
+          },
+          "after": {
+            "elapsedMs": 161.042,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "f582b2cac9ba1acb824f01d60ea0e597e714a5eeabb293429b1105dd539084ac"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 238.34550000000002,
+          "p95Ms": 271.09
+        },
+        "after": {
+          "medianMs": 159.393,
+          "p95Ms": 170.238
+        },
+        "ratioOfMedians": 1.4953322918823286,
+        "ratioOfP95": 1.5924176740798175
+      }
+    },
+    {
+      "name": "list-cache-warm-after-remote-update",
+      "command": "linc issue list --state Backlog",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 245.908,
+            "stdout": {
+              "bytes": 12331,
+              "sha256": "bfaf9153ebac01d1343a1e8e13b448ba19cf037175cd2cb3dbc6ef976240e59c"
+            }
+          },
+          "after": {
+            "elapsedMs": 159.464,
+            "stdout": {
+              "bytes": 12331,
+              "sha256": "f25819dc5bb2f5b65febf56f496ce4ef412ffb9bf900f3261f7d336e35ab8ddf"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "839c196b-c4f9-43e5-a90b-43094e228238",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "920c2156-a778-4379-9f19-62be40b87b6c",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 247.591,
+            "stdout": {
+              "bytes": 12338,
+              "sha256": "d9395f7e7750d4cf2cfe90a000ea452a7592aacf3c96a122bee4a28563d01a57"
+            }
+          },
+          "after": {
+            "elapsedMs": 150.933,
+            "stdout": {
+              "bytes": 12338,
+              "sha256": "f5e54b695529523fc9f5b90aa6f99d73798c5efc7594449c312b9297164d1b66"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "9920cc65-4655-434d-b065-0afc49216c23",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "1ed892c1-7c88-46d3-8c7a-2151494c6c9e",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 225.137,
+            "stdout": {
+              "bytes": 12345,
+              "sha256": "395e6c602c1917ec36389e3de202e40b428847f923b438b17ad931f772221110"
+            }
+          },
+          "after": {
+            "elapsedMs": 146.801,
+            "stdout": {
+              "bytes": 12345,
+              "sha256": "718acb3125848275e18ecd94211ba9e08cf7a68fad924638bdeb2639e9d9f473"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "9eb70dc7-1959-42f4-acd8-253e7184aa0e",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "e777ce0a-3328-4e51-9b79-d6945e4e8f4c",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 265.078,
+            "stdout": {
+              "bytes": 12352,
+              "sha256": "68e3e67288cac6151765ff6b7833d9018aa72b7ff46554c07f2e5310c619611e"
+            }
+          },
+          "after": {
+            "elapsedMs": 164.954,
+            "stdout": {
+              "bytes": 12352,
+              "sha256": "5bc471f39e1911ceeffac92fa47119b7323ed5426b708690f2d85e102d6585f7"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "ea363328-a69f-4d15-a62f-3ad09370a9cf",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "78d924bb-9a8e-4089-8c16-49abc6515dac",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 215.966,
+            "stdout": {
+              "bytes": 12359,
+              "sha256": "6571fc27bf2be8589365ea3eb22b0f0af33a361e67a766e0e0f772ef62eda7ac"
+            }
+          },
+          "after": {
+            "elapsedMs": 151.806,
+            "stdout": {
+              "bytes": 12359,
+              "sha256": "6032e7fb7f8b374214841c14bfcc870b7281ea6f89e52dfd2e118bd361facdc6"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "c2940800-5f42-4511-98a9-ff53fd73fe67",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "8c9cb4cd-ab2a-4f85-a9f1-5624b67748f5",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 243.671,
+            "stdout": {
+              "bytes": 12366,
+              "sha256": "407ec9ce403601cfab556f08c50f0dce6c1dbd31e1dc01cf7aa53d9446cbb65c"
+            }
+          },
+          "after": {
+            "elapsedMs": 160.319,
+            "stdout": {
+              "bytes": 12366,
+              "sha256": "9859869195b6eafe1468331ae31fb9a1165bf74ec0d9050b7cfba34e1019d388"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "187378ec-ca7a-408d-8ec6-d06fa4ddf92e",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "fec99cf4-1ea3-48d0-9f93-d16f65cbf0af",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 237.821,
+            "stdout": {
+              "bytes": 12373,
+              "sha256": "a5e78d435e7e605a87b5d8939c195b4d7cd76f729c0e55e894c224c73e60f297"
+            }
+          },
+          "after": {
+            "elapsedMs": 150.569,
+            "stdout": {
+              "bytes": 12373,
+              "sha256": "53b716001f119565004386beaabbe6c95993ab64e067d516343427f547e8558f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "42502169-7aee-4997-8f55-cfcb43d56e8a",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "79c9924c-82ce-499e-8a45-d17fc13285a7",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 282.728,
+            "stdout": {
+              "bytes": 12380,
+              "sha256": "89a7d17993a43ccb06160f83bb121eb399fe65483d9503194f165198497aea36"
+            }
+          },
+          "after": {
+            "elapsedMs": 163.63,
+            "stdout": {
+              "bytes": 12380,
+              "sha256": "26d182debc9343d38c85622277133dbc2d3e5bfd959d865a942fffef5b8c5e2a"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "e9734b99-df73-44e8-9150-55d8e388038d",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "59e9fc71-af89-4bfc-a078-22772860ffee",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 241.62,
+            "stdout": {
+              "bytes": 12387,
+              "sha256": "afa2a411e90c215ff4821c4d0cb3607d4cc09a604613f81fffd80ce2cb84b3c1"
+            }
+          },
+          "after": {
+            "elapsedMs": 164.439,
+            "stdout": {
+              "bytes": 12387,
+              "sha256": "95aba27f866ead0c003dc56b07caf206e05b77539ec9b77c8064a50ea52d4a90"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "69b916b8-3ba5-464b-879a-ed1641a5ed3e",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "1838aa9d-d4bf-4e50-a81c-93b9fc2e029e",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 243.83,
+            "stdout": {
+              "bytes": 12395,
+              "sha256": "4419bdf306f04b7d0cde454da0ecf6b1486d733cab633f40ca21f9fff5ff7308"
+            }
+          },
+          "after": {
+            "elapsedMs": 162.141,
+            "stdout": {
+              "bytes": 12395,
+              "sha256": "462994738c05e7fe45bb2f1a62ff976fd1216cae14c0cc2e302e0edd77515822"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "13032284-9f93-41b0-98ea-5fc3829cdc37",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "0a7333a5-79d1-4ac9-a3d8-b24e477c8301",
+              "updatedVersion": 2
+            }
+          }
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 243.7505,
+          "p95Ms": 282.728
+        },
+        "after": {
+          "medianMs": 159.8915,
+          "p95Ms": 164.954
+        },
+        "ratioOfMedians": 1.5244744092087446,
+        "ratioOfP95": 1.7139808673933339
+      }
+    }
+  ],
+  "cleanup": {
+    "archivedWorkspaces": [
+      {
+        "id": "bdb90bef-fadd-4637-b8e2-9e331d5f67b4",
+        "archivedAt": "2026-09-22T10:08:45.745Z"
+      },
+      {
+        "id": "c6541aed-f92e-4b14-9cb0-a06bd4805703",
+        "archivedAt": "2026-09-22T10:08:45.797Z"
+      }
+    ],
+    "errors": []
+  },
+  "deployedWorkerVersion": "dee28639-bda8-40fe-b0b7-79cd00e344e3",
+  "sourceFinal": {
+    "gitCommit": "a6c11cdd4cca7bc79698f9ba87992147f7b8bbce",
+    "cleanBuildEvidence": "clean-build.json",
+    "sha256MatchesMeasuredArtifact": true
+  }
+}

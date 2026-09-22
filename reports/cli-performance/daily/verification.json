@@ -1,0 +1,90 @@
+{
+  "sourceCommit": "a6c11cd",
+  "deployedWorkerVersion": "dee28639-bda8-40fe-b0b7-79cd00e344e3",
+  "url": "https://linc.kazumasa.workers.dev",
+  "checks": {
+    "fullCheck": {
+      "command": "pnpm check",
+      "passed": 58,
+      "failed": 0,
+      "log": "/tmp/linc-daily-check-final.log",
+      "scope": "Includes real Worker/API/CLI, import, restart, and 100 concurrent write behavior; run before final weak ETag compatibility fix."
+    },
+    "browser": {
+      "command": "pnpm test:e2e",
+      "passed": 31,
+      "failed": 0,
+      "log": "/tmp/linc-daily-e2e.log",
+      "scope": "Real browser and Worker; run before final weak ETag compatibility fix."
+    },
+    "weakEtagRegression": {
+      "command": "node --test tests/issue-list-cache.test.mjs",
+      "passed": 4,
+      "failed": 0,
+      "log": "/tmp/linc-weak-etag-after.log",
+      "beforeFix": "Targeted real Worker test returned 200 where 304 was expected."
+    },
+    "quality": {
+      "command": "pnpm quality",
+      "exitCode": 0,
+      "unused": [],
+      "duplicateLinePercent": 1.75,
+      "cyclomaticMaximum": 12,
+      "functionLinesMaximum": 79,
+      "log": "/tmp/linc-daily-quality-final.log"
+    },
+    "finalCommitHooks": {
+      "format": true,
+      "lint": true,
+      "allProjectTypecheck": true
+    }
+  },
+  "productionReadback": {
+    "openIssueCount": 2,
+    "cacheValidation": {
+      "requestCount": 1,
+      "failedRequests": 0,
+      "requestBodyBytes": 0,
+      "responseBodyBytes": 0,
+      "totalBodyBytes": 0,
+      "requestsByMethod": {
+        "GET": 1
+      },
+      "responsesByStatus": {
+        "304": 1
+      }
+    },
+    "cachedOutputMatchesInitialResponse": true
+  },
+  "independentReview": {
+    "model": "gpt-5.6-terra",
+    "fixedFindings": [
+      "Workspace UUID versus slug collision",
+      "Authorization of the actual receipt entity after name reuse",
+      "Workspace-bound idempotency receipts"
+    ],
+    "weakEtagFixReviewed": true,
+    "finalReportAudit": "One source-to-bundle attribution gap identified; resolved by rebuilding archived committed source and matching the measured SHA-256."
+  },
+  "limitations": [
+    "The 3x target was not achieved: daily command median speedups are 1.16x to 1.52x.",
+    "No delta synchronization or offline stale-list fallback.",
+    "Only complete single-page lists are cached.",
+    "The local 100-write test is not a production load claim."
+  ],
+  "productionBenchmark": {
+    "daily": "production-after-slug.json",
+    "cache": "production-cache-after.json",
+    "status": "complete",
+    "finalRunFailures": 0,
+    "finalRunArchivedWorkspaces": 4,
+    "earlierFailedAttempt": "failed-run.json"
+  },
+  "ticketReadback": {
+    "issue": "FUCHIKOMA-25",
+    "verifiedCommentCount": 5,
+    "finalCommentId": "bc31c815-4709-4721-8546-5bc01308b852",
+    "bodyMatched": true
+  },
+  "cleanBuild": "clean-build.json"
+}

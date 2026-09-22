@@ -1,0 +1,22 @@
+{
+  "sourceCommit": "a6c11cdd4cca7bc79698f9ba87992147f7b8bbce",
+  "sourceMaterialization": "git archive of committed tree into temporary directory; no working-tree source files",
+  "buildCommand": "node scripts/build-cli.mjs",
+  "node": "v26.8.1",
+  "dependencies": "Copied the existing installed CLI/build packages into the temporary directory; no dependency reinstall",
+  "copiedPackages": [
+    "commander@14.0.3",
+    "zod@4.6.5",
+    "esbuild@0.25.12",
+    "esbuild@0.28.1",
+    "esbuild@0.28.2",
+    "@esbuild+linux-x64@0.28.1",
+    "@esbuild+linux-x64@0.25.12",
+    "@esbuild+linux-x64@0.28.2"
+  ],
+  "dependencyLockSha256": "f75b6c1cc1f3db9792516ce957d479f009b23feedb41a5022444496b93337d7e",
+  "sha256": "f1e2b3b23d8b1f613832efd5333682d1df76e68011e7d6e03ac9c56efa6648c8",
+  "bytes": 465590,
+  "matchesMeasuredArtifact": true,
+  "earlierAttempts": "A directory symlink changed esbuild module-path labels; hardlinks across filesystem mounts were unavailable. Copying only the CLI/build dependencies preserved relative paths."
+}

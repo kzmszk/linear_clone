@@ -1,0 +1,129 @@
+{
+  "baseline": "Old CLI on old Worker; combine both identical old-CLI cohorts, 20 samples.",
+  "final": "New CLI on new Worker; 10 samples. Different time windows include network variation.",
+  "p95Method": "nearest-rank; p95 of 10 samples is the maximum, not a reliable tail estimate",
+  "daily": [
+    {
+      "name": "issue-list-open-default",
+      "before": {
+        "sampleCount": 20,
+        "medianMs": 237.5125,
+        "p95Ms": 265.109
+      },
+      "after": {
+        "sampleCount": 10,
+        "medianMs": 164.983,
+        "p95Ms": 257.702
+      },
+      "speedup": 1.4396180212506742,
+      "latencyReductionPercent": 30.537129624756588
+    },
+    {
+      "name": "issue-list-open-filtered",
+      "before": {
+        "sampleCount": 20,
+        "medianMs": 236.92849999999999,
+        "p95Ms": 272.209
+      },
+      "after": {
+        "sampleCount": 10,
+        "medianMs": 168.1865,
+        "p95Ms": 207.17
+      },
+      "speedup": 1.40872483820045,
+      "latencyReductionPercent": 29.013816404527105
+    },
+    {
+      "name": "issue-create",
+      "before": {
+        "sampleCount": 20,
+        "medianMs": 252.30700000000002,
+        "p95Ms": 273.994
+      },
+      "after": {
+        "sampleCount": 10,
+        "medianMs": 174.178,
+        "p95Ms": 200.843
+      },
+      "speedup": 1.4485583713212922,
+      "latencyReductionPercent": 30.965847162385508
+    },
+    {
+      "name": "issue-state-update",
+      "before": {
+        "sampleCount": 20,
+        "medianMs": 247.94549999999998,
+        "p95Ms": 275.388
+      },
+      "after": {
+        "sampleCount": 10,
+        "medianMs": 214.58100000000002,
+        "p95Ms": 248.261
+      },
+      "speedup": 1.1554867392732813,
+      "latencyReductionPercent": 13.456384568382962
+    },
+    {
+      "name": "comment-create",
+      "before": {
+        "sampleCount": 20,
+        "medianMs": 253.305,
+        "p95Ms": 279.649
+      },
+      "after": {
+        "sampleCount": 10,
+        "medianMs": 166.93400000000003,
+        "p95Ms": 179.549
+      },
+      "speedup": 1.5173960966609557,
+      "latencyReductionPercent": 34.09762934012356
+    }
+  ],
+  "cache": [
+    {
+      "name": "list-cache-cold",
+      "before": {
+        "sampleCount": 20,
+        "medianMs": 238.3155,
+        "p95Ms": 267.99
+      },
+      "after": {
+        "sampleCount": 10,
+        "medianMs": 165.05700000000002,
+        "p95Ms": 183.359
+      },
+      "speedup": 1.4438375833802866,
+      "latencyReductionPercent": 30.740132303605925
+    },
+    {
+      "name": "list-cache-warm-unchanged",
+      "before": {
+        "sampleCount": 20,
+        "medianMs": 233.51549999999997,
+        "p95Ms": 273.167
+      },
+      "after": {
+        "sampleCount": 10,
+        "medianMs": 159.393,
+        "p95Ms": 170.238
+      },
+      "speedup": 1.4650298319248647,
+      "latencyReductionPercent": 31.742004278088597
+    },
+    {
+      "name": "list-cache-warm-after-remote-update",
+      "before": {
+        "sampleCount": 20,
+        "medianMs": 243.59050000000002,
+        "p95Ms": 270.825
+      },
+      "after": {
+        "sampleCount": 10,
+        "medianMs": 159.8915,
+        "p95Ms": 164.954
+      },
+      "speedup": 1.5234737306235793,
+      "latencyReductionPercent": 34.36053540675847
+    }
+  ]
+}

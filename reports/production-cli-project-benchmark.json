@@ -1,0 +1,915 @@
+{
+  "startedAt": "2026-09-22T03:10:08.205371+00:00",
+  "target": "https://linc.kazumasa.workers.dev",
+  "team": "Dev",
+  "execution": "sequential CLI subprocesses; elapsed wall time includes CLI startup, requests and process exit",
+  "phases": [
+    {
+      "name": "create projA",
+      "count": 1,
+      "elapsedMs": 953.221,
+      "meanCommandMs": 953.003,
+      "minCommandMs": 953.003,
+      "maxCommandMs": 953.003
+    },
+    {
+      "name": "create projB",
+      "count": 1,
+      "elapsedMs": 362.523,
+      "meanCommandMs": 362.308,
+      "minCommandMs": 362.308,
+      "maxCommandMs": 362.308
+    },
+    {
+      "name": "create 10 issues in projA",
+      "count": 10,
+      "elapsedMs": 3381.275,
+      "meanCommandMs": 337.87,
+      "minCommandMs": 287.543,
+      "maxCommandMs": 419.761
+    },
+    {
+      "name": "create 10 issues in projB",
+      "count": 10,
+      "elapsedMs": 3349.909,
+      "meanCommandMs": 334.716,
+      "minCommandMs": 296.302,
+      "maxCommandMs": 394.775
+    },
+    {
+      "name": "set projA issues to In Progress",
+      "count": 10,
+      "elapsedMs": 3220.033,
+      "meanCommandMs": 321.7,
+      "minCommandMs": 295.381,
+      "maxCommandMs": 376.054
+    },
+    {
+      "name": "move projB issues to projA",
+      "count": 10,
+      "elapsedMs": 3263.513,
+      "meanCommandMs": 326.038,
+      "minCommandMs": 280.388,
+      "maxCommandMs": 410.416
+    },
+    {
+      "name": "set all 20 issues to Done",
+      "count": 20,
+      "elapsedMs": 6263.63,
+      "meanCommandMs": 312.825,
+      "minCommandMs": 290.105,
+      "maxCommandMs": 348.347
+    }
+  ],
+  "commands": [
+    {
+      "args": ["project", "create", "--name", "projA", "--team", "FUCHIKOMA"],
+      "elapsedMs": 953.003,
+      "exitCode": 0
+    },
+    {
+      "args": ["project", "create", "--name", "projB", "--team", "FUCHIKOMA"],
+      "elapsedMs": 362.308,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0",
+        "--title",
+        "projA issue 01"
+      ],
+      "elapsedMs": 343.141,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0",
+        "--title",
+        "projA issue 02"
+      ],
+      "elapsedMs": 349.559,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0",
+        "--title",
+        "projA issue 03"
+      ],
+      "elapsedMs": 323.972,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0",
+        "--title",
+        "projA issue 04"
+      ],
+      "elapsedMs": 308.514,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0",
+        "--title",
+        "projA issue 05"
+      ],
+      "elapsedMs": 335.731,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0",
+        "--title",
+        "projA issue 06"
+      ],
+      "elapsedMs": 419.761,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0",
+        "--title",
+        "projA issue 07"
+      ],
+      "elapsedMs": 287.543,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0",
+        "--title",
+        "projA issue 08"
+      ],
+      "elapsedMs": 330.795,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0",
+        "--title",
+        "projA issue 09"
+      ],
+      "elapsedMs": 302.806,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0",
+        "--title",
+        "projA issue 10"
+      ],
+      "elapsedMs": 376.876,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "91c25e87-eab8-496e-83ea-ca059bc453cd",
+        "--title",
+        "projB issue 01"
+      ],
+      "elapsedMs": 310.955,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "91c25e87-eab8-496e-83ea-ca059bc453cd",
+        "--title",
+        "projB issue 02"
+      ],
+      "elapsedMs": 394.775,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "91c25e87-eab8-496e-83ea-ca059bc453cd",
+        "--title",
+        "projB issue 03"
+      ],
+      "elapsedMs": 343.287,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "91c25e87-eab8-496e-83ea-ca059bc453cd",
+        "--title",
+        "projB issue 04"
+      ],
+      "elapsedMs": 318.495,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "91c25e87-eab8-496e-83ea-ca059bc453cd",
+        "--title",
+        "projB issue 05"
+      ],
+      "elapsedMs": 325.242,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "91c25e87-eab8-496e-83ea-ca059bc453cd",
+        "--title",
+        "projB issue 06"
+      ],
+      "elapsedMs": 321.196,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "91c25e87-eab8-496e-83ea-ca059bc453cd",
+        "--title",
+        "projB issue 07"
+      ],
+      "elapsedMs": 327.85,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "91c25e87-eab8-496e-83ea-ca059bc453cd",
+        "--title",
+        "projB issue 08"
+      ],
+      "elapsedMs": 319.417,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "91c25e87-eab8-496e-83ea-ca059bc453cd",
+        "--title",
+        "projB issue 09"
+      ],
+      "elapsedMs": 296.302,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "create",
+        "--team",
+        "FUCHIKOMA",
+        "--project",
+        "91c25e87-eab8-496e-83ea-ca059bc453cd",
+        "--title",
+        "projB issue 10"
+      ],
+      "elapsedMs": 389.646,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-4",
+        "--state",
+        "c00b9967-fc91-41b9-87dd-5618711b8f0a"
+      ],
+      "elapsedMs": 327.363,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-5",
+        "--state",
+        "c00b9967-fc91-41b9-87dd-5618711b8f0a"
+      ],
+      "elapsedMs": 309.437,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-6",
+        "--state",
+        "c00b9967-fc91-41b9-87dd-5618711b8f0a"
+      ],
+      "elapsedMs": 332.508,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-7",
+        "--state",
+        "c00b9967-fc91-41b9-87dd-5618711b8f0a"
+      ],
+      "elapsedMs": 308.763,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-8",
+        "--state",
+        "c00b9967-fc91-41b9-87dd-5618711b8f0a"
+      ],
+      "elapsedMs": 295.381,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-9",
+        "--state",
+        "c00b9967-fc91-41b9-87dd-5618711b8f0a"
+      ],
+      "elapsedMs": 311.299,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-10",
+        "--state",
+        "c00b9967-fc91-41b9-87dd-5618711b8f0a"
+      ],
+      "elapsedMs": 376.054,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-11",
+        "--state",
+        "c00b9967-fc91-41b9-87dd-5618711b8f0a"
+      ],
+      "elapsedMs": 308.621,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-12",
+        "--state",
+        "c00b9967-fc91-41b9-87dd-5618711b8f0a"
+      ],
+      "elapsedMs": 300.686,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-13",
+        "--state",
+        "c00b9967-fc91-41b9-87dd-5618711b8f0a"
+      ],
+      "elapsedMs": 346.886,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-14",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0"
+      ],
+      "elapsedMs": 280.388,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-15",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0"
+      ],
+      "elapsedMs": 345.995,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-16",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0"
+      ],
+      "elapsedMs": 317.757,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-17",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0"
+      ],
+      "elapsedMs": 410.416,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-18",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0"
+      ],
+      "elapsedMs": 324.863,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-19",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0"
+      ],
+      "elapsedMs": 368.895,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-20",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0"
+      ],
+      "elapsedMs": 290.762,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-21",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0"
+      ],
+      "elapsedMs": 296.497,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-22",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0"
+      ],
+      "elapsedMs": 298.316,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-23",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0"
+      ],
+      "elapsedMs": 326.492,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-4",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 302.805,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-5",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 298.235,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-6",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 313.722,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-7",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 322.457,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-8",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 308.513,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-9",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 302.514,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-10",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 292.936,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-11",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 338.164,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-12",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 297.406,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-13",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 345.435,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-14",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 348.347,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-15",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 290.105,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-16",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 294.397,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-17",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 292.213,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-18",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 310.889,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-19",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 319.435,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-20",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 332.133,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-21",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 297.929,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-22",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 333.03,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "update",
+        "FUCHIKOMA-23",
+        "--state",
+        "d11e6199-6f70-4435-9a07-99612d15fa6c"
+      ],
+      "elapsedMs": 315.843,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "list",
+        "--project",
+        "29c1704c-9f71-4bff-971b-f1ceee1fc2d0"
+      ],
+      "elapsedMs": 288.591,
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "issue",
+        "list",
+        "--project",
+        "91c25e87-eab8-496e-83ea-ca059bc453cd"
+      ],
+      "elapsedMs": 258.167,
+      "exitCode": 0
+    }
+  ],
+  "projects": {
+    "projA": "29c1704c-9f71-4bff-971b-f1ceee1fc2d0",
+    "projB": "91c25e87-eab8-496e-83ea-ca059bc453cd"
+  },
+  "issues": {
+    "projA": [
+      {
+        "id": "d66872e9-cd6c-4021-a96c-ad5514b5f296",
+        "identifier": "FUCHIKOMA-4"
+      },
+      {
+        "id": "f1daaf6b-7e8e-4a08-b93f-936de0a6cfca",
+        "identifier": "FUCHIKOMA-5"
+      },
+      {
+        "id": "90129582-62c3-492b-b09f-418f3dcee87a",
+        "identifier": "FUCHIKOMA-6"
+      },
+      {
+        "id": "2712bf31-ab86-42e7-bec2-b0bb15b2832b",
+        "identifier": "FUCHIKOMA-7"
+      },
+      {
+        "id": "321743a7-5984-46e9-87a1-8585fc9d1d44",
+        "identifier": "FUCHIKOMA-8"
+      },
+      {
+        "id": "638472ec-34bb-4787-90e1-6aaa38a61a81",
+        "identifier": "FUCHIKOMA-9"
+      },
+      {
+        "id": "e8ad0146-3e54-4955-ae7a-a7cecfaff54d",
+        "identifier": "FUCHIKOMA-10"
+      },
+      {
+        "id": "d90e9571-01ae-4243-b903-c0e87d4a4d4e",
+        "identifier": "FUCHIKOMA-11"
+      },
+      {
+        "id": "99715b95-16d2-4289-a62f-c95d26945125",
+        "identifier": "FUCHIKOMA-12"
+      },
+      {
+        "id": "6908e183-f943-4181-8265-81b7ef03fb66",
+        "identifier": "FUCHIKOMA-13"
+      }
+    ],
+    "projB": [
+      {
+        "id": "cca83b71-8981-4a16-ae6a-71d01600e347",
+        "identifier": "FUCHIKOMA-14"
+      },
+      {
+        "id": "fe446929-68c3-46f4-b230-b5bdfc4831c7",
+        "identifier": "FUCHIKOMA-15"
+      },
+      {
+        "id": "036d3f42-3c68-4d57-bc0c-4e0f1711463a",
+        "identifier": "FUCHIKOMA-16"
+      },
+      {
+        "id": "5fac7478-747e-4a08-8a3d-0fcfcfc9fa08",
+        "identifier": "FUCHIKOMA-17"
+      },
+      {
+        "id": "61560696-c100-4548-bae0-e3c0a537ff0d",
+        "identifier": "FUCHIKOMA-18"
+      },
+      {
+        "id": "81143231-1fa4-4a25-9caf-350be1301dba",
+        "identifier": "FUCHIKOMA-19"
+      },
+      {
+        "id": "922ce3e1-4acf-42e9-88ac-a2652bb6602d",
+        "identifier": "FUCHIKOMA-20"
+      },
+      {
+        "id": "ac4e9ef7-a61b-4c32-8406-88cc154228f2",
+        "identifier": "FUCHIKOMA-21"
+      },
+      {
+        "id": "6a7a05d6-b1bc-4d0d-9bf6-17aa186725ff",
+        "identifier": "FUCHIKOMA-22"
+      },
+      {
+        "id": "eab80871-3dd7-4596-800a-2e3dfb14b273",
+        "identifier": "FUCHIKOMA-23"
+      }
+    ]
+  },
+  "mutationElapsedMs": 20794.104,
+  "verification": {
+    "passed": true,
+    "projAIssues": 20,
+    "projBIssues": 0,
+    "completedIssues": 20,
+    "elapsedMs": 547.533
+  },
+  "finishedAt": "2026-09-22T03:10:29.555554+00:00"
+}

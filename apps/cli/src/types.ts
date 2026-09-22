@@ -26,7 +26,6 @@ export type {
   Member,
   Project,
   Team,
-  WorkflowState,
   Workspace,
 } from '../../../packages/contracts/src/index.ts';
 export type Label = z.infer<typeof labelSchema>;

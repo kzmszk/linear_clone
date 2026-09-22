@@ -2,9 +2,9 @@ import { listRelations } from '../issues/relations.ts';
 import { listAttachments } from '../issues/attachments.ts';
 import type { DurableObjectStorage } from '@cloudflare/workers-types';
 import {
+  issueCreateRequestSchema,
+  issuePatchRequestSchema,
   newCommentSchema,
-  newIssueSchema,
-  issuePatchSchema,
   versionInputSchema,
 } from '../../../../packages/contracts/src/index.ts';
 import { hashPayload, requireOperationId } from '../mutations.ts';
@@ -13,7 +13,6 @@ import {
   listActivity,
   listComments,
   getComment,
-  listIssues,
   getIssue,
 } from '../issues/queries.ts';
 import {
@@ -28,9 +27,11 @@ import {
   patchComment,
 } from '../issues/comments.ts';
 import { z } from 'zod';
-import { badRequest } from '../errors.ts';
-import { parseBoolean } from '../db.ts';
-import type { IssueLifecycle, IssueListFilter } from '../issues/inputs.ts';
+import { issueListResponse } from './issue-list.ts';
+import {
+  resolveIssueCreateReferences,
+  resolveIssuePatchReferences,
+} from '../issues/references.ts';
 import type { AuthActor, SqlDb } from '../types.ts';
 
 const commentPatchSchema = z.object({
@@ -67,19 +68,14 @@ async function issueCollection(
   workspaceId: string,
 ): Promise<Response | null> {
   if (request.method === 'GET')
-    return response(
-      listIssues(
-        sql,
-        actor,
-        workspaceId,
-        issueListFilter(new URL(request.url)),
-      ),
-    );
+    return issueListResponse(request, sql, actor, workspaceId);
   if (request.method !== 'POST') return null;
-  const body = await parseBody(request, newIssueSchema);
+  const body = await parseBody(request, issueCreateRequestSchema);
   const operationId = requireOperationId(
     request.headers.get('Idempotency-Key'),
   );
+  const requestHash = await hashPayload({ path: request.url, body });
+  const input = resolveIssueCreateReferences(sql, actor, workspaceId, body);
   return response(
     createIssue(
       sql,
@@ -87,45 +83,11 @@ async function issueCollection(
       actor,
       workspaceId,
       operationId,
-      await hashPayload({ path: request.url, body }),
-      body,
+      requestHash,
+      input,
     ),
     201,
   );
-}
-
-function issueListFilter(url: URL): IssueListFilter {
-  const lifecycle = lifecycleFilter(url.searchParams.get('lifecycle'));
-  rejectDuplicateReference(url, 'team');
-  rejectDuplicateReference(url, 'project');
-  rejectDuplicateReference(url, 'state');
-  rejectDuplicateReference(url, 'assignee');
-  return {
-    teamId: url.searchParams.get('teamId'),
-    team: url.searchParams.get('team'),
-    projectId: url.searchParams.get('projectId'),
-    project: url.searchParams.get('project'),
-    stateId: url.searchParams.get('stateId'),
-    state: url.searchParams.get('state'),
-    assigneeId: url.searchParams.get('assigneeId'),
-    assignee: url.searchParams.get('assignee'),
-    query: url.searchParams.get('q'),
-    cursor: url.searchParams.get('cursor'),
-    deleted: parseBoolean(url.searchParams.get('deleted'), false),
-    archived: parseBoolean(url.searchParams.get('archived'), false),
-    lifecycle,
-  };
-}
-
-function lifecycleFilter(value: string | null): IssueLifecycle | null {
-  if (value === null) return null;
-  if (value === 'open' || value === 'closed' || value === 'all') return value;
-  throw badRequest('lifecycle must be open, closed, or all');
-}
-
-function rejectDuplicateReference(url: URL, name: string): void {
-  if (url.searchParams.has(`${name}Id`) && url.searchParams.has(name))
-    throw badRequest(`Use only one of ${name}Id and ${name}`);
 }
 
 async function issueResource(
@@ -186,17 +148,26 @@ async function issueItem(
     request.headers.get('Idempotency-Key'),
   );
   if (request.method === 'PATCH') {
-    const body = await parseBody(request, issuePatchSchema);
+    const body = await parseBody(request, issuePatchRequestSchema);
+    const requestHash = await hashPayload({ path: request.url, body });
+    const current = getIssue(sql, actor, workspaceId, issueId);
+    const patch = resolveIssuePatchReferences(
+      sql,
+      actor,
+      workspaceId,
+      current.teamId,
+      body,
+    );
     return response(
       patchIssue(
         sql,
         storage,
         actor,
         workspaceId,
-        issueId,
+        current.id,
         operationId,
-        await hashPayload({ path: request.url, body }),
-        body,
+        requestHash,
+        patch,
       ),
     );
   }
@@ -261,15 +232,17 @@ async function comments(
     const operationId = requireOperationId(
       request.headers.get('Idempotency-Key'),
     );
+    const requestHash = await hashPayload({ path: request.url, body });
+    const resolvedIssueId = getIssue(sql, actor, workspaceId, issueId).id;
     return response(
       createComment(
         sql,
         storage,
         actor,
         workspaceId,
-        issueId,
+        resolvedIssueId,
         operationId,
-        await hashPayload({ path: request.url, body }),
+        requestHash,
         body,
       ),
       201,

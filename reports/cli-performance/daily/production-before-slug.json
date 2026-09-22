@@ -1,0 +1,3062 @@
+{
+  "schemaVersion": 1,
+  "phase": "baseline",
+  "capturedAt": "2026-09-22T09:22:55.561Z",
+  "target": "https://linc.kazumasa.workers.dev",
+  "timingBoundary": "performance.now() immediately before CLI spawn through process close; fixture setup and API verification are excluded",
+  "httpTrace": "Separate unmeasured child runs use a fetch preload to count request and response body bytes without recording URLs, headers, tokens, or bodies.",
+  "environment": {
+    "node": "v26.8.1",
+    "nodeBinary": "/home/kazu/.hermes/node/bin/node",
+    "platform": "linux",
+    "release": "7.0.0-31-generic",
+    "architecture": "x64"
+  },
+  "sourceBaseline": {
+    "gitCommit": "ee24ac057498776453cbd5d2b98778433d99658c",
+    "workingTree": "dirty"
+  },
+  "artifacts": {
+    "before": {
+      "sourcePath": "dist/cli/linc-daily-before.mjs",
+      "resolvedPath": "/home/kazu/work/linear_clone/dist/cli/linc-daily-before.mjs",
+      "bytes": 461549,
+      "sha256": "2b8d160013b172cbe00d2d98e31f591176442806539a882b0de10f5412a322a4"
+    },
+    "after": {
+      "sourcePath": "dist/cli/linc-daily-before.mjs",
+      "resolvedPath": "/home/kazu/work/linear_clone/dist/cli/linc-daily-before.mjs",
+      "bytes": 461549,
+      "sha256": "2b8d160013b172cbe00d2d98e31f591176442806539a882b0de10f5412a322a4"
+    }
+  },
+  "trialsPerWorkload": 10,
+  "fixture": {
+    "counts": {
+      "open": 20,
+      "closed": 200
+    },
+    "teamKey": "BENCH",
+    "projectName": "Daily benchmark project",
+    "workspaceForm": "slug",
+    "states": {
+      "open": "Backlog",
+      "update": "In Progress",
+      "closed": "Done"
+    },
+    "workspaceIds": {
+      "before": "17932431-3618-4db8-9452-636c800f19d9",
+      "after": "78c10f37-c5a8-4880-9715-c5676c0bd7de"
+    }
+  },
+  "semantics": {
+    "defaultList": "baseline phase expects both executables to return open plus closed",
+    "filteredList": "Both executables use --state Backlog and must return only the open fixture issues."
+  },
+  "workloads": [
+    {
+      "name": "issue-list-open-default",
+      "command": "linc issue list",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 237.831,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "67f67fa6fe0708d946880bef9ffa37f054726ff280d8b667ab7c20617516eb41"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 243.988,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "7a920878d0e52e954ab297f79412642f38c83022dabe75fe1eb57f2e620fc432"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            },
+            "after": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            }
+          }
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 230.653,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "67f67fa6fe0708d946880bef9ffa37f054726ff280d8b667ab7c20617516eb41"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 291.039,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "7a920878d0e52e954ab297f79412642f38c83022dabe75fe1eb57f2e620fc432"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            },
+            "after": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            }
+          }
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 250.06,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "67f67fa6fe0708d946880bef9ffa37f054726ff280d8b667ab7c20617516eb41"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 250.886,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "7a920878d0e52e954ab297f79412642f38c83022dabe75fe1eb57f2e620fc432"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            },
+            "after": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            }
+          }
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 241.886,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "67f67fa6fe0708d946880bef9ffa37f054726ff280d8b667ab7c20617516eb41"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 232.866,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "7a920878d0e52e954ab297f79412642f38c83022dabe75fe1eb57f2e620fc432"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            },
+            "after": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            }
+          }
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 265.109,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "67f67fa6fe0708d946880bef9ffa37f054726ff280d8b667ab7c20617516eb41"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 252.147,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "7a920878d0e52e954ab297f79412642f38c83022dabe75fe1eb57f2e620fc432"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            },
+            "after": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            }
+          }
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 239.214,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "67f67fa6fe0708d946880bef9ffa37f054726ff280d8b667ab7c20617516eb41"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 235.475,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "7a920878d0e52e954ab297f79412642f38c83022dabe75fe1eb57f2e620fc432"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            },
+            "after": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            }
+          }
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 237.194,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "67f67fa6fe0708d946880bef9ffa37f054726ff280d8b667ab7c20617516eb41"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 233.432,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "7a920878d0e52e954ab297f79412642f38c83022dabe75fe1eb57f2e620fc432"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            },
+            "after": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            }
+          }
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 237.069,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "67f67fa6fe0708d946880bef9ffa37f054726ff280d8b667ab7c20617516eb41"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 232.774,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "7a920878d0e52e954ab297f79412642f38c83022dabe75fe1eb57f2e620fc432"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            },
+            "after": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            }
+          }
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 227.865,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "67f67fa6fe0708d946880bef9ffa37f054726ff280d8b667ab7c20617516eb41"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 232.719,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "7a920878d0e52e954ab297f79412642f38c83022dabe75fe1eb57f2e620fc432"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            },
+            "after": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            }
+          }
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 230.664,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "67f67fa6fe0708d946880bef9ffa37f054726ff280d8b667ab7c20617516eb41"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 248.647,
+            "stdout": {
+              "bytes": 140766,
+              "sha256": "7a920878d0e52e954ab297f79412642f38c83022dabe75fe1eb57f2e620fc432"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 144534,
+              "totalBodyBytes": 144534,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            },
+            "after": {
+              "count": 220,
+              "open": 20,
+              "closed": 200
+            }
+          }
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 237.5125,
+          "p95Ms": 265.109
+        },
+        "after": {
+          "medianMs": 239.73149999999998,
+          "p95Ms": 291.039
+        },
+        "ratioOfMedians": 0.9907438113055648,
+        "ratioOfP95": 0.9109054113022653
+      }
+    },
+    {
+      "name": "issue-list-open-filtered",
+      "command": "linc issue list --state Backlog",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 236.01,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "7f81f0d961bf0c8dbb43847e8c7b9a3b690b719cd8c437f02da8bd0672076613"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 272.209,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "216196ebb742d871e9fd993155b799211d8dc298d6f7599904b24952b7752601"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 266.956,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "7f81f0d961bf0c8dbb43847e8c7b9a3b690b719cd8c437f02da8bd0672076613"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 694.658,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "216196ebb742d871e9fd993155b799211d8dc298d6f7599904b24952b7752601"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 250.565,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "7f81f0d961bf0c8dbb43847e8c7b9a3b690b719cd8c437f02da8bd0672076613"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 224.626,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "216196ebb742d871e9fd993155b799211d8dc298d6f7599904b24952b7752601"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 227.932,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "7f81f0d961bf0c8dbb43847e8c7b9a3b690b719cd8c437f02da8bd0672076613"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 230.546,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "216196ebb742d871e9fd993155b799211d8dc298d6f7599904b24952b7752601"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 223.459,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "7f81f0d961bf0c8dbb43847e8c7b9a3b690b719cd8c437f02da8bd0672076613"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 226.153,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "216196ebb742d871e9fd993155b799211d8dc298d6f7599904b24952b7752601"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 237.847,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "7f81f0d961bf0c8dbb43847e8c7b9a3b690b719cd8c437f02da8bd0672076613"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 222.021,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "216196ebb742d871e9fd993155b799211d8dc298d6f7599904b24952b7752601"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 250.125,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "7f81f0d961bf0c8dbb43847e8c7b9a3b690b719cd8c437f02da8bd0672076613"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 220.923,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "216196ebb742d871e9fd993155b799211d8dc298d6f7599904b24952b7752601"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 231.944,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "7f81f0d961bf0c8dbb43847e8c7b9a3b690b719cd8c437f02da8bd0672076613"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 249.924,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "216196ebb742d871e9fd993155b799211d8dc298d6f7599904b24952b7752601"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 216.056,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "7f81f0d961bf0c8dbb43847e8c7b9a3b690b719cd8c437f02da8bd0672076613"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 255.628,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "216196ebb742d871e9fd993155b799211d8dc298d6f7599904b24952b7752601"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 252.836,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "7f81f0d961bf0c8dbb43847e8c7b9a3b690b719cd8c437f02da8bd0672076613"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 252.124,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "216196ebb742d871e9fd993155b799211d8dc298d6f7599904b24952b7752601"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 0,
+              "responseBodyBytes": 17871,
+              "totalBodyBytes": 17871,
+              "requestsByMethod": {
+                "GET": 3
+              },
+              "responsesByStatus": {
+                "200": 3
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 236.92849999999999,
+          "p95Ms": 266.956
+        },
+        "after": {
+          "medianMs": 240.235,
+          "p95Ms": 694.658
+        },
+        "ratioOfMedians": 0.9862363935313337,
+        "ratioOfP95": 0.38429846053741556
+      }
+    },
+    {
+      "name": "issue-create",
+      "command": "linc issue create --team BENCH --project \"Daily benchmark project\"",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 260.159,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "f587ebad3fe13500fa3bbce6f208fb4b6ffe8617e9674a1b661d1ed49d44ccd8"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 275.536,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "2a389a4eb0b979840aae5d45d6b7e37a16d29dcf3ca69774af670d1d6bddffbe"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "id": "f836350c-9c44-459a-88b3-617b6b4a4437",
+              "identifier": "BENCH-221",
+              "version": 1
+            },
+            "after": {
+              "id": "899687d4-dc4b-4bf6-8397-2ad1db9c475d",
+              "identifier": "BENCH-221",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 265.529,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "130ff001752f30ee4b23ea0deffac11228a16e7c0a1c0973c5a990305c217659"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 271.215,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "8524034dd7cc64722916a7763b77ce1c591ba08ede2e3eb7d02f8ad6469824ee"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "id": "0373d3cc-516b-4682-9a31-9b234eb459da",
+              "identifier": "BENCH-223",
+              "version": 1
+            },
+            "after": {
+              "id": "7374ec76-7c83-4e9c-afff-2d14e84e13d1",
+              "identifier": "BENCH-223",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 273.994,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "ebbc36751749957d94064dd81872c64cc7bb71238d73f212e065241bcd749209"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 243.493,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "79b1820d39daff139ac6b5652003b3ea570ea99e727355504af996d10f0a9b75"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "id": "52e8e162-da66-4a0b-8b21-46a240e1006a",
+              "identifier": "BENCH-225",
+              "version": 1
+            },
+            "after": {
+              "id": "d6f6a741-0310-4aa3-8052-e245ac64dcc1",
+              "identifier": "BENCH-225",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 249.169,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "44c3b7c2e69381344e4637d206cd2819b03dec2cb988054631dc3e12db4c14d2"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 247.788,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "16bc6c2e728560023b97a9b5166039712f1f864e9122fba0d24757591a1fc1e5"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "id": "dc849f09-b038-4b23-9f8e-7474a58c6ff8",
+              "identifier": "BENCH-227",
+              "version": 1
+            },
+            "after": {
+              "id": "d6d403d4-5fdd-4407-b729-efcc5d1d0c9f",
+              "identifier": "BENCH-227",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 222.788,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "7ba28c467e9d105a8d5937ef109f336c569bfe304ae3795e8b8d698bb945037f"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 237.82,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "fa398241cc59e14f8c006cd63b5f3b94ba6fddc80a57fca8aae64df9b42e6e3d"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "id": "1082f496-8382-4579-9190-2a4d3bfdb1a0",
+              "identifier": "BENCH-229",
+              "version": 1
+            },
+            "after": {
+              "id": "6d2be3e2-a1ee-48b1-b4c0-623797111071",
+              "identifier": "BENCH-229",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 246.351,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "b0670808513438d3bfadb02d88518b743f044f1c498a4f6e573534a66749d80e"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 262.763,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "091bc9442756c58349ddfad6f98770490558378b4c4727c7d861b2cce911eaa3"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "id": "dae640c1-6396-497f-935c-949b28dba53f",
+              "identifier": "BENCH-231",
+              "version": 1
+            },
+            "after": {
+              "id": "5141f4f4-a986-42d8-8c55-f46b6a223ec7",
+              "identifier": "BENCH-231",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 255.445,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "b88d57fb952fcf329943411fb906694e68cb9821401fa90d35a31174b7a87b34"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 266.766,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "1aa4da81f623133814df25d1b1c0e93f327c8880d0e27a12a90c6017a01a96a1"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "id": "b882e36b-4ae1-4bd2-876a-8395aa57a3d4",
+              "identifier": "BENCH-233",
+              "version": 1
+            },
+            "after": {
+              "id": "21897252-ac7d-4494-ace5-f7a595d5f378",
+              "identifier": "BENCH-233",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 267.714,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "94c6af98e9b527108601006adf6a8fa48520f935fee4e54ce3cc5553531f6ee6"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 240.168,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "4393ec0f46f5bb4fb64fb59812709184bc0a293e9122cde0be3c36f9babaf0b7"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "id": "9104889c-3aa4-4a09-bfc8-029f8958b137",
+              "identifier": "BENCH-235",
+              "version": 1
+            },
+            "after": {
+              "id": "53f698c0-79dc-4cb0-9693-f63e5642414f",
+              "identifier": "BENCH-235",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 246.027,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "85253aa128d9a650926fbd4471214de03d67c196aa29f4f56add2c5f3cba0281"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 236.481,
+            "stdout": {
+              "bytes": 793,
+              "sha256": "f66e427da63152eb37fe46567d2cf7c0e3e74b1572ce5cc1b58aa449cafc844b"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 242,
+              "responseBodyBytes": 6322,
+              "totalBodyBytes": 6564,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "id": "88b968fd-7e50-4e81-a567-c87e95e1112c",
+              "identifier": "BENCH-237",
+              "version": 1
+            },
+            "after": {
+              "id": "acf8c803-ae77-4772-96f1-c37937973203",
+              "identifier": "BENCH-237",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 239.453,
+            "stdout": {
+              "bytes": 794,
+              "sha256": "15114952889cd6eab69c7e6ef1c004d62cb38beeca915697988a2852b446c593"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 243,
+              "responseBodyBytes": 6323,
+              "totalBodyBytes": 6566,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 255.852,
+            "stdout": {
+              "bytes": 794,
+              "sha256": "b8441ae5095bbe24637685c2439e6ef54c1f32aee6c7ba1d7943e8f112f39682"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 243,
+              "responseBodyBytes": 6323,
+              "totalBodyBytes": 6566,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "id": "e35defc4-d22b-4217-a46b-dfdac78da7f3",
+              "identifier": "BENCH-239",
+              "version": 1
+            },
+            "after": {
+              "id": "8c276bf7-a269-40be-a78d-0f37dcea2403",
+              "identifier": "BENCH-239",
+              "version": 1
+            }
+          }
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 252.30700000000002,
+          "p95Ms": 273.994
+        },
+        "after": {
+          "medianMs": 251.82,
+          "p95Ms": 275.536
+        },
+        "ratioOfMedians": 1.0019339210547218,
+        "ratioOfP95": 0.9944036350966844
+      }
+    },
+    {
+      "name": "issue-state-update",
+      "command": "linc issue update <identifier> --state \"In Progress\"",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 249.456,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "bd01a806fd90ab2cf2aff0e4485a4c4e351f2e1821060b9a37800f8fa07ec239"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 248.587,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "784da0050f968d891f5845e3880c3bbebf7e75fd8c441e616c8f15acb6aa4751"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "expectedVersion": 1,
+              "id": "3815bf94-ac73-4bba-aae1-eee269024786",
+              "identifier": "BENCH-241",
+              "version": 2
+            },
+            "after": {
+              "expectedVersion": 1,
+              "id": "56a34882-139f-4411-b343-ddbe6796acaa",
+              "identifier": "BENCH-241",
+              "version": 2
+            }
+          }
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 244.918,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "2438c0763da0ef61ba9a95e5dda7054f9c9aab33f9909475f9a2666fd6d7dffd"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 273.307,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "95ca9a4df681aca56c08a2d3c825dc325d5a9f9e15b521f38f3aec29abd531a2"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "expectedVersion": 1,
+              "id": "8e888f7f-8259-4270-b7b7-b6b96cd48ee6",
+              "identifier": "BENCH-243",
+              "version": 2
+            },
+            "after": {
+              "expectedVersion": 1,
+              "id": "cb39c2a9-04f0-4713-b6a5-ae6ca7dbf87d",
+              "identifier": "BENCH-243",
+              "version": 2
+            }
+          }
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 259.899,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "e5b1740eccaff62222d5a4850f64a9d2c795d57a1ea9c318f0e24c5692badb65"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 251.422,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "87bcef53bea4a436660cd9f1884a57f80c970f42948c8c23fbaa91bae98af3aa"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "expectedVersion": 1,
+              "id": "5cc17b72-11e2-4b5c-ab20-42a81fe41186",
+              "identifier": "BENCH-245",
+              "version": 2
+            },
+            "after": {
+              "expectedVersion": 1,
+              "id": "951acc05-260b-4ab0-93f0-0f4d6057f64e",
+              "identifier": "BENCH-245",
+              "version": 2
+            }
+          }
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 231.557,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "62db6843f84c25c111d45ea91a95666fa7463c1dc6a70343d6ae4b0511db60f5"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 282.915,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "27fa822da14af43082ffb847495027a2c6eb1a017da2fe04a67835f0c2e2cf87"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "expectedVersion": 1,
+              "id": "9d72e228-4bda-4218-9ce0-a5d630d19611",
+              "identifier": "BENCH-247",
+              "version": 2
+            },
+            "after": {
+              "expectedVersion": 1,
+              "id": "c7e2f90b-4bef-4682-b1d5-125493e226dd",
+              "identifier": "BENCH-247",
+              "version": 2
+            }
+          }
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 249.429,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "a3147feb34e7b7ec0fce53e0cc4f5d5b1a75abbd8163a3deb3aa80f33ad72064"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 267.537,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "628b8edf9d9a06d4c3622956dcd11da5c4920345767e4f028a60aafc3b6db904"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "expectedVersion": 1,
+              "id": "b71170f2-d0f3-4ff3-b320-c35309094c7c",
+              "identifier": "BENCH-249",
+              "version": 2
+            },
+            "after": {
+              "expectedVersion": 1,
+              "id": "a50a7b6f-c9cd-4319-ba0d-908b2ddb2fe1",
+              "identifier": "BENCH-249",
+              "version": 2
+            }
+          }
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 236.34,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "9c46267b8e76141b6f9122d702f7cd01e17308118b97d4b06df0cf2024193179"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 240.188,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "aff8ffaac1bb79ea4664d9a764c3f083358f24468598bf3973f9881f9a504804"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "expectedVersion": 1,
+              "id": "f16981dd-749d-4925-b028-e28525f2c858",
+              "identifier": "BENCH-251",
+              "version": 2
+            },
+            "after": {
+              "expectedVersion": 1,
+              "id": "72b1df62-0d38-4c74-be2b-ebd251a081a8",
+              "identifier": "BENCH-251",
+              "version": 2
+            }
+          }
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 237.722,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "cf9c13c5922839a97b53007a91767a997e9a86d5d5d52e51db11c9a3416f0c1c"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 238.59,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "697dcc623408f2c9b1c737280ad495b27a2634b79e752e86c5667ce0d6733fc3"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "expectedVersion": 1,
+              "id": "9abae417-8434-4782-98ea-fa321d4f0f6a",
+              "identifier": "BENCH-253",
+              "version": 2
+            },
+            "after": {
+              "expectedVersion": 1,
+              "id": "312a9578-f655-49b1-885b-a98697af8121",
+              "identifier": "BENCH-253",
+              "version": 2
+            }
+          }
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 243.491,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "9ef453373c6d2b0d4988638e1a4c0db9c9d1dfa62c556f7571e92b66b24a9f5b"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 275.388,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "304975bf3b2608474cb8b69ed84f01de4d76abb6cc7e522749871fbd3cb4614d"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "expectedVersion": 1,
+              "id": "203299f7-8d2e-4e94-a8aa-91dea5b78197",
+              "identifier": "BENCH-255",
+              "version": 2
+            },
+            "after": {
+              "expectedVersion": 1,
+              "id": "d81ad1d0-bfc2-4689-a587-1ed4090b0713",
+              "identifier": "BENCH-255",
+              "version": 2
+            }
+          }
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 243.109,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "a578f2b9e5404e6a173eee14c6451528175c4f9933dfd2f7dc237ec5c2690ce4"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 249.393,
+            "stdout": {
+              "bytes": 799,
+              "sha256": "1e445fb87e99a3f500fdb5fd3843db934ade0ed68d1875b1e2a676445b816031"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6984,
+              "totalBodyBytes": 7054,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "expectedVersion": 1,
+              "id": "256c7d00-cb1a-42da-9c27-dbed260acc06",
+              "identifier": "BENCH-257",
+              "version": 2
+            },
+            "after": {
+              "expectedVersion": 1,
+              "id": "e64d385d-f4b4-47a0-88b6-b8cafcc69fd6",
+              "identifier": "BENCH-257",
+              "version": 2
+            }
+          }
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 239.169,
+            "stdout": {
+              "bytes": 800,
+              "sha256": "bd1a8a1ae5d5108f615f4f54a8b6750adbc4ecf21dbd701fa766543d5281d544"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6986,
+              "totalBodyBytes": 7056,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 247.304,
+            "stdout": {
+              "bytes": 800,
+              "sha256": "c84ba4b4e9be278da605071158e70a1598b403f20a65628bd6996cd5c5d69ed4"
+            },
+            "http": {
+              "requestCount": 4,
+              "failedRequests": 0,
+              "requestBodyBytes": 70,
+              "responseBodyBytes": 6986,
+              "totalBodyBytes": 7056,
+              "requestsByMethod": {
+                "GET": 3,
+                "PATCH": 1
+              },
+              "responsesByStatus": {
+                "200": 4
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "expectedVersion": 1,
+              "id": "4d95f120-0c46-4924-88e0-0d51027c6d5d",
+              "identifier": "BENCH-259",
+              "version": 2
+            },
+            "after": {
+              "expectedVersion": 1,
+              "id": "c5df0fd9-fdeb-4259-8478-0944a358577a",
+              "identifier": "BENCH-259",
+              "version": 2
+            }
+          }
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 243.3,
+          "p95Ms": 259.899
+        },
+        "after": {
+          "medianMs": 250.4075,
+          "p95Ms": 282.915
+        },
+        "ratioOfMedians": 0.9716162654872558,
+        "ratioOfP95": 0.918646943428238
+      }
+    },
+    {
+      "name": "comment-create",
+      "command": "linc issue comment create <identifier> --body <text>",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 347.898,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "927e97a4e91228a9a26d832ca42ad176e0cd17cb380ff052480366b00daf0707"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 238.618,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "d589458f1832b039bd30d3ce98991fe3562026bdc3bcc20c148b4b5afd313bfd"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "issueId": "f60506c4-0d2c-4f60-92f4-357ee49a2004",
+              "commentId": "b11bf455-1420-4dfc-a401-9481ddab4dde",
+              "version": 1
+            },
+            "after": {
+              "issueId": "74e0be3d-15b2-4c7d-bbde-93ea3366f6ce",
+              "commentId": "2b748661-824c-4b40-89da-b675aed836bb",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 235.317,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "6700af7163bec6b88d51e1102b84ec22c4af4de63c81d141e2d4365b881d285c"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 273.35,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "8b37671f5cf4522a681a1e2e99c5a36b2b6b7bd334919a02c4183dca64ac79cb"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "issueId": "7ab1f98e-0f78-464c-8c85-da088d873efb",
+              "commentId": "71438cb4-4496-4d27-8acc-d00ef0d26e6b",
+              "version": 1
+            },
+            "after": {
+              "issueId": "7409f081-14e5-4eee-89e9-fa086015e786",
+              "commentId": "ed3fe8a0-69ef-40c5-ad5e-a700381ec5ef",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 240.197,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "60382956aab02b94d7938495fddb0045d95fc03588ffee00a0c18e2458ed84d5"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 252.636,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "6ebdafd8f49b56e0c80aac0e1d881e24453a954e7c779ff0fd80eb06ceaf4857"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "issueId": "f5e942a2-8bbd-473e-ab45-1245c2c414b9",
+              "commentId": "8812b227-afb1-44ea-bc54-fa971c5dbbc5",
+              "version": 1
+            },
+            "after": {
+              "issueId": "7fe98391-d11f-485b-839d-2252f7e1e8ca",
+              "commentId": "efae4ad9-cb7d-4ac5-b405-752bd252c828",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 249.72,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "1a192205e999568df9a8a7f136454a9949c54ae1ac79a3be39be42a7738b48a3"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 237.259,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "1ddf80384a0c61db57d424c3476881f81508eb91903d6fe632adc6c27d216e65"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "issueId": "307d5556-eb2c-41bf-9138-b25cdc4d0737",
+              "commentId": "9c49b3ab-f74b-4c84-8d0d-412a50529130",
+              "version": 1
+            },
+            "after": {
+              "issueId": "91b11b69-7cfe-44c2-b7fc-bea15a2c8441",
+              "commentId": "7ca0dd15-a4a3-4109-91f4-0b23b0e2bb91",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 265.448,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "99bd6ff1acf84bce7a78061baefad8b8ab5d517e504607b9a23939aa3ac44d28"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 269.313,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "f581f0414dd56b515153d04f0d1e039a894ba3361e3e3d41d22f5eb3e3f841aa"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "issueId": "efd522f3-fd99-4644-884b-1e88bebe1f7f",
+              "commentId": "da43e2e3-b603-4aa9-a5da-0699b245ee39",
+              "version": 1
+            },
+            "after": {
+              "issueId": "7aee2261-eb88-497c-b1e5-799112827827",
+              "commentId": "652df5ba-24fa-488e-8c80-dbbc7f88957d",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 229.211,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "4c517a1182e54873c8a067da73e11701486f490b0db1bb0967827bec5c853917"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 279.649,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "895164e17f59ea5ba7139bf8f51877b05813af2a1ac5cf8d8ddc5bd21ba26097"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "issueId": "953be5cc-9fab-46a8-b627-d9e5643cebf6",
+              "commentId": "ecf34ca0-5075-47a5-8cbf-bb66fd4f940e",
+              "version": 1
+            },
+            "after": {
+              "issueId": "78c0402a-5440-4fd4-b46f-4c2a0fb657a3",
+              "commentId": "0c728645-8895-467f-b836-72691e03e067",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 254.016,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "ed3dae772f08f0e062460ba746dff47b611bfd486658b011dc81b0b1e5325ac1"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 233.885,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "6a49d0af9ed85f448c28030824707477de9b2f032ee9df6456ab46973882a60d"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "issueId": "0a208b72-61c5-4746-96ca-9b804a4ff840",
+              "commentId": "06423e11-f78a-4f68-a103-c5aa4030e4b5",
+              "version": 1
+            },
+            "after": {
+              "issueId": "e2a829fb-eaa2-44d0-a3c0-faff89c875f1",
+              "commentId": "082518f7-62f1-47d9-bdc4-842924d83522",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 236.366,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "c69adaab367af7f056e0e58762070b9c6034b5d8664a8e814410562626fce5d2"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 259.66,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "8e42871f3daea37b0a9d7b95b74bcd9a17e23f4304250ec73c86805c14153234"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "issueId": "90cecab4-e5b5-40c5-bdba-3c184bec3760",
+              "commentId": "f3f5e544-aa70-48e5-b07a-98d2e7475507",
+              "version": 1
+            },
+            "after": {
+              "issueId": "cd584105-64eb-4a5b-9f7e-a356d6303af7",
+              "commentId": "00cfbe52-d45a-4efb-bedd-a19b2084665d",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "before": {
+            "elapsedMs": 255.938,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "d708fa8bc9527f70e0284c4a1253fe2b37aab30e33b07912977ef5b4afa31ed7"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 275.979,
+            "stdout": {
+              "bytes": 521,
+              "sha256": "b4a8d6dfe883310ea4ba5b805b01faa620909a8bcefe02b33aba8ed8e89194da"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 60,
+              "responseBodyBytes": 4782,
+              "totalBodyBytes": 4842,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "issueId": "053fbe19-830c-4612-88aa-aeede6552d2d",
+              "commentId": "55671f40-f787-447a-9d7a-0f231eba6485",
+              "version": 1
+            },
+            "after": {
+              "issueId": "fadfc21b-ce5f-489a-84e6-a98f6ebbc29b",
+              "commentId": "d9cd0d81-bd6a-47bc-b1b8-5058481f567b",
+              "version": 1
+            }
+          }
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "before": {
+            "elapsedMs": 236.212,
+            "stdout": {
+              "bytes": 522,
+              "sha256": "fc200013360c42317e5c9bb17a43ecf53c387b3394eaed4203415324be59b4e8"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 61,
+              "responseBodyBytes": 4784,
+              "totalBodyBytes": 4845,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "after": {
+            "elapsedMs": 253.974,
+            "stdout": {
+              "bytes": 522,
+              "sha256": "4746e63bd72897d3189e711ece3dd43bb5e41c889fd0de11c603bf5d69c2cce3"
+            },
+            "http": {
+              "requestCount": 3,
+              "failedRequests": 0,
+              "requestBodyBytes": 61,
+              "responseBodyBytes": 4784,
+              "totalBodyBytes": 4845,
+              "requestsByMethod": {
+                "GET": 2,
+                "POST": 1
+              },
+              "responsesByStatus": {
+                "200": 2,
+                "201": 1
+              }
+            }
+          },
+          "verification": {
+            "before": {
+              "issueId": "558c20e5-b6bc-404b-97d7-4a2f01f68325",
+              "commentId": "31c57467-cfe9-4ad9-9247-e3071545d76d",
+              "version": 1
+            },
+            "after": {
+              "issueId": "b9ac5ac2-97cb-49e7-bb9b-1c21a8376069",
+              "commentId": "2afaab66-7b02-4261-bc15-d8edf6a39f57",
+              "version": 1
+            }
+          }
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 244.95850000000002,
+          "p95Ms": 347.898
+        },
+        "after": {
+          "medianMs": 256.817,
+          "p95Ms": 279.649
+        },
+        "ratioOfMedians": 0.9538250972482352,
+        "ratioOfP95": 1.2440523656440754
+      }
+    }
+  ],
+  "cleanup": {
+    "archivedWorkspaces": [
+      {
+        "id": "78c10f37-c5a8-4880-9715-c5676c0bd7de",
+        "archivedAt": "2026-09-22T09:22:55.561Z"
+      },
+      {
+        "id": "17932431-3618-4db8-9452-636c800f19d9",
+        "archivedAt": "2026-09-22T09:22:55.613Z"
+      }
+    ],
+    "errors": []
+  },
+  "deployedWorkerVersion": "29cebc45-90b9-4193-b6da-3c8ad3ac146d"
+}

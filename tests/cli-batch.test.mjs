@@ -35,7 +35,10 @@ function runBatch(lines, workspace = 'development') {
         workspace,
         'batch',
       ],
-      { stdio: ['pipe', 'pipe', 'pipe'] },
+      {
+        stdio: ['pipe', 'pipe', 'pipe'],
+        env: { ...process.env, XDG_CACHE_HOME: runtime.cacheHome },
+      },
     );
     let stdout = '';
     let stderr = '';

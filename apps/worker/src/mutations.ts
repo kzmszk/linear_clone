@@ -11,6 +11,7 @@ import type {
 
 type OperationRow = {
   request_hash: string;
+  workspace_id: string | null;
   entity_id: string;
   version: number;
   sequence: number;
@@ -40,12 +41,15 @@ export function runMutation<T>(
     const key = actorKey(options.actor);
     const existing = one<OperationRow>(
       options.sql,
-      'SELECT request_hash, entity_id, version, sequence FROM operations WHERE actor_key = ? AND operation_id = ?',
+      'SELECT request_hash, workspace_id, entity_id, version, sequence FROM operations WHERE actor_key = ? AND operation_id = ?',
       key,
       options.operationId,
     );
     if (existing) {
-      if (existing.request_hash !== options.requestHash) {
+      if (
+        existing.request_hash !== options.requestHash ||
+        existing.workspace_id !== options.workspaceId
+      ) {
         throw conflict(
           'idempotency_reused',
           'Idempotency key was used for another request',

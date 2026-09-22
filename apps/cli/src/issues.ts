@@ -13,11 +13,8 @@ import {
   listIssues,
   parseRepeated,
   resolveAssigneeId,
-  resolveIssueMutationStateId,
   resolveIssueId,
   resolveLabel,
-  resolveProject,
-  resolveTeam,
 } from './resolve.ts';
 import { registerCommentCommands } from './issue-comments.ts';
 import { registerIssueUpdateCommands } from './issue-updates.ts';
@@ -77,34 +74,28 @@ function registerIssueCreate(issue: Command): void {
       const { api, options } = apiFor(command);
       const workspaceRef = await workspaceRefFor(api, options);
       const input = createOptions.parse(command.opts());
-      const description =
-        (await fileContents(input.descriptionFile, input.description)) ?? null;
-      const team = await resolveTeam(api, workspaceRef, input.team);
-      const stateId = input.state
-        ? await resolveIssueMutationStateId(api, workspaceRef, input.state)
-        : undefined;
-      const assigneeId = input.assignee
-        ? await resolveAssigneeId(api, workspaceRef, input.assignee)
-        : null;
-      const projectId = input.project
-        ? (await resolveProject(api, workspaceRef, input.project)).id
-        : null;
-      const parentId = input.parent
-        ? await resolveIssueId(api, workspaceRef, input.parent)
-        : null;
-      const labelIds = await Promise.all(
-        parseRepeated(input.label).map(
-          async (ref) => (await resolveLabel(api, workspaceRef, ref)).id,
+      const [description, assigneeId, parentId, labelIds] = await Promise.all([
+        fileContents(input.descriptionFile, input.description).then(
+          (value) => value ?? null,
         ),
-      );
+        input.assignee
+          ? resolveAssigneeId(api, workspaceRef, input.assignee)
+          : null,
+        input.parent ? resolveIssueId(api, workspaceRef, input.parent) : null,
+        Promise.all(
+          parseRepeated(input.label).map(
+            async (ref) => (await resolveLabel(api, workspaceRef, ref)).id,
+          ),
+        ),
+      ]);
       const body = {
-        teamId: team.id,
+        team: input.team,
         title: input.title,
         description,
-        stateId,
+        state: input.state,
         priority: input.priority,
         assigneeId,
-        projectId,
+        project: input.project ?? null,
         parentId,
         estimate: input.estimate ?? null,
         dueDate: input.dueDate ?? null,

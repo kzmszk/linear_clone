@@ -21,17 +21,21 @@ afterEach(async () => {
 });
 
 async function cliAs(email, ...args) {
-  const result = await execute(process.execPath, [
-    'dist/cli/linc.mjs',
-    '--url',
-    runtime.url,
-    '--test-email',
-    email,
-    '--workspace',
-    fixture.workspaceId,
-    '--json',
-    ...args,
-  ]);
+  const result = await execute(
+    process.execPath,
+    [
+      'dist/cli/linc.mjs',
+      '--url',
+      runtime.url,
+      '--test-email',
+      email,
+      '--workspace',
+      fixture.workspaceId,
+      '--json',
+      ...args,
+    ],
+    { env: { ...process.env, XDG_CACHE_HOME: runtime.cacheHome } },
+  );
   return JSON.parse(result.stdout);
 }
 

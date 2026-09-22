@@ -10,6 +10,7 @@ import { headersFor } from './auth.ts';
 import { normalizeUrl } from './config.ts';
 import { mutationSchema } from './types.ts';
 import * as z from 'zod';
+import { createHash } from 'node:crypto';
 
 type DownloadedFile = {
   bytes: Uint8Array;
@@ -18,20 +19,29 @@ type DownloadedFile = {
 export type ApiContext = {
   client: ApiClient;
   url: string;
+  cacheScope: () => Promise<string>;
   metadata: (workspaceId: string) => Promise<Metadata>;
   downloadFile: (path: string) => Promise<DownloadedFile>;
 };
 
 export function createApiContext(url: string, testEmail?: string): ApiContext {
   const normalizedUrl = normalizeUrl(url);
+  let authentication: Promise<Record<string, string>> | undefined;
+  const headers = () =>
+    (authentication ??= headersFor(normalizedUrl, testEmail));
   const client = createClient({
     baseUrl: normalizedUrl,
-    headers: () => headersFor(normalizedUrl, testEmail),
+    headers,
   });
+  let cacheScope: Promise<string> | undefined;
   const metadata = new Map<string, Promise<Metadata>>();
   return {
     url: normalizedUrl,
     client,
+    cacheScope: () =>
+      (cacheScope ??= headers().then((value) =>
+        createHash('sha256').update(JSON.stringify(value)).digest('hex'),
+      )),
     metadata: (workspaceId) => {
       let pending = metadata.get(workspaceId);
       if (!pending) {

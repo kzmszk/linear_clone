@@ -20,17 +20,21 @@ async function cli(
   email = 'owner@example.test',
   workspace = fixture.workspaceId,
 ) {
-  const { stdout } = await execute(process.execPath, [
-    'dist/cli/linc.mjs',
-    '--url',
-    runtime.url,
-    '--test-email',
-    email,
-    '--workspace',
-    workspace,
-    '--json',
-    ...args,
-  ]);
+  const { stdout } = await execute(
+    process.execPath,
+    [
+      'dist/cli/linc.mjs',
+      '--url',
+      runtime.url,
+      '--test-email',
+      email,
+      '--workspace',
+      workspace,
+      '--json',
+      ...args,
+    ],
+    { env: { ...process.env, XDG_CACHE_HOME: runtime.cacheHome } },
+  );
   return JSON.parse(stdout);
 }
 

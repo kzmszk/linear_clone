@@ -15,6 +15,7 @@ export async function startRuntime(port = 8899, options = {}) {
   }
   return {
     url: worker.url,
+    cacheHome: path.join(storage, 'cli-cache'),
     output: () => worker.output(),
     async restart() {
       await worker.stop();

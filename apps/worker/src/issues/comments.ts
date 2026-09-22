@@ -84,7 +84,7 @@ export function createComment(
         payload: { issueId, action: 'created' },
       };
     },
-    current: (entityId) => commentCurrent(sql, entityId),
+    current: (entityId) => commentCurrent(sql, actor, workspaceId, entityId),
   });
 }
 
@@ -147,7 +147,7 @@ export function patchComment(
         payload: { issueId, action: 'updated' },
       };
     },
-    current: (entityId) => commentCurrent(sql, entityId),
+    current: (entityId) => commentCurrent(sql, actor, workspaceId, entityId),
   });
 }
 
@@ -202,7 +202,7 @@ export function deleteComment(
         payload: { issueId, action: 'deleted' },
       };
     },
-    current: (entityId) => commentCurrent(sql, entityId),
+    current: (entityId) => commentCurrent(sql, actor, workspaceId, entityId),
   });
 }
 
@@ -217,9 +217,17 @@ function authorizeIssue(
   requireTeamAccess(sql, actor, row.team_id);
 }
 
-function commentCurrent(sql: SqlDb, commentId: string): Comment | null {
+function commentCurrent(
+  sql: SqlDb,
+  actor: AuthActor,
+  workspaceId: string,
+  commentId: string,
+): Comment | null {
   const row = commentRow(sql, commentId);
-  return row === null ? null : commentRecord(row);
+  if (row === null) return null;
+  if (row.workspace_id !== workspaceId) throw notFound();
+  authorizeIssue(sql, actor, workspaceId, row.issue_id);
+  return commentRecord(row);
 }
 
 function commentRow(sql: SqlDb, commentId: string): CommentRow | null {

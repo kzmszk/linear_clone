@@ -1,16 +1,16 @@
 # CLIの性能改善と計測方法
 
-FUCHIKOMA-25では、変更前コミット `5318b27` のCLIと変更後のCLIを比較します。単発コマンドの待ち時間と、複数操作をbatchで行う処理時間は別の指標です。
+FUCHIKOMA-25では、単発コマンドの待ち時間と、複数操作をbatchで行う処理時間を別々に計測しています。最初の改善の基準は `5318b27`、日常操作と一覧キャッシュの改善の基準は `ee24ac0` です。
 
 ## 変更した処理
 
 UUIDでworkspaceを指定した操作は、IDを確認するためだけのworkspace一覧取得を省きます。実際の読取・更新ではWorkerが認可します。workspace自体を更新する場合など、現在の版番号が必要な処理は引き続きレコードを読みます。
 
-team・project・state・member・labelの参照解決は、既存のmetadata APIを1コマンド内で共有します。次のコマンドでは取り直します。非公開teamの可視性、アーカイブ済みprojectの除外、member IDから担当者user IDへの変換を維持します。チケット本文や版番号はキャッシュしません。作成・更新でstateをUUID指定した場合は参照解決を省き、Workerがその状態のworkspace・team所属を検証します。状態名を指定した場合はmetadataからIDを解決します。
+日常操作ではworkspaceのslugやチケット番号をそのままWorkerへ渡します。一覧のteam・project・state・assigneeの参照もWorkerが解決します。CLIでmetadataが必要な操作は、1コマンド内で取得結果を共有します。非公開teamの可視性、アーカイブ済みprojectの除外、member IDから担当者user IDへの変換を維持します。
 
-CLIの依存ライブラリもビルド時にまとめ、起動時のモジュール読込を減らします。圧縮、永続キャッシュ、常駐デーモンは追加していません。
+CLIの依存ライブラリもビルド時にまとめ、起動時のモジュール読込を減らします。常駐デーモンは使いません。
 
-チケット更新では、現在のチケット取得と変更先の参照解決を並行して進めます。両方が成功した後に、現在の版番号を添えて更新します。参照解決の失敗や版の競合では、更新内容を保存しません。
+チケット更新は `expectedVersion` による競合検出を維持します。参照解決の失敗や版の競合では、更新内容を保存しません。一覧キャッシュの版番号で更新確認を省略することはありません。
 
 `linc batch` は1つのプロセスで既存コマンドを順番に実行します。Nodeのfetchがプロセス内でHTTP接続を再利用します。各行に新しいCommandとApiContextを用意するため、引数やmetadataは前の行から引き継ぎません。
 
@@ -35,6 +35,23 @@ EOF_COMMANDS
 batch内のauth・import・helpと、batchの入れ子は受け付けません。それらは通常のコマンドとして実行します。
 
 ## 比較を再実行する
+
+日常操作は、未完了20件・完了200件のワークスペースで比較します。既定一覧、未完了だけの一覧、登録、ステータス更新、コメント追加を測り、結果も実際のAPIで確認します。`--url` を付けると本番に専用ワークスペースを作り、終了時にアーカイブします。
+
+```sh
+node scripts/benchmark-cli-daily.mjs \
+  --phase final --workspace-form slug \
+  --before dist/cli/linc-daily-before.mjs --after dist/cli/linc.mjs \
+  --trials 10 --trace --output artifacts/private/cli-daily.json
+node scripts/benchmark-cli-daily-cache.mjs \
+  --phase final --workspace-form slug \
+  --before dist/cli/linc-daily-before.mjs --after dist/cli/linc.mjs \
+  --trials 10 --output artifacts/private/cli-daily-cache.json
+```
+
+`--trace` の通信回数・本文バイト数は、時間を測る実行とは別の実行で取得します。キャッシュ専用の計測は保存先を試行ごとに分け、初回・変更なし・別クライアントによる更新後を比較します。キャッシュの準備とリモート更新は計測区間に含めません。保存済み結果は、毎回サーバーが認証・所属・変更番号を確認して304を返した場合だけ使います。200件を超えてページ送りが必要な一覧は、全ページを取得してキャッシュしません。
+
+Workerも変更する場合は、デプロイ前に `--phase baseline` と旧CLIを両方の引数へ指定して測ります。新Worker上で旧CLIと新CLIを比較した結果だけを、システム全体の改善前後として扱わないでください。
 
 起動時間の追加調査では、Zodのimportを変更して英語以外のlocaleと未使用APIを配布物から除去しました。検証処理は維持しています。[起動時間の比較結果](../reports/cli-performance/startup/README.md)に、採用しなかった遅延初期化の試作も記録しています。
 

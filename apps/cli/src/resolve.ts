@@ -18,9 +18,9 @@ import {
   type Member,
   type Project,
   type Team,
-  type WorkflowState,
   type Workspace,
 } from './types.ts';
+import { cachedIssuePage } from './issue-list-cache.ts';
 
 const uuidPattern =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
@@ -149,29 +149,6 @@ export async function resolveAssigneeId(
   return member.userId;
 }
 
-export async function resolveState(
-  api: ApiContext,
-  workspaceId: string,
-  ref: string,
-): Promise<WorkflowState> {
-  const { states } = await api.metadata(workspaceId);
-  const needle = ref.toLowerCase();
-  const match = states.find(
-    (state) => state.id === ref || state.name.toLowerCase() === needle,
-  );
-  if (!match) throw new Error(`Workflow state not found: ${ref}`);
-  return match;
-}
-
-export async function resolveIssueMutationStateId(
-  api: ApiContext,
-  workspaceId: string,
-  ref: string,
-): Promise<string> {
-  if (isUuid(ref)) return ref;
-  return (await resolveState(api, workspaceId, ref)).id;
-}
-
 export async function listLabels(
   api: ApiContext,
   workspaceId: string,
@@ -210,7 +187,9 @@ export async function listIssues(
       `/workspaces/${encodeURIComponent(workspaceRef)}/issues`,
       { ...params, cursor },
     );
-    const value = await api.client.request(path, issueListSchema);
+    const value = cursor
+      ? await api.client.request(path, issueListSchema)
+      : await cachedIssuePage(api, path);
     items.push(...value.items);
     cursor = value.cursor ?? undefined;
     if (cursor && seen.has(cursor))

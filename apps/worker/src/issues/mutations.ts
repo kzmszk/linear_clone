@@ -3,7 +3,7 @@ import { newId, now, one } from '../db.ts';
 import { conflict, notFound } from '../errors.ts';
 import { runMutation } from '../mutations.ts';
 import { requireTeamAccess } from '../organization/authentication.ts';
-import { issueCurrent, issueLabelIds, issueRow } from './queries.ts';
+import { getIssue, issueLabelIds, issueRow } from './queries.ts';
 import { issueRecord } from './records.ts';
 import type {
   AuthActor,
@@ -88,7 +88,7 @@ export function createIssue(
         payload: { title: row.title },
       };
     },
-    current: (entityId) => issueCurrent(sql, entityId),
+    current: (entityId) => getIssue(sql, actor, workspaceId, entityId),
   });
 }
 
@@ -111,7 +111,7 @@ export function patchIssue(
     workspaceId,
     authorize: () => authorizeIssue(sql, actor, workspaceId, issueId),
     apply: () => applyIssuePatch(sql, actor, workspaceId, issueId, patch),
-    current: (entityId) => issueCurrent(sql, entityId),
+    current: (entityId) => getIssue(sql, actor, workspaceId, entityId),
   });
 }
 
@@ -285,7 +285,7 @@ function lifecycleIssue(
         payload: { deleted: action === 'deleted' },
       };
     },
-    current: (entityId) => issueCurrent(sql, entityId),
+    current: (entityId) => getIssue(sql, actor, workspaceId, entityId),
   });
 }
 

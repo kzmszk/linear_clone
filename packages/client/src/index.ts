@@ -16,6 +16,10 @@ export type ClientOptions = {
   headers?: () => Promise<Record<string, string>>;
 };
 
+export type ConditionalResponse<T> =
+  | { kind: 'not-modified' }
+  | { kind: 'modified'; value: T; etag: string | null };
+
 async function parseResponse<T>(
   response: Response,
   schema: z.ZodType<T>,
@@ -40,6 +44,24 @@ async function parseResponse<T>(
 }
 
 export function createClient(options: ClientOptions = {}) {
+  async function conditionalRequest<T>(
+    path: string,
+    schema: z.ZodType<T>,
+    etag?: string,
+  ): Promise<ConditionalResponse<T>> {
+    const headers = new Headers(await options.headers?.());
+    if (etag) headers.set('If-None-Match', etag);
+    const response = await fetch(`${options.baseUrl ?? ''}/api/v1${path}`, {
+      headers,
+      credentials: 'same-origin',
+    });
+    if (response.status === 304) return { kind: 'not-modified' };
+    return {
+      kind: 'modified',
+      value: await parseResponse(response, schema),
+      etag: response.headers.get('etag'),
+    };
+  }
   async function request<T>(
     path: string,
     schema: z.ZodType<T>,
@@ -75,6 +97,6 @@ export function createClient(options: ClientOptions = {}) {
     );
     return parseResponse(response, fileUploadSchema);
   }
-  return { request, uploadFile };
+  return { request, conditionalRequest, uploadFile };
 }
 export type ApiClient = ReturnType<typeof createClient>;

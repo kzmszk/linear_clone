@@ -36,6 +36,10 @@ linc --help
 
 連続操作には `linc --workspace <slug-or-id> batch < commands.jsonl` を使えます。1行につきコマンド引数のJSON配列を渡し、順番に実行します。[batchの使用例と性能の比較方法](docs/cli-performance.md)を参照してください。
 
+`issue list` は既定で未完了のチケットを表示します。完了・キャンセル済みも含める場合は `--all`、完了・キャンセル済みだけなら `--closed` を指定します。`--state`、`--archived`、`--deleted` を指定すると、その条件に合う一覧を取得します。
+
+1ページに収まる一覧は `$XDG_CACHE_HOME/linc/issue-lists`、未設定なら `~/.cache/linc/issue-lists` に保存します。毎回サーバーへ認証付きで確認し、変更がない場合だけ保存済みデータを使います。通信や認証が失敗した場合、古い一覧を表示せずエラーを返します。
+
 ## CloudflareとLinearからの移行
 
 本番の配置先は `https://linc.kazumasa.workers.dev`。利用する本人をCloudflare Accessで確認し、Linc内の所属でデータへのアクセスを制限します。

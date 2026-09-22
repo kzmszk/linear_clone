@@ -216,6 +216,39 @@ export const issuePatchSchema = z.object(editableIssueFields).partial().extend({
   expectedVersion: version,
   archivedAt: z.string().nullable().optional(),
 });
+const issueResourceReference = z.string().trim().min(1).max(200);
+const canonicalIssueCreateSchema = newIssueSchema.extend({
+  team: z.never().optional(),
+  state: z.never().optional(),
+  project: z.never().optional(),
+});
+const referencedIssueCreateSchema = newIssueSchema
+  .omit({ teamId: true, stateId: true, projectId: true })
+  .extend({
+    team: issueResourceReference,
+    state: issueResourceReference.optional(),
+    project: issueResourceReference.nullable().default(null),
+  })
+  .strict();
+export const issueCreateRequestSchema = z.union([
+  canonicalIssueCreateSchema,
+  referencedIssueCreateSchema,
+]);
+const canonicalIssuePatchSchema = issuePatchSchema.extend({
+  state: z.never().optional(),
+  project: z.never().optional(),
+});
+const referencedIssuePatchSchema = issuePatchSchema
+  .omit({ stateId: true, projectId: true })
+  .extend({
+    state: issueResourceReference.optional(),
+    project: issueResourceReference.nullable().optional(),
+  })
+  .strict();
+export const issuePatchRequestSchema = z.union([
+  canonicalIssuePatchSchema,
+  referencedIssuePatchSchema,
+]);
 export const newCommentSchema = z.object({
   body: z.string().min(1).max(100000),
   parentCommentId: id.nullable().default(null),
@@ -231,6 +264,8 @@ export type Comment = z.infer<typeof commentSchema>;
 export type Metadata = z.infer<typeof metadataSchema>;
 export type NewIssue = z.input<typeof newIssueSchema>;
 export type IssuePatch = z.input<typeof issuePatchSchema>;
+export type IssueCreateRequest = z.output<typeof issueCreateRequestSchema>;
+export type IssuePatchRequest = z.output<typeof issuePatchRequestSchema>;
 
 export const attachmentSchema = z.object({
   id: z.string(),

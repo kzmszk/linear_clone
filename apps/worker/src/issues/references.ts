@@ -6,12 +6,73 @@ import {
   listStates,
   listTeams,
 } from '../organization/queries.ts';
+import {
+  type IssueCreateRequest,
+  type IssuePatchRequest,
+} from '../../../../packages/contracts/src/index.ts';
 import type { AuthActor, SqlDb, SqlRow } from '../types.ts';
 import type {
+  IssueEdit,
   IssueListFilter,
   NewIssueInput,
   ResolvedIssueListFilter,
 } from './inputs.ts';
+
+export function resolveIssueCreateReferences(
+  sql: SqlDb,
+  actor: AuthActor,
+  workspaceId: string,
+  input: IssueCreateRequest,
+): NewIssueInput {
+  if ('teamId' in input) return input;
+  const { team, state, project, ...fields } = input;
+  const teamId = resolveTeamReference(sql, actor, workspaceId, team);
+  return {
+    ...fields,
+    teamId,
+    stateId:
+      state === undefined
+        ? undefined
+        : resolveStateReference(sql, actor, workspaceId, teamId, state),
+    projectId:
+      project === null
+        ? null
+        : resolveProjectReference(sql, actor, workspaceId, project),
+  };
+}
+
+export function resolveIssuePatchReferences(
+  sql: SqlDb,
+  actor: AuthActor,
+  workspaceId: string,
+  teamId: string,
+  input: IssuePatchRequest,
+): IssueEdit {
+  if (!('state' in input) && !('project' in input)) return input;
+  const { state, project, ...fields } = input;
+  return {
+    ...fields,
+    ...(state === undefined
+      ? {}
+      : {
+          stateId: resolveStateReference(
+            sql,
+            actor,
+            workspaceId,
+            teamId,
+            state,
+          ),
+        }),
+    ...(project === undefined
+      ? {}
+      : {
+          projectId:
+            project === null
+              ? null
+              : resolveProjectReference(sql, actor, workspaceId, project),
+        }),
+  };
+}
 
 export function resolveIssueListReferences(
   sql: SqlDb,

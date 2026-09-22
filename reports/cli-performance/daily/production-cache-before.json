@@ -1,0 +1,1066 @@
+{
+  "schemaVersion": 1,
+  "phase": "baseline",
+  "capturedAt": "2026-09-22T09:24:22.817Z",
+  "target": "https://linc.kazumasa.workers.dev",
+  "timingBoundary": "performance.now() immediately before the timed CLI spawn through process close; cache prime, API update and verification are excluded",
+  "httpTrace": "Omitted for cache scenarios. Each timed run uses an isolated cache home so a later diagnostic request cannot change cold or warm state.",
+  "environment": {
+    "node": "v26.8.1",
+    "nodeBinary": "/home/kazu/.hermes/node/bin/node",
+    "platform": "linux",
+    "release": "7.0.0-31-generic",
+    "architecture": "x64"
+  },
+  "sourceBaseline": {
+    "gitCommit": "ee24ac057498776453cbd5d2b98778433d99658c",
+    "workingTree": "dirty"
+  },
+  "artifacts": {
+    "before": {
+      "sourcePath": "dist/cli/linc-daily-before.mjs",
+      "resolvedPath": "/home/kazu/work/linear_clone/dist/cli/linc-daily-before.mjs",
+      "bytes": 461549,
+      "sha256": "2b8d160013b172cbe00d2d98e31f591176442806539a882b0de10f5412a322a4"
+    },
+    "after": {
+      "sourcePath": "dist/cli/linc-daily-before.mjs",
+      "resolvedPath": "/home/kazu/work/linear_clone/dist/cli/linc-daily-before.mjs",
+      "bytes": 461549,
+      "sha256": "2b8d160013b172cbe00d2d98e31f591176442806539a882b0de10f5412a322a4"
+    }
+  },
+  "trialsPerScenario": 10,
+  "fixture": {
+    "counts": {
+      "open": 20,
+      "closed": 200
+    },
+    "teamKey": "BENCH",
+    "projectName": "Daily benchmark project",
+    "workspaceForm": "slug",
+    "states": {
+      "open": "Backlog",
+      "closed": "Done"
+    },
+    "workspaceIds": {
+      "before": "afde98c7-3fe4-4c16-865a-95ed658a4c55",
+      "after": "1c79690c-ce4d-4b20-948a-8bfad364ee7e"
+    }
+  },
+  "scenarios": {
+    "cold": "Empty XDG_CACHE_HOME before the timed read.",
+    "warmUnchanged": "Prime the isolated cache, then time an unchanged read.",
+    "warmAfterRemoteUpdate": "Prime the isolated cache, update one open issue through the API, then time the read and require the new title/version."
+  },
+  "workloads": [
+    {
+      "name": "list-cache-cold",
+      "command": "linc issue list --state Backlog",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 249.613,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 233.792,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 291.074,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 246.788,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 239.314,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 227.714,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 218.389,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 228.828,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 260.719,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 224.531,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 234.554,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 233.973,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 260.454,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 241.266,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 228.817,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 249.307,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 237.317,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 239.913,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "cacheState": "cold",
+          "primedOutsideTiming": false,
+          "before": {
+            "elapsedMs": 225.698,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 267.99,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 238.3155,
+          "p95Ms": 291.074
+        },
+        "after": {
+          "medianMs": 236.943,
+          "p95Ms": 267.99
+        },
+        "ratioOfMedians": 1.0057925323812056,
+        "ratioOfP95": 1.0861375424456137
+      }
+    },
+    {
+      "name": "list-cache-warm-unchanged",
+      "command": "linc issue list --state Backlog",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 235.873,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 283.078,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 255.904,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 239.148,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 218.452,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 273.167,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 227.959,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 237.279,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 244.947,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 231.158,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 220.956,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 216.661,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 219.548,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 219.854,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 253.366,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 225.619,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 257.564,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 217.535,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "cacheState": "warm-unchanged",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 238.053,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "a6192769a0b288d6ba486af68d83693899679c55abe4ec08e41c12557fcee131"
+            }
+          },
+          "after": {
+            "elapsedMs": 225.519,
+            "stdout": {
+              "bytes": 12324,
+              "sha256": "4116eec6bc75f572612afa6a4ef1755bb366ac38bbf597fc6b3a31f678a2585f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0
+            },
+            "after": {
+              "count": 20,
+              "closed": 0
+            }
+          }
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 236.963,
+          "p95Ms": 257.564
+        },
+        "after": {
+          "medianMs": 228.3885,
+          "p95Ms": 283.078
+        },
+        "ratioOfMedians": 1.0375434840195543,
+        "ratioOfP95": 0.9098693646274173
+      }
+    },
+    {
+      "name": "list-cache-warm-after-remote-update",
+      "command": "linc issue list --state Backlog",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 261.449,
+            "stdout": {
+              "bytes": 12331,
+              "sha256": "dd8340d10efc9fe6f2da37378b90642b53afa2031b769a4e178b2c82015dc9f1"
+            }
+          },
+          "after": {
+            "elapsedMs": 241.807,
+            "stdout": {
+              "bytes": 12331,
+              "sha256": "59afc8c57c156ca3fb1970de3dc9282c6545d63782084da5c5021c335f15d0bb"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "c897a2f6-27c8-4767-8266-0f8ba9a93618",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "fe2af98a-ca67-4aed-8547-db5295cd7faa",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 260.071,
+            "stdout": {
+              "bytes": 12338,
+              "sha256": "28bab715e02035134f37239ea1008a31a0df9603c4607f2e2efb00fbacc9c641"
+            }
+          },
+          "after": {
+            "elapsedMs": 220.776,
+            "stdout": {
+              "bytes": 12338,
+              "sha256": "83c8e13490d9c1c4a07b5220ac0088ef7cadad9accd3551440276cbac3ca6ee5"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "725a7df1-293b-4dc5-b2ec-b8c9d21bf2e1",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "24d2c717-f685-4436-b45a-ef3a5428deaf",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 260.469,
+            "stdout": {
+              "bytes": 12345,
+              "sha256": "b6339c1b1d69e82e539b4a7141505b3662e1dc15b2175dd1511815a8bbf15a5e"
+            }
+          },
+          "after": {
+            "elapsedMs": 245.24,
+            "stdout": {
+              "bytes": 12345,
+              "sha256": "e9d3335f57a75ca76fa7778dad59ca2fd1513a2be14abf9ab31b3b98c94842d9"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "7f3cc45b-f2d5-4cf6-ab5f-9809d34bd2b8",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "aaab10bd-db36-4daa-a487-55f4e4f7646d",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 231.439,
+            "stdout": {
+              "bytes": 12352,
+              "sha256": "6aa40e9086823680e610eae78e0a85a06b28b611fe402681d5826186b2d87086"
+            }
+          },
+          "after": {
+            "elapsedMs": 288.679,
+            "stdout": {
+              "bytes": 12352,
+              "sha256": "e80398e2f78386f6c7cc8477bc41949f4d220d2b42eba201eb1b6ee2fb9e6584"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "e354995e-8ed6-48ab-a443-031472a92666",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "2826387d-1203-4f49-b2af-2eb3aabb5b5a",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 246.034,
+            "stdout": {
+              "bytes": 12359,
+              "sha256": "23373205967dafe9dd132c7641051ce63a9eab8080dd85f997f4ff66fee17ea8"
+            }
+          },
+          "after": {
+            "elapsedMs": 250.454,
+            "stdout": {
+              "bytes": 12359,
+              "sha256": "1f624b9d764fb7267bdc5dcf1bb349279affc7dc052e92190e58e7523156fd45"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "5b29ae44-9f88-48ad-bd38-86ecc7f7ae04",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "6bfe98e7-96c5-4339-ba27-6f03629d4597",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 215.946,
+            "stdout": {
+              "bytes": 12366,
+              "sha256": "c47f116483060f0367a8de657db01bd4f5471037575ee1aef3ec53fb5543effc"
+            }
+          },
+          "after": {
+            "elapsedMs": 263.569,
+            "stdout": {
+              "bytes": 12366,
+              "sha256": "6813349ffe7121daa14c65a5d554a4c557c3971c66ae96c96196d06f7b4c1db4"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "42ddf684-81fe-46c5-b778-a97f7de77c3f",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "5509f2e9-00f5-4811-af40-c2e8846d4cc1",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 225.214,
+            "stdout": {
+              "bytes": 12373,
+              "sha256": "8b2e6df687ae62c8101d08ddc769c7a6173b9cb92a4b0b7105fc0796ad45f9c8"
+            }
+          },
+          "after": {
+            "elapsedMs": 232.2,
+            "stdout": {
+              "bytes": 12373,
+              "sha256": "05d6653d27a207a2375d078b2eaa721759b22acf382be4edca8a8b876d065c0a"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "eff882d7-0a7e-4a34-8503-ea2ae9e87778",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "6a7a3456-9241-4fe7-8715-c417bf1840ff",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 221.46,
+            "stdout": {
+              "bytes": 12380,
+              "sha256": "b0194e50fba7e54e9ebc09234843dec9b8f4269310013b4c7a937a8b595fed08"
+            }
+          },
+          "after": {
+            "elapsedMs": 243.565,
+            "stdout": {
+              "bytes": 12380,
+              "sha256": "f744019edfe905d563baae134473b1a543e39a63ef688206e63efebbcffc09fc"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "6387eafb-0b69-40c3-b503-cda14e91bd36",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "17d2299f-d5a6-47c2-8877-1404c0b63a1a",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 270.825,
+            "stdout": {
+              "bytes": 12387,
+              "sha256": "88321bd0b0fa77e76bb690b23f4c56ef0079886a7bddfc840a52f3df3ff3a1e5"
+            }
+          },
+          "after": {
+            "elapsedMs": 223.713,
+            "stdout": {
+              "bytes": 12387,
+              "sha256": "23fb631273b72130137d66433cd7ec6bf3d6f44d4e8d7e9dcb3add7002d8ce9f"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "9028d70d-bfe1-45f7-8fc8-eb7fba7a7808",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "dbd36752-a4a3-443a-a49e-8f62d8f5e264",
+              "updatedVersion": 2
+            }
+          }
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "cacheState": "warm-after-remote-update",
+          "primedOutsideTiming": true,
+          "before": {
+            "elapsedMs": 227.809,
+            "stdout": {
+              "bytes": 12395,
+              "sha256": "bada7623064caf9802168eadbc1168cefb710ed2edcc0f6db4b6319149ae18f9"
+            }
+          },
+          "after": {
+            "elapsedMs": 243.616,
+            "stdout": {
+              "bytes": 12395,
+              "sha256": "91b47ca95fb1aa8487f6a82abd24ce56ee8fa3caed29dfcce51a00aea0cc8489"
+            }
+          },
+          "verification": {
+            "before": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "78b7b874-7aec-425c-867c-ba1041761d68",
+              "updatedVersion": 2
+            },
+            "after": {
+              "count": 20,
+              "closed": 0,
+              "updatedIssueId": "7121e55c-2338-450d-b2c6-d9a49a58d91b",
+              "updatedVersion": 2
+            }
+          }
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 238.73649999999998,
+          "p95Ms": 270.825
+        },
+        "after": {
+          "medianMs": 243.59050000000002,
+          "p95Ms": 288.679
+        },
+        "ratioOfMedians": 0.9800731145098022,
+        "ratioOfP95": 0.9381527579075721
+      }
+    }
+  ],
+  "cleanup": {
+    "archivedWorkspaces": [
+      {
+        "id": "1c79690c-ce4d-4b20-948a-8bfad364ee7e",
+        "archivedAt": "2026-09-22T09:24:22.818Z"
+      },
+      {
+        "id": "afde98c7-3fe4-4c16-865a-95ed658a4c55",
+        "archivedAt": "2026-09-22T09:24:22.862Z"
+      }
+    ],
+    "errors": []
+  },
+  "deployedWorkerVersion": "29cebc45-90b9-4193-b6da-3c8ad3ac146d"
+}

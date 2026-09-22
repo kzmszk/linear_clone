@@ -61,14 +61,13 @@ function registerCommentCreate(comments: Command): void {
     .action(async (identifier, _options, command) => {
       const { api, options } = apiFor(command);
       const workspaceRef = await workspaceRefFor(api, options);
-      const issueId = await resolveIssueId(api, workspaceRef, identifier);
       const input = commentCreateOptions.parse(command.opts());
       const body = await fileContents(input.bodyFile, input.body);
       if (!body) throw new Error('Provide --body or --body-file.');
       printResult(
         await requestRecord(
           api,
-          `/workspaces/${encodeURIComponent(workspaceRef)}/issues/${issueId}/comments`,
+          `/workspaces/${encodeURIComponent(workspaceRef)}/issues/${encodeURIComponent(identifier)}/comments`,
           commentSchema,
           {
             method: 'POST',

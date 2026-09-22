@@ -17,24 +17,32 @@ after(async () => {
   await runtime?.stop();
 });
 async function cli(...args) {
-  const result = await execute(process.execPath, [
-    'dist/cli/linc.mjs',
-    '--url',
-    runtime.url,
-    '--test-email',
-    'owner@example.test',
-    '--workspace',
-    fixture.workspaceId,
-    '--json',
-    ...args,
-  ]);
+  const result = await execute(
+    process.execPath,
+    [
+      'dist/cli/linc.mjs',
+      '--url',
+      runtime.url,
+      '--test-email',
+      'owner@example.test',
+      '--workspace',
+      fixture.workspaceId,
+      '--json',
+      ...args,
+    ],
+    { env: { ...process.env, XDG_CACHE_HOME: runtime.cacheHome } },
+  );
   return JSON.parse(result.stdout);
 }
 
 test('login selects the destination for later issue commands without --url', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'linc-login-test-'));
   const configPath = join(directory, 'config.json');
-  const env = { ...process.env, LINC_CONFIG: configPath };
+  const env = {
+    ...process.env,
+    LINC_CONFIG: configPath,
+    XDG_CACHE_HOME: runtime.cacheHome,
+  };
   delete env.LINC_URL;
   async function run(args, overrides = {}) {
     const result = await execute(

@@ -181,11 +181,6 @@ function issueRowByReference(
   );
 }
 
-export function issueCurrent(sql: SqlDb, issueId: string): Issue | null {
-  const row = issueRow(sql, issueId);
-  return row === null ? null : issueRecord(row, issueLabelIds(sql, issueId));
-}
-
 export function issueLabelIds(sql: SqlDb, issueId: string): string[] {
   return rows<{ label_id: string } & SqlRow>(
     sql,

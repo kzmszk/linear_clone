@@ -12,10 +12,8 @@ import {
   getIssue,
   parseRepeated,
   resolveAssigneeId,
-  resolveIssueMutationStateId,
   resolveIssueId,
   resolveLabel,
-  resolveProject,
 } from './resolve.ts';
 import { issueSchema } from './types.ts';
 
@@ -72,20 +70,23 @@ function registerIssueUpdate(issue: Command): void {
     const { api, options } = apiFor(command);
     const workspaceRef = await workspaceRefFor(api, options);
     const input = updateOptions.parse(command.opts());
-    const [current, fields] = await Promise.all([
-      getIssue(api, workspaceRef, identifier),
+    const version =
+      input.expectedVersion ??
+      getIssue(api, workspaceRef, identifier).then((issue) => issue.version);
+    const [expectedVersion, fields] = await Promise.all([
+      version,
       issuePatch(api, workspaceRef, input),
     ]);
     if (Object.keys(fields).length === 0)
       throw new Error('Provide an issue field to update.');
     const patch = {
       ...fields,
-      expectedVersion: input.expectedVersion ?? current.version,
+      expectedVersion,
     };
     printResult(
       await requestRecord(
         api,
-        `/workspaces/${encodeURIComponent(workspaceRef)}/issues/${current.id}`,
+        `/workspaces/${encodeURIComponent(workspaceRef)}/issues/${encodeURIComponent(identifier)}`,
         issueSchema,
         { method: 'PATCH', body: patch, operationId: operationId() },
       ),
@@ -105,7 +106,7 @@ async function issuePatch(
   );
   const patch: Record<string, unknown> = {};
   addTextPatch(patch, input, description);
-  await addStatePatch(api, workspaceRef, patch, input);
+  addStatePatch(patch, input);
   await addAssignmentPatch(api, workspaceRef, patch, input);
   await addRelationPatch(api, workspaceRef, patch, input);
   addDatePatch(patch, input);
@@ -123,18 +124,11 @@ function addTextPatch(
   if (input.clearDescription) patch.description = null;
 }
 
-async function addStatePatch(
-  api: ApiContext,
-  workspaceRef: string,
+function addStatePatch(
   patch: Record<string, unknown>,
   input: z.infer<typeof updateOptions>,
-): Promise<void> {
-  if (input.state !== undefined)
-    patch.stateId = await resolveIssueMutationStateId(
-      api,
-      workspaceRef,
-      input.state,
-    );
+): void {
+  if (input.state !== undefined) patch.state = input.state;
   if (input.priority !== undefined) patch.priority = input.priority;
 }
 
@@ -159,11 +153,8 @@ async function addRelationPatch(
   patch: Record<string, unknown>,
   input: z.infer<typeof updateOptions>,
 ): Promise<void> {
-  if (input.project !== undefined)
-    patch.projectId = (
-      await resolveProject(api, workspaceRef, input.project)
-    ).id;
-  if (input.clearProject) patch.projectId = null;
+  if (input.project !== undefined) patch.project = input.project;
+  if (input.clearProject) patch.project = null;
   if (input.parent !== undefined)
     patch.parentId = await resolveIssueId(api, workspaceRef, input.parent);
   if (input.clearParent) patch.parentId = null;

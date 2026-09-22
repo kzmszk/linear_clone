@@ -6,7 +6,7 @@ import {
   fileContents,
   operationId,
   printResult,
-  workspaceFor,
+  workspaceIdFor,
 } from './command-utils.ts';
 import {
   getIssue,
@@ -70,16 +70,16 @@ function registerIssueUpdate(issue: Command): void {
     .option('--expected-version <number>');
   update.action(async (identifier, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspace = await workspaceFor(api, options);
-    const current = await getIssue(api, workspace.id, identifier);
+    const workspaceId = await workspaceIdFor(api, options);
+    const current = await getIssue(api, workspaceId, identifier);
     const input = updateOptions.parse(command.opts());
-    const patch = await issuePatch(api, workspace.id, current, input);
+    const patch = await issuePatch(api, workspaceId, current, input);
     if (Object.keys(patch).length === 1)
       throw new Error('Provide an issue field to update.');
     printResult(
       await requestRecord(
         api,
-        `/workspaces/${workspace.id}/issues/${current.id}`,
+        `/workspaces/${workspaceId}/issues/${current.id}`,
         issueSchema,
         { method: 'PATCH', body: patch, operationId: operationId() },
       ),
@@ -193,8 +193,8 @@ function registerIssueDelete(issue: Command): void {
     .option('--expected-version <number>');
   remove.action(async (identifier, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspace = await workspaceFor(api, options);
-    const current = await getIssue(api, workspace.id, identifier);
+    const workspaceId = await workspaceIdFor(api, options);
+    const current = await getIssue(api, workspaceId, identifier);
     const input = z
       .object({
         expectedVersion: z.coerce.number().int().positive().optional(),
@@ -203,7 +203,7 @@ function registerIssueDelete(issue: Command): void {
     printResult(
       await requestRecord(
         api,
-        `/workspaces/${workspace.id}/issues/${current.id}`,
+        `/workspaces/${workspaceId}/issues/${current.id}`,
         issueSchema,
         {
           method: 'DELETE',
@@ -223,8 +223,8 @@ function registerIssueRestore(issue: Command): void {
     .option('--expected-version <number>');
   restore.action(async (identifier, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspace = await workspaceFor(api, options);
-    const current = await getIssue(api, workspace.id, identifier);
+    const workspaceId = await workspaceIdFor(api, options);
+    const current = await getIssue(api, workspaceId, identifier);
     const input = z
       .object({
         expectedVersion: z.coerce.number().int().positive().optional(),
@@ -233,7 +233,7 @@ function registerIssueRestore(issue: Command): void {
     printResult(
       await requestRecord(
         api,
-        `/workspaces/${workspace.id}/issues/${current.id}/restore`,
+        `/workspaces/${workspaceId}/issues/${current.id}/restore`,
         issueSchema,
         {
           method: 'POST',

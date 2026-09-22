@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import type { Command } from 'commander';
 import { createApiContext, type ApiContext } from './api.ts';
 import { optionsFor, printValue, type GlobalOptions } from './output.ts';
-import { resolveWorkspace } from './resolve.ts';
+import { isUuid, resolveWorkspace } from './resolve.ts';
 import { type Workspace } from './types.ts';
 
 export function operationId(): string {
@@ -23,6 +23,14 @@ export async function workspaceFor(
   options: GlobalOptions,
 ): Promise<Workspace> {
   return resolveWorkspace(api, options.workspace);
+}
+
+export async function workspaceIdFor(
+  api: ApiContext,
+  options: GlobalOptions,
+): Promise<string> {
+  if (options.workspace && isUuid(options.workspace)) return options.workspace;
+  return (await resolveWorkspace(api, options.workspace)).id;
 }
 
 export async function fileContents(

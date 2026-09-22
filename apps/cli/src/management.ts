@@ -6,6 +6,7 @@ import {
   operationId,
   printResult,
   workspaceFor,
+  workspaceIdFor,
 } from './command-utils.ts';
 import { listTeams, resolveTeam } from './resolve.ts';
 import { teamSchema, workspaceSchema } from './types.ts';
@@ -126,8 +127,8 @@ function registerTeamCommands(root: Command): void {
   const team = root.command('team').description('Manage teams');
   team.command('list').action(async (_, command) => {
     const { api, options } = apiFor(command);
-    const workspace = await workspaceFor(api, options);
-    printResult(await listTeams(api, workspace.id), options.json);
+    const workspaceId = await workspaceIdFor(api, options);
+    printResult(await listTeams(api, workspaceId), options.json);
   });
   team
     .command('create')
@@ -136,12 +137,12 @@ function registerTeamCommands(root: Command): void {
     .option('--private')
     .action(async (_, command) => {
       const { api, options } = apiFor(command);
-      const workspace = await workspaceFor(api, options);
+      const workspaceId = await workspaceIdFor(api, options);
       const input = teamCreateOptions.parse(command.opts());
       printResult(
         await requestRecord(
           api,
-          `/workspaces/${workspace.id}/teams`,
+          `/workspaces/${workspaceId}/teams`,
           teamSchema,
           { method: 'POST', body: input, operationId: operationId() },
         ),
@@ -157,8 +158,8 @@ function registerTeamCommands(root: Command): void {
     .option('--expected-version <number>');
   update.action(async (ref, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspace = await workspaceFor(api, options);
-    const current = await resolveTeam(api, workspace.id, ref);
+    const workspaceId = await workspaceIdFor(api, options);
+    const current = await resolveTeam(api, workspaceId, ref);
     const input = teamUpdateOptions.parse(command.opts());
     const body = {
       ...input,
@@ -173,7 +174,7 @@ function registerTeamCommands(root: Command): void {
     printResult(
       await requestRecord(
         api,
-        `/workspaces/${workspace.id}/teams/${current.id}`,
+        `/workspaces/${workspaceId}/teams/${current.id}`,
         teamSchema,
         { method: 'PATCH', body, operationId: operationId() },
       ),

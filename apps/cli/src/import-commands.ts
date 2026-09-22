@@ -6,7 +6,7 @@ import {
   verifyExport,
   verifyImport,
 } from '../../../packages/linear-import/src/index.ts';
-import { apiFor, printResult, workspaceFor } from './command-utils.ts';
+import { apiFor, printResult, workspaceIdFor } from './command-utils.ts';
 import { listIssues } from './resolve.ts';
 
 export function registerImportCommands(root: Command): void {
@@ -92,17 +92,17 @@ function registerApply(linear: Command): void {
         typeof commandOptions.destinationWorkspace === 'string'
           ? commandOptions.destinationWorkspace
           : options.workspace;
-      const workspace = await workspaceFor(api, {
+      const workspaceId = await workspaceIdFor(api, {
         ...options,
         workspace: destination,
       });
       const result = await applyImport({
         outputDir,
-        workspaceId: workspace.id,
-        destinationKey: `${api.url}|${workspace.id}`,
+        workspaceId: workspaceId,
+        destinationKey: `${api.url}|${workspaceId}`,
         transport: api.client,
         resolveDestinationIssueIds: (sourceIds) =>
-          resolveDestinationIssueIds(api, workspace.id, sourceIds),
+          resolveDestinationIssueIds(api, workspaceId, sourceIds),
       });
       printResult(result, options.json);
     });
@@ -152,11 +152,11 @@ function registerVerify(linear: Command): void {
         typeof commandOptions.destinationWorkspace === 'string'
           ? commandOptions.destinationWorkspace
           : options.workspace;
-      const workspace = await workspaceFor(api, {
+      const workspaceId = await workspaceIdFor(api, {
         ...options,
         workspace: destination,
       });
-      const result = await verifyImport(outputDir, workspace.id, {
+      const result = await verifyImport(outputDir, workspaceId, {
         ...api.client,
         downloadFile: api.downloadFile,
       });

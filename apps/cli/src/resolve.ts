@@ -11,7 +11,6 @@ import {
   memberSchema,
   projectSchema,
   recordFromMutation,
-  stateSchema,
   teamSchema,
   workspaceSchema,
   type Issue,
@@ -26,7 +25,7 @@ import {
 const uuidPattern =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
 
-function isUuid(value: string): boolean {
+export function isUuid(value: string): boolean {
   return uuidPattern.test(value);
 }
 
@@ -72,7 +71,7 @@ export async function resolveTeam(
   workspaceId: string,
   ref: string,
 ): Promise<Team> {
-  const teams = await listTeams(api, workspaceId);
+  const { teams } = await api.metadata(workspaceId);
   const needle = ref.toLowerCase();
   const match = teams.find(
     (team) =>
@@ -100,7 +99,9 @@ export async function resolveProject(
   workspaceId: string,
   ref: string,
 ): Promise<Project> {
-  const projects = await listProjects(api, workspaceId);
+  const projects = (await api.metadata(workspaceId)).projects.filter(
+    (project) => project.archivedAt === null,
+  );
   const needle = ref.toLowerCase();
   const match = projects.find(
     (project) => project.id === ref || project.name.toLowerCase() === needle,
@@ -125,7 +126,7 @@ export async function resolveMember(
   workspaceId: string,
   ref: string,
 ): Promise<Member> {
-  const members = await listMembers(api, workspaceId);
+  const { members } = await api.metadata(workspaceId);
   const needle = ref.toLowerCase();
   const match = members.find(
     (member) =>
@@ -148,23 +149,12 @@ export async function resolveAssigneeId(
   return member.userId;
 }
 
-async function listStates(
-  api: ApiContext,
-  workspaceId: string,
-): Promise<WorkflowState[]> {
-  return listRecords(
-    api,
-    `/workspaces/${encodeURIComponent(workspaceId)}/states`,
-    stateSchema,
-  );
-}
-
 export async function resolveState(
   api: ApiContext,
   workspaceId: string,
   ref: string,
 ): Promise<WorkflowState> {
-  const states = await listStates(api, workspaceId);
+  const { states } = await api.metadata(workspaceId);
   const needle = ref.toLowerCase();
   const match = states.find(
     (state) => state.id === ref || state.name.toLowerCase() === needle,
@@ -189,7 +179,7 @@ export async function resolveLabel(
   workspaceId: string,
   ref: string,
 ): Promise<Label> {
-  const labels = await listLabels(api, workspaceId);
+  const { labels } = await api.metadata(workspaceId);
   const needle = ref.toLowerCase();
   const match = labels.find(
     (label) => label.id === ref || label.name.toLowerCase() === needle,

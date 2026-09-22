@@ -5,7 +5,7 @@ import {
   apiFor,
   operationId,
   printResult,
-  workspaceFor,
+  workspaceIdFor,
 } from './command-utils.ts';
 import { listLabels, resolveLabel } from './resolve.ts';
 import { labelSchema } from './types.ts';
@@ -31,8 +31,8 @@ export function registerLabelCommands(root: Command): void {
   const label = root.command('label').description('Manage labels');
   label.command('list').action(async (_, command) => {
     const { api, options } = apiFor(command);
-    const workspace = await workspaceFor(api, options);
-    printResult(await listLabels(api, workspace.id), options.json);
+    const workspaceId = await workspaceIdFor(api, options);
+    printResult(await listLabels(api, workspaceId), options.json);
   });
   label
     .command('create')
@@ -40,12 +40,12 @@ export function registerLabelCommands(root: Command): void {
     .option('--color <color>', '#8b80f9')
     .action(async (_, command) => {
       const { api, options } = apiFor(command);
-      const workspace = await workspaceFor(api, options);
+      const workspaceId = await workspaceIdFor(api, options);
       const input = createOptions.parse(command.opts());
       printResult(
         await requestRecord(
           api,
-          `/workspaces/${workspace.id}/labels`,
+          `/workspaces/${workspaceId}/labels`,
           labelSchema,
           { method: 'POST', body: input, operationId: operationId() },
         ),
@@ -64,8 +64,8 @@ function registerLabelUpdate(label: Command): void {
     .option('--expected-version <number>');
   update.action(async (ref, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspace = await workspaceFor(api, options);
-    const current = await resolveLabel(api, workspace.id, ref);
+    const workspaceId = await workspaceIdFor(api, options);
+    const current = await resolveLabel(api, workspaceId, ref);
     const input = updateOptions.parse(command.opts());
     const body = {
       ...input,
@@ -76,7 +76,7 @@ function registerLabelUpdate(label: Command): void {
     printResult(
       await requestRecord(
         api,
-        `/workspaces/${workspace.id}/labels/${current.id}`,
+        `/workspaces/${workspaceId}/labels/${current.id}`,
         labelSchema,
         { method: 'PATCH', body, operationId: operationId() },
       ),

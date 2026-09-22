@@ -1,4 +1,8 @@
 import {
+  metadataSchema,
+  type Metadata,
+} from '../../../packages/contracts/src/index.ts';
+import {
   createClient,
   type ApiClient,
 } from '../../../packages/client/src/index.ts';
@@ -14,17 +18,31 @@ type DownloadedFile = {
 export type ApiContext = {
   client: ApiClient;
   url: string;
+  metadata: (workspaceId: string) => Promise<Metadata>;
   downloadFile: (path: string) => Promise<DownloadedFile>;
 };
 
 export function createApiContext(url: string, testEmail?: string): ApiContext {
   const normalizedUrl = normalizeUrl(url);
+  const client = createClient({
+    baseUrl: normalizedUrl,
+    headers: () => headersFor(normalizedUrl, testEmail),
+  });
+  const metadata = new Map<string, Promise<Metadata>>();
   return {
     url: normalizedUrl,
-    client: createClient({
-      baseUrl: normalizedUrl,
-      headers: () => headersFor(normalizedUrl, testEmail),
-    }),
+    client,
+    metadata: (workspaceId) => {
+      let pending = metadata.get(workspaceId);
+      if (!pending) {
+        pending = client.request(
+          `/workspaces/${encodeURIComponent(workspaceId)}/metadata`,
+          metadataSchema,
+        );
+        metadata.set(workspaceId, pending);
+      }
+      return pending;
+    },
     downloadFile: async (path) => {
       const target = new URL(path, `${normalizedUrl}/`);
       const base = new URL(normalizedUrl);

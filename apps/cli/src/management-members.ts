@@ -5,7 +5,7 @@ import {
   apiFor,
   operationId,
   printResult,
-  workspaceFor,
+  workspaceIdFor,
 } from './command-utils.ts';
 import {
   listMembers,
@@ -38,8 +38,8 @@ export function registerMemberCommands(root: Command): void {
   const member = root.command('member').description('Manage workspace members');
   member.command('list').action(async (_, command) => {
     const { api, options } = apiFor(command);
-    const workspace = await workspaceFor(api, options);
-    printResult(await listMembers(api, workspace.id), options.json);
+    const workspaceId = await workspaceIdFor(api, options);
+    printResult(await listMembers(api, workspaceId), options.json);
   });
   member
     .command('invite')
@@ -49,17 +49,17 @@ export function registerMemberCommands(root: Command): void {
     .option('--team <team...>')
     .action(async (_, command) => {
       const { api, options } = apiFor(command);
-      const workspace = await workspaceFor(api, options);
+      const workspaceId = await workspaceIdFor(api, options);
       const input = createOptions.parse(command.opts());
       const teamIds = await Promise.all(
         parseRepeated(input.team).map(
-          async (teamRef) => (await resolveTeam(api, workspace.id, teamRef)).id,
+          async (teamRef) => (await resolveTeam(api, workspaceId, teamRef)).id,
         ),
       );
       printResult(
         await requestRecord(
           api,
-          `/workspaces/${workspace.id}/members`,
+          `/workspaces/${workspaceId}/members`,
           memberSchema,
           {
             method: 'POST',
@@ -83,8 +83,8 @@ function registerMemberUpdate(member: Command): void {
     .option('--expected-version <number>');
   update.action(async (ref, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspace = await workspaceFor(api, options);
-    const current = await resolveMember(api, workspace.id, ref);
+    const workspaceId = await workspaceIdFor(api, options);
+    const current = await resolveMember(api, workspaceId, ref);
     const input = updateOptions.parse(command.opts());
     const teamIds =
       input.team === undefined
@@ -92,7 +92,7 @@ function registerMemberUpdate(member: Command): void {
         : await Promise.all(
             parseRepeated(input.team).map(
               async (teamRef) =>
-                (await resolveTeam(api, workspace.id, teamRef)).id,
+                (await resolveTeam(api, workspaceId, teamRef)).id,
             ),
           );
     const body = {
@@ -105,7 +105,7 @@ function registerMemberUpdate(member: Command): void {
     printResult(
       await requestRecord(
         api,
-        `/workspaces/${workspace.id}/members/${current.id}`,
+        `/workspaces/${workspaceId}/members/${current.id}`,
         memberSchema,
         { method: 'PATCH', body, operationId: operationId() },
       ),
@@ -121,8 +121,8 @@ function registerMemberRemove(member: Command): void {
     .option('--expected-version <number>');
   remove.action(async (ref, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspace = await workspaceFor(api, options);
-    const current = await resolveMember(api, workspace.id, ref);
+    const workspaceId = await workspaceIdFor(api, options);
+    const current = await resolveMember(api, workspaceId, ref);
     const input = z
       .object({
         expectedVersion: z.coerce.number().int().positive().optional(),
@@ -131,7 +131,7 @@ function registerMemberRemove(member: Command): void {
     printResult(
       await requestRecord(
         api,
-        `/workspaces/${workspace.id}/members/${current.id}`,
+        `/workspaces/${workspaceId}/members/${current.id}`,
         memberSchema,
         {
           method: 'DELETE',

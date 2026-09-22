@@ -5,7 +5,7 @@ import {
   apiFor,
   operationId,
   printResult,
-  workspaceFor,
+  workspaceIdFor,
 } from './command-utils.ts';
 import {
   listProjects,
@@ -46,8 +46,8 @@ export function registerProjectCommands(root: Command): void {
 function registerProjectList(project: Command): void {
   project.command('list').action(async (_, command) => {
     const { api, options } = apiFor(command);
-    const workspace = await workspaceFor(api, options);
-    printResult(await listProjects(api, workspace.id), options.json);
+    const workspaceId = await workspaceIdFor(api, options);
+    printResult(await listProjects(api, workspaceId), options.json);
   });
 }
 
@@ -60,11 +60,11 @@ function registerProjectCreate(project: Command): void {
     .option('--team <team...>')
     .action(async (_, command) => {
       const { api, options } = apiFor(command);
-      const workspace = await workspaceFor(api, options);
+      const workspaceId = await workspaceIdFor(api, options);
       const input = projectCreateOptions.parse(command.opts());
       const teamIds = await Promise.all(
         parseRepeated(input.team).map(
-          async (ref) => (await resolveTeam(api, workspace.id, ref)).id,
+          async (ref) => (await resolveTeam(api, workspaceId, ref)).id,
         ),
       );
       const body = {
@@ -76,7 +76,7 @@ function registerProjectCreate(project: Command): void {
       printResult(
         await requestRecord(
           api,
-          `/workspaces/${workspace.id}/projects`,
+          `/workspaces/${workspaceId}/projects`,
           projectSchema,
           { method: 'POST', body, operationId: operationId() },
         ),
@@ -96,8 +96,8 @@ function registerProjectUpdate(project: Command): void {
     .option('--expected-version <number>');
   update.action(async (ref, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspace = await workspaceFor(api, options);
-    const current = await resolveProject(api, workspace.id, ref);
+    const workspaceId = await workspaceIdFor(api, options);
+    const current = await resolveProject(api, workspaceId, ref);
     const input = projectUpdateOptions.parse(command.opts());
     const teamIds =
       input.team === undefined
@@ -105,7 +105,7 @@ function registerProjectUpdate(project: Command): void {
         : await Promise.all(
             parseRepeated(input.team).map(
               async (teamRef) =>
-                (await resolveTeam(api, workspace.id, teamRef)).id,
+                (await resolveTeam(api, workspaceId, teamRef)).id,
             ),
           );
     const body = {
@@ -125,7 +125,7 @@ function registerProjectUpdate(project: Command): void {
     printResult(
       await requestRecord(
         api,
-        `/workspaces/${workspace.id}/projects/${current.id}`,
+        `/workspaces/${workspaceId}/projects/${current.id}`,
         projectSchema,
         { method: 'PATCH', body, operationId: operationId() },
       ),

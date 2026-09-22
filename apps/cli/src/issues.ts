@@ -6,7 +6,7 @@ import {
   fileContents,
   operationId,
   printResult,
-  workspaceFor,
+  workspaceIdFor,
 } from './command-utils.ts';
 import {
   getIssue,
@@ -73,26 +73,26 @@ function registerIssueCreate(issue: Command): void {
     .option('--label <label...>')
     .action(async (_, command) => {
       const { api, options } = apiFor(command);
-      const workspace = await workspaceFor(api, options);
+      const workspaceId = await workspaceIdFor(api, options);
       const input = createOptions.parse(command.opts());
       const description =
         (await fileContents(input.descriptionFile, input.description)) ?? null;
-      const team = await resolveTeam(api, workspace.id, input.team);
+      const team = await resolveTeam(api, workspaceId, input.team);
       const stateId = input.state
-        ? (await resolveState(api, workspace.id, input.state)).id
+        ? (await resolveState(api, workspaceId, input.state)).id
         : undefined;
       const assigneeId = input.assignee
-        ? await resolveAssigneeId(api, workspace.id, input.assignee)
+        ? await resolveAssigneeId(api, workspaceId, input.assignee)
         : null;
       const projectId = input.project
-        ? (await resolveProject(api, workspace.id, input.project)).id
+        ? (await resolveProject(api, workspaceId, input.project)).id
         : null;
       const parentId = input.parent
-        ? await resolveIssueId(api, workspace.id, input.parent)
+        ? await resolveIssueId(api, workspaceId, input.parent)
         : null;
       const labelIds = await Promise.all(
         parseRepeated(input.label).map(
-          async (ref) => (await resolveLabel(api, workspace.id, ref)).id,
+          async (ref) => (await resolveLabel(api, workspaceId, ref)).id,
         ),
       );
       const body = {
@@ -111,7 +111,7 @@ function registerIssueCreate(issue: Command): void {
       printResult(
         await requestRecord(
           api,
-          `/workspaces/${workspace.id}/issues`,
+          `/workspaces/${workspaceId}/issues`,
           issueSchema,
           { method: 'POST', body, operationId: operationId() },
         ),
@@ -133,21 +133,21 @@ function registerIssueList(issue: Command): void {
     .option('--deleted', 'show deleted issues')
     .action(async (_, command) => {
       const { api, options } = apiFor(command);
-      const workspace = await workspaceFor(api, options);
+      const workspaceId = await workspaceIdFor(api, options);
       const input = listOptions.parse(command.opts());
       const teamId = input.team
-        ? (await resolveTeam(api, workspace.id, input.team)).id
+        ? (await resolveTeam(api, workspaceId, input.team)).id
         : undefined;
       const stateId = input.state
-        ? (await resolveState(api, workspace.id, input.state)).id
+        ? (await resolveState(api, workspaceId, input.state)).id
         : undefined;
       const assigneeId = input.assignee
-        ? await resolveAssigneeId(api, workspace.id, input.assignee)
+        ? await resolveAssigneeId(api, workspaceId, input.assignee)
         : undefined;
       const projectId = input.project
-        ? (await resolveProject(api, workspace.id, input.project)).id
+        ? (await resolveProject(api, workspaceId, input.project)).id
         : undefined;
-      const items = await listIssues(api, workspace.id, {
+      const items = await listIssues(api, workspaceId, {
         teamId,
         stateId,
         assigneeId,
@@ -167,7 +167,7 @@ function registerIssueGet(issue: Command): void {
     .argument('<identifier>')
     .action(async (identifier, _options, command) => {
       const { api, options } = apiFor(command);
-      const workspace = await workspaceFor(api, options);
-      printResult(await getIssue(api, workspace.id, identifier), options.json);
+      const workspaceId = await workspaceIdFor(api, options);
+      printResult(await getIssue(api, workspaceId, identifier), options.json);
     });
 }

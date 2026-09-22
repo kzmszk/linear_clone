@@ -1,0 +1,166 @@
+import assert from 'node:assert/strict';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+import { afterEach, beforeEach, test } from 'node:test';
+import { api, seed, startRuntime } from './runtime.mjs';
+
+const execute = promisify(execFile);
+let runtime, request, fixture;
+beforeEach(async () => {
+  runtime = await startRuntime(8916);
+  request = api(runtime.url);
+  fixture = await seed(request);
+});
+afterEach(async () => {
+  await runtime?.stop();
+});
+
+async function cli(
+  args,
+  email = 'owner@example.test',
+  workspace = fixture.workspaceId,
+) {
+  const { stdout } = await execute(process.execPath, [
+    'dist/cli/linc.mjs',
+    '--url',
+    runtime.url,
+    '--test-email',
+    email,
+    '--workspace',
+    workspace,
+    '--json',
+    ...args,
+  ]);
+  return JSON.parse(stdout);
+}
+
+async function rejectsCommand(args, message, email) {
+  await assert.rejects(cli(args, email), (error) => {
+    assert.equal(error.code, 1);
+    assert.equal(JSON.parse(error.stderr).error.message, message);
+    return true;
+  });
+}
+
+test('CLI resolves mixed names and IDs and saves an assignee user rather than membership ID', async () => {
+  const project = (
+    await cli(['project', 'create', '--name', 'Delivery', '--team', 'DEV'])
+  ).current;
+  const metadata = (await request(`${fixture.base}/metadata`)).body;
+  const owner = metadata.members.find((member) => member.role === 'owner');
+  const done = metadata.states.find((state) => state.type === 'completed');
+  assert.notEqual(owner.id, owner.userId);
+  const parent = (
+    await cli(['issue', 'create', '--team', 'DEV', '--title', 'Parent'])
+  ).current;
+  const child = (
+    await cli(
+      [
+        'issue',
+        'create',
+        '--team',
+        fixture.team.id,
+        '--title',
+        'Assigned child',
+        '--project',
+        'delivery',
+        '--state',
+        done.name,
+        '--assignee',
+        owner.id,
+        '--parent',
+        parent.identifier,
+      ],
+      'owner@example.test',
+      'development',
+    )
+  ).current;
+  assert.equal(child.projectId, project.id);
+  assert.equal(child.assigneeId, owner.userId);
+  assert.equal(child.parentId, parent.id);
+  assert.equal(child.stateId, done.id);
+  const records = await cli([
+    'issue',
+    'list',
+    '--team',
+    'DEV',
+    '--project',
+    project.id,
+    '--state',
+    done.id,
+    '--assignee',
+    owner.email,
+  ]);
+  assert.deepEqual(
+    records.map((record) => record.id),
+    [child.id],
+  );
+  const stored = await request(`${fixture.base}/issues/${child.id}`);
+  assert.equal(stored.body.title, 'Assigned child');
+  assert.equal(stored.body.assigneeId, owner.userId);
+});
+
+test('CLI metadata respects private teams and excludes archived projects', async () => {
+  const privateTeam = await request(`${fixture.base}/teams`, {
+    method: 'POST',
+    body: { key: 'SEC', name: 'Secret', private: true },
+  });
+  assert.equal(privateTeam.status, 201);
+  const invited = await request(`${fixture.base}/members`, {
+    method: 'POST',
+    body: {
+      email: 'reader@example.test',
+      name: 'Reader',
+      role: 'member',
+      teamIds: [],
+    },
+  });
+  assert.equal(invited.status, 201);
+  await api(runtime.url, 'reader@example.test')('/me');
+  const issue = (
+    await cli(['issue', 'create', '--team', 'DEV', '--title', 'Visible'])
+  ).current;
+  assert.deepEqual(
+    (await cli(['issue', 'list'], 'reader@example.test')).map(
+      (record) => record.id,
+    ),
+    [issue.id],
+  );
+  await rejectsCommand(
+    [
+      'issue',
+      'create',
+      '--team',
+      privateTeam.body.current.id,
+      '--title',
+      'Denied',
+    ],
+    `Team not found in workspace: ${privateTeam.body.current.id}`,
+    'reader@example.test',
+  );
+  const project = (
+    await cli(['project', 'create', '--name', 'Old project', '--team', 'DEV'])
+  ).current;
+  const archived = await request(`${fixture.base}/projects/${project.id}`, {
+    method: 'PATCH',
+    body: { expectedVersion: 1, archivedAt: '2026-01-01T00:00:00.000Z' },
+  });
+  assert.equal(archived.status, 200);
+  await rejectsCommand(
+    ['issue', 'list', '--project', project.id],
+    `Project not found in workspace: ${project.id}`,
+  );
+  await assert.rejects(
+    cli(['issue', 'list'], 'outsider@example.test'),
+    (error) => {
+      assert.equal(error.code, 1);
+      assert.equal(JSON.parse(error.stderr).error.code, 'not_found');
+      return true;
+    },
+  );
+  const stored = await request(`${fixture.base}/issues`);
+  assert.deepEqual(
+    stored.body.items.map((record) => record.title),
+    ['Visible'],
+  );
+});

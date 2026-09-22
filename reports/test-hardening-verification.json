@@ -1,0 +1,52 @@
+{
+  "checkedAt": "2026-09-22T05:22:07.911873+00:00",
+  "sourceCommit": "ddf9c690a34c1f0c40e67073bb0f8b3467fd89c7",
+  "productFixCommit": "743fbb9",
+  "checks": {
+    "pnpm check": "passed",
+    "final format lint typecheck": "passed",
+    "apiCli": {
+      "passed": 31,
+      "failed": 0,
+      "durationMs": 44815.808165
+    },
+    "apiTestsIndividually": {
+      "passed": 9,
+      "failed": 0
+    },
+    "browser": {
+      "startTime": "2026-09-22T05:19:58.567Z",
+      "duration": 25091.113999999998,
+      "expected": 31,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "reconnectRepeat": {
+      "passed": 3,
+      "failed": 0
+    }
+  },
+  "localLoad": {
+    "creates": 100,
+    "updates": 100,
+    "replays": 100,
+    "contentionConflicts": 99,
+    "elapsedMs": 1256,
+    "scope": "Includes requests and stored-result verification; not per-request latency or Cloudflare benchmark."
+  },
+  "production": {
+    "version": "29cebc45-90b9-4193-b6da-3c8ad3ac146d",
+    "readVerification": {
+      "checkedAt": "2026-09-22T05:21:18.014Z",
+      "url": "https://linc.kazumasa.workers.dev",
+      "method": "GET",
+      "status": 200,
+      "commentMatchesList": true,
+      "mutationKeyRequired": false,
+      "productionDataModified": false
+    }
+  },
+  "lineAndBranchCoverage": "not measured",
+  "remainingGaps": "docs/test-coverage.md"
+}

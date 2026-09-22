@@ -23,3 +23,5 @@ ts	phase	decision	why	evidence	result
 2026-09-22T03:40:52.141632+00:00	quality-cleanup	Knipで入口を補正してから未使用宣言を削除し、内部専用exportを非公開化	ローカルWorkerや外部CLIを未使用と誤認せず、実際に読む必要のないAPIを減らす	knip.json;reports/quality/before/unused.json	41値export・25型exportの指摘を整理。直後のKnip指摘0、lint/typecheck成功
 2026-09-22T03:40:52.141636+00:00	quality-design	設定編集draftを種類別の型にし、インポート要求schemaをcontractsへ統一	無関係な入力の状態共有とCLI/Worker間の型の重複をなくす。単なるファイル分割や汎用HTTPレジストリは採用しない	docs/code-quality.md	実装中。公開APIと画面操作を実動作テストで検証予定
 2026-09-22T03:55:34.907249+00:00	quality-verification	閾値を変えずに不要コード・編集状態・共有schemaを整理し、前後を同じ固定ツールで測定	最大複雑度は基準内なので分割せず、検出重複を消す汎用化も避ける	reports/quality;docs/code-quality.md;e53e0a9	18実動作テスト・30E2E成功。未使用指摘66から0、180行削減、重複32件は不変
+2026-09-22T05:22:07.911873+00:00	test-hardening	公開API・実CLI・ブラウザの保存結果を検証し、API各テストの保存領域を分離	性能改善で内部実装を変更しても利用者の結果を比較できるようにする	tests;docs/test-coverage.md;ddf9c69	31 API/CLI・31 E2E成功。行・分岐網羅率は未計測
+2026-09-22T05:22:07.911873+00:00	comment-read-fix	CLIの更新前に必要なコメント単体GETを追加し権限とissue所属を検証	実CLIテストで更新・削除がmissing_idempotency_keyになる不具合を再現	743fbb9;reports/test-hardening-verification.json	ローカルの操作・権限テスト成功。本番GETと一覧の一致を確認

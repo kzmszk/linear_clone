@@ -12,6 +12,7 @@ import { parseBody, response } from './parse.ts';
 import {
   listActivity,
   listComments,
+  getComment,
   listIssues,
   getIssue,
 } from '../issues/queries.ts';
@@ -232,6 +233,9 @@ async function comments(
   }
   if (rest.length !== 1) return null;
   const commentId = rest[0];
+  if (request.method === 'GET')
+    return response(getComment(sql, actor, workspaceId, issueId, commentId));
+  if (request.method !== 'PATCH' && request.method !== 'DELETE') return null;
   const operationId = requireOperationId(
     request.headers.get('Idempotency-Key'),
   );

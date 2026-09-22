@@ -108,6 +108,26 @@ export function listIssues(
   };
 }
 
+export function getComment(
+  sql: SqlDb,
+  actor: AuthActor,
+  workspaceId: string,
+  issueId: string,
+  commentId: string,
+): Comment {
+  const issue = issueRow(sql, issueId);
+  if (issue === null || issue.workspace_id !== workspaceId) throw notFound();
+  requireTeamAccess(sql, actor, issue.team_id);
+  const comment = one<CommentRow>(
+    sql,
+    'SELECT * FROM comments WHERE id = ? AND issue_id = ?',
+    commentId,
+    issueId,
+  );
+  if (comment === null) throw notFound();
+  return commentRecord(comment);
+}
+
 export function listComments(
   sql: SqlDb,
   actor: AuthActor,

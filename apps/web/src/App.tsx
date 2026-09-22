@@ -15,7 +15,7 @@ export function App() {
         <Loading label="Connecting to your workspace" />
       </div>
     );
-  if (me.isError)
+  if (accountErrorBlocksView(me.error, Boolean(me.data)))
     return (
       <div className="app-loading">
         <ErrorNotice
@@ -61,6 +61,10 @@ export function App() {
       </div>
     );
   return <WorkspaceLayout controller={controller} />;
+}
+
+function accountErrorBlocksView(error: unknown, hasCachedAccount: boolean) {
+  return error !== null && (!hasCachedAccount || error instanceof ApiError);
 }
 
 function NoWorkspaceAccess({ email }: { email: string }) {

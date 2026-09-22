@@ -85,6 +85,9 @@ test('recovers missed updates after reconnecting and resumes live updates', asyn
       connectedIssue.version,
       missedDescription,
     );
+    await expect
+      .poll(transport.disconnectedRetries, { timeout: 15_000 })
+      .toBeGreaterThan(0);
     await expect(
       page.getByText(connectedDescription, { exact: true }),
     ).toBeVisible();
@@ -111,6 +114,36 @@ test('recovers missed updates after reconnecting and resumes live updates', asyn
   } finally {
     await context.close();
   }
+});
+
+test('an expired session hides cached workspace content', async ({
+  page,
+  request,
+}) => {
+  const title = `Authenticated issue ${crypto.randomUUID()}`;
+  const issue = await createIssue(request, title, 'Cached private content');
+  await page.goto(`/?workspace=${workspaceId}`);
+  await page.getByText(title, { exact: true }).click();
+  await expect(
+    page.getByText('Cached private content', { exact: true }),
+  ).toBeVisible();
+  await page.route('**/api/v1/me', (route) =>
+    route.fulfill({
+      status: 401,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        error: { code: 'unauthorized', message: 'Session expired' },
+      }),
+    }),
+  );
+  await updateIssue(page.url(), issue.id, issue.version, 'Changed on server');
+  await expect(page.getByRole('alert')).toContainText('Session expired');
+  await expect(page.getByRole('textbox', { name: 'Issue title' })).toHaveCount(
+    0,
+  );
+  await expect(
+    page.getByText('Cached private content', { exact: true }),
+  ).toHaveCount(0);
 });
 
 async function createIssue(
@@ -168,6 +201,7 @@ async function setupReconnectTransport(
   eventsPath: string,
 ) {
   let networkCut = false;
+  let disconnectedRetries = 0;
   let closeRoutedSocket: (() => Promise<void>) | undefined;
   await page.route('**/api/**', async (route) => {
     if (networkCut) {
@@ -178,6 +212,7 @@ async function setupReconnectTransport(
   });
   await context.routeWebSocket(new RegExp(`${eventsPath}$`), (socket) => {
     if (networkCut) {
+      disconnectedRetries += 1;
       void socket.close({ code: 1001, reason: 'network cut' });
       return;
     }
@@ -190,6 +225,7 @@ async function setupReconnectTransport(
     };
   });
   return {
+    disconnectedRetries: () => disconnectedRetries,
     setNetworkCut: (cut: boolean) => {
       networkCut = cut;
     },

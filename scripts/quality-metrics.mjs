@@ -65,6 +65,8 @@ const cognitive = files
 const summary = {
   files: files.length,
   lines: files.reduce((sum, file) => sum + file.lines, 0),
+  cyclomatic: summarizeRule('complexity', /complexity of (\d+)/, 12),
+  functionLines: summarizeRule('max-lines-per-function', /lines \((\d+)\)/, 80),
   cognitiveOver15: cognitive.filter(({ score }) => score > 15),
   largestFiles: files
     .map(({ file, lines }) => ({ file, lines }))
@@ -77,3 +79,24 @@ await writeFile(
   JSON.stringify(summary, null, 2) + '\n',
 );
 console.log(JSON.stringify(summary, null, 2));
+
+function summarizeRule(rule, pattern, threshold) {
+  const measured = files
+    .flatMap(({ file, findings }) =>
+      findings
+        .filter(({ ruleId }) => ruleId === rule)
+        .map((finding) => ({
+          file,
+          ...finding,
+          score: Number(finding.message.match(pattern)?.[1]),
+        })),
+    )
+    .sort((a, b) => b.score - a.score || a.file.localeCompare(b.file));
+  return {
+    measuredFunctions: measured.length,
+    maximum: measured[0]?.score ?? 0,
+    threshold,
+    overThreshold: measured.filter(({ score }) => score > threshold),
+    highest: measured.slice(0, 10),
+  };
+}

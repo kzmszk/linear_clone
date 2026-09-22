@@ -483,18 +483,18 @@
     },
     {
       "firstFile": {
-        "end": 337,
+        "end": 252,
         "endLoc": {
           "column": 14,
-          "line": 337,
-          "position": 7564
+          "line": 252,
+          "position": 6115
         },
         "name": "apps/web/src/components/settings/EditResourceDialog.tsx",
-        "start": 329,
+        "start": 244,
         "startLoc": {
           "column": 19,
-          "line": 329,
-          "position": 7369
+          "line": 244,
+          "position": 5920
         }
       },
       "format": "tsx",
@@ -520,18 +520,18 @@
     },
     {
       "firstFile": {
-        "end": 354,
+        "end": 269,
         "endLoc": {
           "column": 14,
-          "line": 354,
-          "position": 8108
+          "line": 269,
+          "position": 6659
         },
         "name": "apps/web/src/components/settings/EditResourceDialog.tsx",
-        "start": 347,
+        "start": 262,
         "startLoc": {
           "column": 10,
-          "line": 347,
-          "position": 7833
+          "line": 262,
+          "position": 6384
         }
       },
       "format": "tsx",
@@ -1075,18 +1075,18 @@
     },
     {
       "firstFile": {
-        "end": 76,
+        "end": 91,
         "endLoc": {
           "column": 24,
-          "line": 76,
-          "position": 1884
+          "line": 91,
+          "position": 2110
         },
         "name": "packages/contracts/src/index.ts",
-        "start": 71,
+        "start": 86,
         "startLoc": {
           "column": 50,
-          "line": 71,
-          "position": 1733
+          "line": 86,
+          "position": 1959
         }
       },
       "format": "typescript",
@@ -1094,18 +1094,18 @@
       "kind": "exact",
       "lines": 6,
       "secondFile": {
-        "end": 185,
+        "end": 200,
         "endLoc": {
           "column": 24,
-          "line": 185,
-          "position": 4925
+          "line": 200,
+          "position": 5144
         },
         "name": "packages/contracts/src/index.ts",
-        "start": 180,
+        "start": 195,
         "startLoc": {
           "column": 34,
-          "line": 180,
-          "position": 4774
+          "line": 195,
+          "position": 4993
         }
       },
       "tokens": 51
@@ -1191,38 +1191,38 @@
         "clones": 7,
         "duplicatedLines": 80,
         "duplicatedTokens": 565,
-        "lines": 5463,
+        "lines": 5331,
         "newClones": 0,
         "newDuplicatedLines": 0,
-        "percentage": 1.4643968515467691,
-        "percentageTokens": 1.9559648272519559,
+        "percentage": 1.5006565372350404,
+        "percentageTokens": 1.9978077154273188,
         "sources": 41,
-        "tokens": 28886
+        "tokens": 28281
       },
       "typescript": {
         "clones": 25,
         "duplicatedLines": 278,
         "duplicatedTokens": 1618,
-        "lines": 14026,
+        "lines": 13966,
         "newClones": 0,
         "newDuplicatedLines": 0,
-        "percentage": 1.9820333666048766,
-        "percentageTokens": 2.106359435006184,
-        "sources": 104,
-        "tokens": 76815
+        "percentage": 1.9905484748675355,
+        "percentageTokens": 2.119021425952119,
+        "sources": 103,
+        "tokens": 76356
       }
     },
     "total": {
       "clones": 32,
       "duplicatedLines": 358,
       "duplicatedTokens": 2183,
-      "lines": 19489,
+      "lines": 19297,
       "newClones": 0,
       "newDuplicatedLines": 0,
-      "percentage": 1.836933654882241,
-      "percentageTokens": 2.065259552889755,
-      "sources": 145,
-      "tokens": 105701
+      "percentage": 1.8552106545058815,
+      "percentageTokens": 2.0862601183137897,
+      "sources": 144,
+      "tokens": 104637
     }
   }
 }

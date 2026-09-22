@@ -1,0 +1,41 @@
+{
+  "verifiedAt": "2026-09-22T03:54:28.625773+00:00",
+  "baselineSourceCommit": "ce03d53",
+  "format": "passed",
+  "lint": "passed",
+  "typecheck": "passed",
+  "build": "passed",
+  "behaviorTests": {
+    "passed": 18,
+    "failed": 0
+  },
+  "browserTests": {
+    "passed": 30,
+    "failed": 0
+  },
+  "localLoad": {
+    "creates": 100,
+    "updates": 100,
+    "replays": 100,
+    "contentionConflicts": 99,
+    "elapsedMs": 1245
+  },
+  "unusedFindings": 0,
+  "notes": [
+    "Production load and Linear latency comparison were not measured in this task.",
+    "Browser failure injection covers draft retention followed by a real API retry and reload."
+  ],
+  "sourceCommit": "e53e0a9",
+  "deployment": {
+    "url": "https://linc.kazumasa.workers.dev",
+    "version": "77a1180f-a03c-496b-8b88-58d50a830232",
+    "verifiedAt": "2026-09-22T03:56:50.750529+00:00",
+    "checks": [
+      "Authenticated CLI read of FUCHIKOMA-24",
+      "Authenticated browser opens Projects settings and linear clone edit dialog with stored fields",
+      "Cancel closes dialog without saving"
+    ],
+    "passed": true
+  },
+  "review": "Independent review found no remaining source or measurement blockers; baseline reproduction, summaries and report normalization corrected."
+}

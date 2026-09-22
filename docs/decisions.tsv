@@ -19,3 +19,7 @@ ts	phase	decision	why	evidence	result
 2026-09-22T02:22:40Z	ui-audit	コメントを送信直後に表示してdraftを空にし、失敗時は同じoperationIdで再試行	通信完了を待つ旧UIが操作を遅く見せていた。応答だけが失われても重複投稿を避ける	tests/e2e/detail-behavior.spec.ts;apps/web/src/app/useCommentMutation.ts	遅延・失敗・再送と確定件数を実APIで検証
 2026-09-22T02:22:40Z	maintainability	CSSをナビ・一覧・詳細・編集・dialogなど画面の責任ごとに分割	base.cssとdetail.cssへさらに機能を集めず、読者が対象画面の定義を追えるようにする	apps/web/src/styles.css;AGENTS.md	関数・ファイルのlint制限を変更せずに実装
 2026-09-22T02:44:16Z	ui-audit	作成フォームから汎用2列gridのクラスを除き、専用CSSでプロパティ配置とpopup表示を管理	目視確認でCSS順序に依存する縦長フォームとメニュー見切れを検出	tests/e2e/creation-behavior.spec.ts;reports/screenshots/issue-create.png	29件E2E成功。本番で作成から削除・復元まで9項目成功
+2026-09-22T03:40:52.141606+00:00	quality-method	Cognitive Complexity・jscpd・Knipを併用し、AI生成の判定点は作らない	論文では複雑度は理解度の一部の指標であり、品質や問題の重大さを単独で判定しない	docs/code-quality.md;reports/quality/before/summary.json	147ファイル、最大15、閾値15超0関数
+2026-09-22T03:40:52.141632+00:00	quality-cleanup	Knipで入口を補正してから未使用宣言を削除し、内部専用exportを非公開化	ローカルWorkerや外部CLIを未使用と誤認せず、実際に読む必要のないAPIを減らす	knip.json;reports/quality/before/unused.json	41値export・25型exportの指摘を整理。直後のKnip指摘0、lint/typecheck成功
+2026-09-22T03:40:52.141636+00:00	quality-design	設定編集draftを種類別の型にし、インポート要求schemaをcontractsへ統一	無関係な入力の状態共有とCLI/Worker間の型の重複をなくす。単なるファイル分割や汎用HTTPレジストリは採用しない	docs/code-quality.md	実装中。公開APIと画面操作を実動作テストで検証予定
+2026-09-22T03:55:34.907249+00:00	quality-verification	閾値を変えずに不要コード・編集状態・共有schemaを整理し、前後を同じ固定ツールで測定	最大複雑度は基準内なので分割せず、検出重複を消す汎用化も避ける	reports/quality;docs/code-quality.md;e53e0a9	18実動作テスト・30E2E成功。未使用指摘66から0、180行削減、重複32件は不変

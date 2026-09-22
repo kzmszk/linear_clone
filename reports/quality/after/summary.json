@@ -1,8 +1,8 @@
 {
-  "files": 147,
-  "lines": 19500,
+  "files": 148,
+  "lines": 19320,
   "cyclomatic": {
-    "measuredFunctions": 1220,
+    "measuredFunctions": 1219,
     "maximum": 12,
     "threshold": 12,
     "overThreshold": [],
@@ -59,7 +59,7 @@
         "file": "packages/linear-import/src/model.ts",
         "ruleId": "complexity",
         "message": "Function 'sourceIdentity' has a complexity of 12. Maximum allowed is 0.",
-        "line": 169,
+        "line": 137,
         "column": 8,
         "score": 12
       },
@@ -80,44 +80,28 @@
         "score": 11
       },
       {
-        "file": "apps/web/src/components/settings/useSettingsForm.ts",
+        "file": "apps/worker/src/auth.ts",
         "ruleId": "complexity",
-        "message": "Function 'beginEdit' has a complexity of 11. Maximum allowed is 0.",
-        "line": 33,
-        "column": 3,
+        "message": "Async function 'authenticateAccess' has a complexity of 11. Maximum allowed is 0.",
+        "line": 8,
+        "column": 8,
         "score": 11
       }
     ]
   },
   "functionLines": {
-    "measuredFunctions": 1219,
+    "measuredFunctions": 1218,
     "maximum": 79,
     "threshold": 80,
     "overThreshold": [],
     "highest": [
       {
-        "file": "apps/web/src/components/settings/EditResourceDialog.tsx",
-        "ruleId": "max-lines-per-function",
-        "message": "Function 'EditResourceForm' has too many lines (79). Maximum allowed is 0.",
-        "line": 56,
-        "column": 1,
-        "score": 79
-      },
-      {
         "file": "apps/worker/src/imports/issues.ts",
         "ruleId": "max-lines-per-function",
         "message": "Function 'normalizeIssue' has too many lines (79). Maximum allowed is 0.",
         "line": 18,
-        "column": 8,
+        "column": 1,
         "score": 79
-      },
-      {
-        "file": "apps/web/src/components/SettingsView.tsx",
-        "ruleId": "max-lines-per-function",
-        "message": "Function 'SettingsView' has too many lines (78). Maximum allowed is 0.",
-        "line": 63,
-        "column": 8,
-        "score": 78
       },
       {
         "file": "apps/web/src/components/usePropertySelect.ts",
@@ -174,15 +158,27 @@
         "line": 51,
         "column": 1,
         "score": 73
+      },
+      {
+        "file": "apps/web/src/components/CreateIssueModal.tsx",
+        "ruleId": "max-lines-per-function",
+        "message": "Function 'CreateIssueDialog' has too many lines (73). Maximum allowed is 0.",
+        "line": 47,
+        "column": 1,
+        "score": 73
+      },
+      {
+        "file": "apps/worker/src/imports/service.ts",
+        "ruleId": "max-lines-per-function",
+        "message": "Function 'applyBatch' has too many lines (73). Maximum allowed is 0.",
+        "line": 42,
+        "column": 1,
+        "score": 73
       }
     ]
   },
   "cognitiveOver15": [],
   "largestFiles": [
-    {
-      "file": "apps/web/src/components/settings/EditResourceDialog.tsx",
-      "lines": 358
-    },
     {
       "file": "apps/web/src/api.ts",
       "lines": 356
@@ -200,16 +196,16 @@
       "lines": 298
     },
     {
-      "file": "apps/worker/src/imports/status.ts",
-      "lines": 295
-    },
-    {
       "file": "apps/web/src/components/Sidebar.tsx",
       "lines": 291
     },
     {
+      "file": "apps/worker/src/imports/status.ts",
+      "lines": 290
+    },
+    {
       "file": "apps/cli/src/resolve.ts",
-      "lines": 282
+      "lines": 276
     },
     {
       "file": "apps/web/src/app/useWorkspaceMutations.ts",
@@ -217,6 +213,10 @@
     },
     {
       "file": "apps/web/src/components/PropertySelect.tsx",
+      "lines": 273
+    },
+    {
+      "file": "apps/web/src/components/settings/EditResourceDialog.tsx",
       "lines": 273
     }
   ],

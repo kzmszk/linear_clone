@@ -9,7 +9,14 @@
       "devDependencies": [],
       "duplicates": [],
       "enumMembers": [],
-      "exports": [{ "name": "configPath", "line": 32, "col": 17, "pos": 971 }],
+      "exports": [
+        {
+          "name": "configPath",
+          "line": 32,
+          "col": 17,
+          "pos": 971
+        }
+      ],
       "files": [],
       "namespaceMembers": [],
       "optionalPeerDependencies": [],
@@ -27,7 +34,12 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "globalOptionsSchema", "line": 4, "col": 14, "pos": 105 }
+        {
+          "name": "globalOptionsSchema",
+          "line": 4,
+          "col": 14,
+          "pos": 105
+        }
       ],
       "files": [],
       "namespaceMembers": [],
@@ -46,10 +58,30 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "id", "line": 3, "col": 14, "pos": 39 },
-        { "name": "version", "line": 4, "col": 14, "pos": 76 },
-        { "name": "role", "line": 5, "col": 14, "pos": 128 },
-        { "name": "receiptSchema", "line": 130, "col": 14, "pos": 3241 }
+        {
+          "name": "id",
+          "line": 3,
+          "col": 14,
+          "pos": 39
+        },
+        {
+          "name": "version",
+          "line": 4,
+          "col": 14,
+          "pos": 76
+        },
+        {
+          "name": "role",
+          "line": 5,
+          "col": 14,
+          "pos": 128
+        },
+        {
+          "name": "receiptSchema",
+          "line": 130,
+          "col": 14,
+          "pos": 3241
+        }
       ],
       "files": [],
       "namespaceMembers": [],
@@ -68,8 +100,18 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "ResourceIcon", "line": 242, "col": 17, "pos": 5413 },
-        { "name": "AddIcon", "line": 265, "col": 17, "pos": 6054 }
+        {
+          "name": "ResourceIcon",
+          "line": 242,
+          "col": 17,
+          "pos": 5413
+        },
+        {
+          "name": "AddIcon",
+          "line": 265,
+          "col": 17,
+          "pos": 6054
+        }
       ],
       "files": [],
       "namespaceMembers": [],
@@ -88,8 +130,18 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "required", "line": 39, "col": 17, "pos": 1175 },
-        { "name": "createRecord", "line": 44, "col": 23, "pos": 1343 }
+        {
+          "name": "required",
+          "line": 39,
+          "col": 17,
+          "pos": 1175
+        },
+        {
+          "name": "createRecord",
+          "line": 44,
+          "col": 23,
+          "pos": 1343
+        }
       ],
       "files": [],
       "namespaceMembers": [],
@@ -108,10 +160,30 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "isUuid", "line": 29, "col": 17, "pos": 505 },
-        { "name": "listWorkspaces", "line": 33, "col": 23, "pos": 597 },
-        { "name": "listStates", "line": 151, "col": 23, "pos": 3684 },
-        { "name": "ensureOne", "line": 278, "col": 17, "pos": 6927 }
+        {
+          "name": "isUuid",
+          "line": 29,
+          "col": 17,
+          "pos": 505
+        },
+        {
+          "name": "listWorkspaces",
+          "line": 33,
+          "col": 23,
+          "pos": 597
+        },
+        {
+          "name": "listStates",
+          "line": 151,
+          "col": 23,
+          "pos": 3684
+        },
+        {
+          "name": "ensureOne",
+          "line": 278,
+          "col": 17,
+          "pos": 6927
+        }
       ],
       "files": [],
       "namespaceMembers": [],
@@ -130,18 +202,53 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "activitySchema", "line": 19, "col": 3, "pos": 310 },
-        { "name": "metadataSchema", "line": 24, "col": 3, "pos": 391 },
-        { "name": "meSchema", "line": 25, "col": 3, "pos": 409 },
-        { "name": "emptySchema", "line": 44, "col": 14, "pos": 724 },
-        { "name": "jsonObjectSchema", "line": 46, "col": 14, "pos": 827 }
+        {
+          "name": "activitySchema",
+          "line": 19,
+          "col": 3,
+          "pos": 310
+        },
+        {
+          "name": "metadataSchema",
+          "line": 24,
+          "col": 3,
+          "pos": 391
+        },
+        {
+          "name": "meSchema",
+          "line": 25,
+          "col": 3,
+          "pos": 409
+        },
+        {
+          "name": "emptySchema",
+          "line": 44,
+          "col": 14,
+          "pos": 724
+        },
+        {
+          "name": "jsonObjectSchema",
+          "line": 46,
+          "col": 14,
+          "pos": 827
+        }
       ],
       "files": [],
       "namespaceMembers": [],
       "optionalPeerDependencies": [],
       "types": [
-        { "name": "Comment", "line": 33, "col": 3, "pos": 521 },
-        { "name": "Metadata", "line": 36, "col": 3, "pos": 551 }
+        {
+          "name": "Comment",
+          "line": 33,
+          "col": 3,
+          "pos": 521
+        },
+        {
+          "name": "Metadata",
+          "line": 36,
+          "col": 3,
+          "pos": 551
+        }
       ],
       "unlisted": [],
       "unresolved": []
@@ -156,30 +263,125 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "readExport", "line": 5, "col": 3, "pos": 153 },
-        { "name": "importKinds", "line": 15, "col": 3, "pos": 327 },
-        { "name": "manifestSchema", "line": 16, "col": 3, "pos": 342 }
+        {
+          "name": "readExport",
+          "line": 5,
+          "col": 3,
+          "pos": 153
+        },
+        {
+          "name": "importKinds",
+          "line": 15,
+          "col": 3,
+          "pos": 327
+        },
+        {
+          "name": "manifestSchema",
+          "line": 16,
+          "col": 3,
+          "pos": 342
+        }
       ],
       "files": [],
       "namespaceMembers": [],
       "optionalPeerDependencies": [],
       "types": [
-        { "name": "ApplyOptions", "line": 1, "col": 28, "pos": 27 },
-        { "name": "ApplyResult", "line": 1, "col": 47, "pos": 46 },
-        { "name": "LoadedExport", "line": 6, "col": 8, "pos": 172 },
-        { "name": "LoadedRecord", "line": 7, "col": 8, "pos": 193 },
-        { "name": "LocalVerifyReport", "line": 12, "col": 8, "pos": 275 },
-        { "name": "ExportOptions", "line": 17, "col": 8, "pos": 365 },
-        { "name": "FileSummary", "line": 18, "col": 8, "pos": 387 },
-        { "name": "FileUpload", "line": 19, "col": 8, "pos": 407 },
-        { "name": "ImportBatch", "line": 20, "col": 8, "pos": 426 },
-        { "name": "ImportBatchItem", "line": 21, "col": 8, "pos": 446 },
-        { "name": "ImportKind", "line": 22, "col": 8, "pos": 470 },
-        { "name": "ImportPlan", "line": 23, "col": 8, "pos": 489 },
-        { "name": "ImportTransport", "line": 24, "col": 8, "pos": 508 },
-        { "name": "Manifest", "line": 25, "col": 8, "pos": 532 },
-        { "name": "RecordSummary", "line": 26, "col": 8, "pos": 549 },
-        { "name": "SourceIdentity", "line": 27, "col": 8, "pos": 571 }
+        {
+          "name": "ApplyOptions",
+          "line": 1,
+          "col": 28,
+          "pos": 27
+        },
+        {
+          "name": "ApplyResult",
+          "line": 1,
+          "col": 47,
+          "pos": 46
+        },
+        {
+          "name": "LoadedExport",
+          "line": 6,
+          "col": 8,
+          "pos": 172
+        },
+        {
+          "name": "LoadedRecord",
+          "line": 7,
+          "col": 8,
+          "pos": 193
+        },
+        {
+          "name": "LocalVerifyReport",
+          "line": 12,
+          "col": 8,
+          "pos": 275
+        },
+        {
+          "name": "ExportOptions",
+          "line": 17,
+          "col": 8,
+          "pos": 365
+        },
+        {
+          "name": "FileSummary",
+          "line": 18,
+          "col": 8,
+          "pos": 387
+        },
+        {
+          "name": "FileUpload",
+          "line": 19,
+          "col": 8,
+          "pos": 407
+        },
+        {
+          "name": "ImportBatch",
+          "line": 20,
+          "col": 8,
+          "pos": 426
+        },
+        {
+          "name": "ImportBatchItem",
+          "line": 21,
+          "col": 8,
+          "pos": 446
+        },
+        {
+          "name": "ImportKind",
+          "line": 22,
+          "col": 8,
+          "pos": 470
+        },
+        {
+          "name": "ImportPlan",
+          "line": 23,
+          "col": 8,
+          "pos": 489
+        },
+        {
+          "name": "ImportTransport",
+          "line": 24,
+          "col": 8,
+          "pos": 508
+        },
+        {
+          "name": "Manifest",
+          "line": 25,
+          "col": 8,
+          "pos": 532
+        },
+        {
+          "name": "RecordSummary",
+          "line": 26,
+          "col": 8,
+          "pos": 549
+        },
+        {
+          "name": "SourceIdentity",
+          "line": 27,
+          "col": 8,
+          "pos": 571
+        }
       ],
       "unlisted": [],
       "unresolved": []
@@ -194,7 +396,12 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "asSqlBoolean", "line": 32, "col": 17, "pos": 754 }
+        {
+          "name": "asSqlBoolean",
+          "line": 32,
+          "col": 17,
+          "pos": 754
+        }
       ],
       "files": [],
       "namespaceMembers": [],
@@ -213,17 +420,47 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "connectionSchema", "line": 25, "col": 14, "pos": 500 },
-        { "name": "recordSummarySchema", "line": 31, "col": 14, "pos": 693 },
-        { "name": "fileSummarySchema", "line": 39, "col": 14, "pos": 923 },
-        { "name": "nestedString", "line": 156, "col": 17, "pos": 4051 }
+        {
+          "name": "connectionSchema",
+          "line": 25,
+          "col": 14,
+          "pos": 500
+        },
+        {
+          "name": "recordSummarySchema",
+          "line": 31,
+          "col": 14,
+          "pos": 693
+        },
+        {
+          "name": "fileSummarySchema",
+          "line": 39,
+          "col": 14,
+          "pos": 923
+        },
+        {
+          "name": "nestedString",
+          "line": 156,
+          "col": 17,
+          "pos": 4051
+        }
       ],
       "files": [],
       "namespaceMembers": [],
       "optionalPeerDependencies": [],
       "types": [
-        { "name": "FileUpload", "line": 88, "col": 13, "pos": 2370 },
-        { "name": "FileDownload", "line": 95, "col": 13, "pos": 2475 }
+        {
+          "name": "FileUpload",
+          "line": 88,
+          "col": 13,
+          "pos": 2370
+        },
+        {
+          "name": "FileDownload",
+          "line": 95,
+          "col": 13,
+          "pos": 2475
+        }
       ],
       "unlisted": [],
       "unresolved": []
@@ -238,7 +475,12 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "newOperationId", "line": 152, "col": 17, "pos": 4098 }
+        {
+          "name": "newOperationId",
+          "line": 152,
+          "col": 17,
+          "pos": 4098
+        }
       ],
       "files": [],
       "namespaceMembers": [],
@@ -281,8 +523,18 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "importKindSchema", "line": 20, "col": 14, "pos": 607 },
-        { "name": "sourceIdentitySchema", "line": 32, "col": 14, "pos": 776 }
+        {
+          "name": "importKindSchema",
+          "line": 20,
+          "col": 14,
+          "pos": 607
+        },
+        {
+          "name": "sourceIdentitySchema",
+          "line": 32,
+          "col": 14,
+          "pos": 776
+        }
       ],
       "files": [],
       "namespaceMembers": [],
@@ -301,8 +553,18 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "safeRecordFile", "line": 23, "col": 17, "pos": 737 },
-        { "name": "safeFileName", "line": 28, "col": 17, "pos": 932 }
+        {
+          "name": "safeRecordFile",
+          "line": 23,
+          "col": 17,
+          "pos": 737
+        },
+        {
+          "name": "safeFileName",
+          "line": 28,
+          "col": 17,
+          "pos": 932
+        }
       ],
       "files": [],
       "namespaceMembers": [],
@@ -321,14 +583,36 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "mappingSchema", "line": 3, "col": 14, "pos": 39 },
-        { "name": "referenceSchema", "line": 10, "col": 14, "pos": 224 },
-        { "name": "fileSchema", "line": 19, "col": 14, "pos": 477 }
+        {
+          "name": "mappingSchema",
+          "line": 3,
+          "col": 14,
+          "pos": 39
+        },
+        {
+          "name": "referenceSchema",
+          "line": 10,
+          "col": 14,
+          "pos": 224
+        },
+        {
+          "name": "fileSchema",
+          "line": 19,
+          "col": 14,
+          "pos": 477
+        }
       ],
       "files": [],
       "namespaceMembers": [],
       "optionalPeerDependencies": [],
-      "types": [{ "name": "Reference", "line": 53, "col": 13, "pos": 1608 }],
+      "types": [
+        {
+          "name": "Reference",
+          "line": 53,
+          "col": 13,
+          "pos": 1608
+        }
+      ],
       "unlisted": [],
       "unresolved": []
     },
@@ -342,7 +626,12 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "normalizeIssue", "line": 18, "col": 17, "pos": 396 }
+        {
+          "name": "normalizeIssue",
+          "line": 18,
+          "col": 17,
+          "pos": 396
+        }
       ],
       "files": [],
       "namespaceMembers": [],
@@ -361,8 +650,18 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "normalizeTeam", "line": 17, "col": 17, "pos": 353 },
-        { "name": "markSourceDestination", "line": 259, "col": 17, "pos": 6736 }
+        {
+          "name": "normalizeTeam",
+          "line": 17,
+          "col": 17,
+          "pos": 353
+        },
+        {
+          "name": "markSourceDestination",
+          "line": 259,
+          "col": 17,
+          "pos": 6736
+        }
       ],
       "files": [],
       "namespaceMembers": [],
@@ -381,8 +680,18 @@
       "duplicates": [],
       "enumMembers": [],
       "exports": [
-        { "name": "isRecord", "line": 12, "col": 17, "pos": 390 },
-        { "name": "identity", "line": 53, "col": 17, "pos": 1634 }
+        {
+          "name": "isRecord",
+          "line": 12,
+          "col": 17,
+          "pos": 390
+        },
+        {
+          "name": "identity",
+          "line": 53,
+          "col": 17,
+          "pos": 1634
+        }
       ],
       "files": [],
       "namespaceMembers": [],
@@ -405,7 +714,12 @@
       "namespaceMembers": [],
       "optionalPeerDependencies": [],
       "types": [
-        { "name": "DownloadedFile", "line": 10, "col": 13, "pos": 258 }
+        {
+          "name": "DownloadedFile",
+          "line": 10,
+          "col": 13,
+          "pos": 258
+        }
       ],
       "unlisted": [],
       "unresolved": []
@@ -423,7 +737,14 @@
       "files": [],
       "namespaceMembers": [],
       "optionalPeerDependencies": [],
-      "types": [{ "name": "Change", "line": 10, "col": 13, "pos": 295 }],
+      "types": [
+        {
+          "name": "Change",
+          "line": 10,
+          "col": 13,
+          "pos": 295
+        }
+      ],
       "unlisted": [],
       "unresolved": []
     },
@@ -441,8 +762,18 @@
       "namespaceMembers": [],
       "optionalPeerDependencies": [],
       "types": [
-        { "name": "ImportKind", "line": 1, "col": 13, "pos": 12 },
-        { "name": "ImportBatchItem", "line": 28, "col": 13, "pos": 438 }
+        {
+          "name": "ImportKind",
+          "line": 1,
+          "col": 13,
+          "pos": 12
+        },
+        {
+          "name": "ImportBatchItem",
+          "line": 28,
+          "col": 13,
+          "pos": 438
+        }
       ],
       "unlisted": [],
       "unresolved": []

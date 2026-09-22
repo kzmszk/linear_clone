@@ -27,7 +27,7 @@
     "quality:complexity": "node scripts/quality-metrics.mjs",
     "quality:unused": "knip",
     "quality:duplicates": "jscpd --config .jscpd.json",
-    "quality": "pnpm quality:complexity && pnpm quality:duplicates && pnpm quality:unused"
+    "quality": "node scripts/check-code-quality.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.0.0",

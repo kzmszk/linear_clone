@@ -19,7 +19,7 @@ pnpm quality
 
 複雑度の対象は `apps/*/src/` と `packages/*/src/` のTypeScript/TSXです。テスト、計測スクリプト、CSS、生成物を製品コードの分母へ混ぜません。jscpdも同じ製品領域を対象にしますが、トークンのないファイル等でファイル数は一致しません。行数は物理行で、Oxlintの空行・コメントを除いた上限とは区別します。
 
-Knipは本番WorkerだけでなくローカルWorker、Web、CLI、テスト、手動実行スクリプトを入口にします。`cloudflare:workers` と `@cloudflare/workers-types` は実行環境・型定義、`linear` と `cloudflared` は別途導入するCLIなので、npm依存の欠落として扱いません。未使用判定を隠すためのファイル除外はありません。
+Knipは本番WorkerだけでなくローカルWorker、Web、CLI、テスト、手動実行スクリプトを入口にします。Webと本番Workerの入口はVite/Wrangler設定から自動検出します。`@cloudflare/workers-types` はtsconfigの型依存として検出されます。`cloudflare:workers` は実行環境のモジュール、`linear` と `cloudflared` は別途導入するCLIなので、npm依存の欠落として扱いません。未使用判定を隠すためのファイル除外はありません。
 
 ## 根拠と限界
 
@@ -47,7 +47,7 @@ Cognitive Complexityの関数15という目安はSonarの実用上の既定値�
 | `destination-metadata.ts` の `compareMetadata`      |       15 | メタデータ照合の走査と不一致収集は同じ責任。閾値内なので分割しない         |
 | `App.tsx` の `App`                                  |       14 | 認証・初期化・通常画面の表示条件。数値だけを理由に画面遷移の層を追加しない |
 | `apply.ts` の `applyImport`                         |       13 | チェックポイント付きの適用順序を維持                                       |
-| `destination-children.ts` の `compareIssueChildren` |       13 | コメント・履歴の照合本体は維持し、単なる転送関数だけ見直す                 |
+| `destination-children.ts` の `compareIssueChildren` |       13 | コメント・履歴の照合本体と転送関数を維持。今回の変更対象から外す           |
 
 ### 採用する構造変更
 
@@ -58,3 +58,46 @@ Cognitive Complexityの関数15という目安はSonarの実用上の既定値�
 | インポート要求の型と検証schemaがCLI側・Worker側に重複    | 別々の定義はfile属性などでずれる                       | 既存のcontracts層に要求schemaを置き、両者が型を導出する       |
 
 ワークスペースとissueのmutationをファイル分割する案は、今回の主要な問題ではないため保留します。HTTPルートや設定パネルの似た配線を汎用レジストリへ置換する案も、追跡箇所が増えるため採用しません。必要な差異を重複率のために消しません。
+
+## 改修後
+
+| 指標                            |   改修前 |   改修後 |
+| ------------------------------- | -------: | -------: |
+| TypeScript/TSXファイル          |      147 |      148 |
+| 物理行                          |   19,500 |   19,320 |
+| Cognitive Complexity最大 / 15超 |   15 / 0 |   15 / 0 |
+| 循環的複雑度最大 / 12超         |   12 / 0 |   12 / 0 |
+| 関数行数最大 / 80超             |   79 / 0 |   79 / 0 |
+| 未使用の値export / 型export     |  41 / 25 |    0 / 0 |
+| 重複箇所 / 重複行               | 32 / 358 | 32 / 358 |
+| jscpdの行重複率                 |    1.84% |    1.86% |
+
+重複行が変わらず全体の行数が減ったため、重複率はわずかに上がりました。今回統合したインポート型・schemaの重複は、5行・50トークンという検出条件で全てが捕捉されるわけではありません。検出されたHTTP処理や表示配線の類似を消すための共通フレームワークは導入していません。
+
+実際に使われない補助関数9個とschema変数2個、未使用の型を削除しました。ファイル内で必要な宣言は残し、外部で使わないexportだけを外しています。
+
+設定画面の編集状態は `EditDraft` にまとめました。workspace・team・project・memberの種類ごとに必要な入力と元データを持ち、更新時のversionもそこから取得します。`EditResourceDialog` の引数は26個から8個になりました。新規作成の状態は今回変更していません。
+
+インポート要求のschemaと型は `packages/contracts/src/import.ts` に集約しました。CLIの移行処理とWorkerが同じ定義を使います。添付メタデータも境界で検証し、不正なサイズ等は取り込み開始前に400で拒否します。これは入力検証の変更を含みます。
+
+検証はformat、lint、全アプリとE2Eのtypecheck、Web/CLI/Workerビルド、実Worker・CLIの18テスト、Chromiumの30テストに成功しました。追加テストは、不正な添付メタデータでimport runが作られないことと、プロジェクト編集の通信失敗後に入力を保ち、再試行・再読込後にも保存内容が残ることを確認します。既存の100件同時作成・更新・再送・競合テストも成功しています。
+
+### 比較の再現方法
+
+この変更に含まれる固定依存と計測スクリプトを両方のソースに適用します。初回のツール導入コミット `b09c6e8` の `pnpm quality` は比較用JSONの正規化まで含んでいなかったため、保存した改修前レポートも以下の方法で再生成しています。
+
+```sh
+quality_root="$PWD"
+quality_baseline=$(mktemp -d)
+git archive ce03d53 | tar -x -C "$quality_baseline"
+cp package.json pnpm-lock.yaml knip.json .jscpd.json "$quality_baseline/"
+cp scripts/quality-metrics.mjs scripts/check-code-quality.mjs "$quality_baseline/scripts/"
+cd "$quality_baseline"
+pnpm install --frozen-lockfile --ignore-scripts
+node scripts/check-code-quality.mjs "$quality_root/artifacts/private/quality/baseline-rerun"
+# 改修前は未使用exportがあるため、全レポートを保存したうえで終了コード1になります。
+cd "$quality_root"
+pnpm quality
+```
+
+`summary.json`、`unused.json`、`jscpd-report.json` を `reports/quality/before/` と `after/` に保存しています。jscpdの実行日時・コード断片・絶対パスは比較から除きます。関数ごとの全件リスト `complexity.json` は実行時に生成し、コミットには上位関数・最大値・閾値超過一覧を含むsummaryを残します。

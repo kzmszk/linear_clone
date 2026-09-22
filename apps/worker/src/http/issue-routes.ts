@@ -28,6 +28,9 @@ import {
   patchComment,
 } from '../issues/comments.ts';
 import { z } from 'zod';
+import { badRequest } from '../errors.ts';
+import { parseBoolean } from '../db.ts';
+import type { IssueLifecycle, IssueListFilter } from '../issues/inputs.ts';
 import type { AuthActor, SqlDb } from '../types.ts';
 
 const commentPatchSchema = z.object({
@@ -64,7 +67,14 @@ async function issueCollection(
   workspaceId: string,
 ): Promise<Response | null> {
   if (request.method === 'GET')
-    return response(listIssues(sql, actor, workspaceId, new URL(request.url)));
+    return response(
+      listIssues(
+        sql,
+        actor,
+        workspaceId,
+        issueListFilter(new URL(request.url)),
+      ),
+    );
   if (request.method !== 'POST') return null;
   const body = await parseBody(request, newIssueSchema);
   const operationId = requireOperationId(
@@ -82,6 +92,40 @@ async function issueCollection(
     ),
     201,
   );
+}
+
+function issueListFilter(url: URL): IssueListFilter {
+  const lifecycle = lifecycleFilter(url.searchParams.get('lifecycle'));
+  rejectDuplicateReference(url, 'team');
+  rejectDuplicateReference(url, 'project');
+  rejectDuplicateReference(url, 'state');
+  rejectDuplicateReference(url, 'assignee');
+  return {
+    teamId: url.searchParams.get('teamId'),
+    team: url.searchParams.get('team'),
+    projectId: url.searchParams.get('projectId'),
+    project: url.searchParams.get('project'),
+    stateId: url.searchParams.get('stateId'),
+    state: url.searchParams.get('state'),
+    assigneeId: url.searchParams.get('assigneeId'),
+    assignee: url.searchParams.get('assignee'),
+    query: url.searchParams.get('q'),
+    cursor: url.searchParams.get('cursor'),
+    deleted: parseBoolean(url.searchParams.get('deleted'), false),
+    archived: parseBoolean(url.searchParams.get('archived'), false),
+    lifecycle,
+  };
+}
+
+function lifecycleFilter(value: string | null): IssueLifecycle | null {
+  if (value === null) return null;
+  if (value === 'open' || value === 'closed' || value === 'all') return value;
+  throw badRequest('lifecycle must be open, closed, or all');
+}
+
+function rejectDuplicateReference(url: URL, name: string): void {
+  if (url.searchParams.has(`${name}Id`) && url.searchParams.has(name))
+    throw badRequest(`Use only one of ${name}Id and ${name}`);
 }
 
 async function issueResource(

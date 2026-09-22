@@ -6,7 +6,7 @@ import {
   fileContents,
   operationId,
   printResult,
-  workspaceIdFor,
+  workspaceRefFor,
 } from './command-utils.ts';
 import {
   getIssue,
@@ -70,11 +70,11 @@ function registerIssueUpdate(issue: Command): void {
     .option('--expected-version <number>');
   update.action(async (identifier, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspaceId = await workspaceIdFor(api, options);
+    const workspaceRef = await workspaceRefFor(api, options);
     const input = updateOptions.parse(command.opts());
     const [current, fields] = await Promise.all([
-      getIssue(api, workspaceId, identifier),
-      issuePatch(api, workspaceId, input),
+      getIssue(api, workspaceRef, identifier),
+      issuePatch(api, workspaceRef, input),
     ]);
     if (Object.keys(fields).length === 0)
       throw new Error('Provide an issue field to update.');
@@ -85,7 +85,7 @@ function registerIssueUpdate(issue: Command): void {
     printResult(
       await requestRecord(
         api,
-        `/workspaces/${workspaceId}/issues/${current.id}`,
+        `/workspaces/${encodeURIComponent(workspaceRef)}/issues/${current.id}`,
         issueSchema,
         { method: 'PATCH', body: patch, operationId: operationId() },
       ),
@@ -96,7 +96,7 @@ function registerIssueUpdate(issue: Command): void {
 
 async function issuePatch(
   api: ApiContext,
-  workspaceId: string,
+  workspaceRef: string,
   input: z.infer<typeof updateOptions>,
 ): Promise<Record<string, unknown>> {
   const description = await fileContents(
@@ -105,11 +105,11 @@ async function issuePatch(
   );
   const patch: Record<string, unknown> = {};
   addTextPatch(patch, input, description);
-  await addStatePatch(api, workspaceId, patch, input);
-  await addAssignmentPatch(api, workspaceId, patch, input);
-  await addRelationPatch(api, workspaceId, patch, input);
+  await addStatePatch(api, workspaceRef, patch, input);
+  await addAssignmentPatch(api, workspaceRef, patch, input);
+  await addRelationPatch(api, workspaceRef, patch, input);
   addDatePatch(patch, input);
-  await addLabelPatch(api, workspaceId, patch, input);
+  await addLabelPatch(api, workspaceRef, patch, input);
   return patch;
 }
 
@@ -125,14 +125,14 @@ function addTextPatch(
 
 async function addStatePatch(
   api: ApiContext,
-  workspaceId: string,
+  workspaceRef: string,
   patch: Record<string, unknown>,
   input: z.infer<typeof updateOptions>,
 ): Promise<void> {
   if (input.state !== undefined)
     patch.stateId = await resolveIssueMutationStateId(
       api,
-      workspaceId,
+      workspaceRef,
       input.state,
     );
   if (input.priority !== undefined) patch.priority = input.priority;
@@ -140,14 +140,14 @@ async function addStatePatch(
 
 async function addAssignmentPatch(
   api: ApiContext,
-  workspaceId: string,
+  workspaceRef: string,
   patch: Record<string, unknown>,
   input: z.infer<typeof updateOptions>,
 ): Promise<void> {
   if (input.assignee !== undefined)
     patch.assigneeId = await resolveAssigneeId(
       api,
-      workspaceId,
+      workspaceRef,
       input.assignee,
     );
   if (input.unassign) patch.assigneeId = null;
@@ -155,17 +155,17 @@ async function addAssignmentPatch(
 
 async function addRelationPatch(
   api: ApiContext,
-  workspaceId: string,
+  workspaceRef: string,
   patch: Record<string, unknown>,
   input: z.infer<typeof updateOptions>,
 ): Promise<void> {
   if (input.project !== undefined)
     patch.projectId = (
-      await resolveProject(api, workspaceId, input.project)
+      await resolveProject(api, workspaceRef, input.project)
     ).id;
   if (input.clearProject) patch.projectId = null;
   if (input.parent !== undefined)
-    patch.parentId = await resolveIssueId(api, workspaceId, input.parent);
+    patch.parentId = await resolveIssueId(api, workspaceRef, input.parent);
   if (input.clearParent) patch.parentId = null;
 }
 
@@ -181,14 +181,14 @@ function addDatePatch(
 
 async function addLabelPatch(
   api: ApiContext,
-  workspaceId: string,
+  workspaceRef: string,
   patch: Record<string, unknown>,
   input: z.infer<typeof updateOptions>,
 ): Promise<void> {
   if (input.label !== undefined)
     patch.labelIds = await Promise.all(
       parseRepeated(input.label).map(
-        async (ref) => (await resolveLabel(api, workspaceId, ref)).id,
+        async (ref) => (await resolveLabel(api, workspaceRef, ref)).id,
       ),
     );
 }
@@ -200,8 +200,8 @@ function registerIssueDelete(issue: Command): void {
     .option('--expected-version <number>');
   remove.action(async (identifier, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspaceId = await workspaceIdFor(api, options);
-    const current = await getIssue(api, workspaceId, identifier);
+    const workspaceRef = await workspaceRefFor(api, options);
+    const current = await getIssue(api, workspaceRef, identifier);
     const input = z
       .object({
         expectedVersion: z.coerce.number().int().positive().optional(),
@@ -210,7 +210,7 @@ function registerIssueDelete(issue: Command): void {
     printResult(
       await requestRecord(
         api,
-        `/workspaces/${workspaceId}/issues/${current.id}`,
+        `/workspaces/${encodeURIComponent(workspaceRef)}/issues/${current.id}`,
         issueSchema,
         {
           method: 'DELETE',
@@ -230,8 +230,8 @@ function registerIssueRestore(issue: Command): void {
     .option('--expected-version <number>');
   restore.action(async (identifier, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspaceId = await workspaceIdFor(api, options);
-    const current = await getIssue(api, workspaceId, identifier);
+    const workspaceRef = await workspaceRefFor(api, options);
+    const current = await getIssue(api, workspaceRef, identifier);
     const input = z
       .object({
         expectedVersion: z.coerce.number().int().positive().optional(),
@@ -240,7 +240,7 @@ function registerIssueRestore(issue: Command): void {
     printResult(
       await requestRecord(
         api,
-        `/workspaces/${workspaceId}/issues/${current.id}/restore`,
+        `/workspaces/${encodeURIComponent(workspaceRef)}/issues/${current.id}/restore`,
         issueSchema,
         {
           method: 'POST',

@@ -2,6 +2,7 @@ import { invitationRecord, type InvitationRow } from './invitations.ts';
 import { memberTeamIds } from './team-memberships.ts';
 import { one, rows } from '../db.ts';
 import { notFound } from '../errors.ts';
+import { z } from 'zod';
 import {
   canAccessTeam,
   findUser,
@@ -41,6 +42,8 @@ type MeResponse = {
   canBootstrap: boolean;
   workspaces: Workspace[];
 };
+
+const workspaceIdReference = z.uuid();
 
 export function getMe(
   sql: SqlDb,
@@ -87,6 +90,35 @@ export function getWorkspace(
   );
   if (row === null) throw notFound();
   return workspaceRecord(row);
+}
+
+export function resolveWorkspaceId(
+  sql: SqlDb,
+  actor: AuthActor,
+  reference: string,
+): string {
+  const user = findUser(sql, actor);
+  if (user === null) throw notFound();
+  const byId = one<{ id: string } & SqlRow>(
+    sql,
+    `SELECT w.id FROM workspaces w
+     JOIN workspace_memberships m ON m.workspace_id = w.id
+     WHERE w.id = ? AND m.user_id = ? AND m.active = 1`,
+    reference,
+    user.id,
+  );
+  if (byId !== null) return byId.id;
+  if (workspaceIdReference.safeParse(reference).success) throw notFound();
+  const bySlug = one<{ id: string } & SqlRow>(
+    sql,
+    `SELECT w.id FROM workspaces w
+     JOIN workspace_memberships m ON m.workspace_id = w.id
+     WHERE lower(w.slug) = lower(?) AND m.user_id = ? AND m.active = 1`,
+    reference,
+    user.id,
+  );
+  if (bySlug === null) throw notFound();
+  return bySlug.id;
 }
 
 export function listTeams(

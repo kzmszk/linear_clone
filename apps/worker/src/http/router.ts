@@ -5,6 +5,7 @@ import { routeIssues } from './issue-routes.ts';
 import { routeImports } from './import-routes.ts';
 import { routeChanges } from './change-routes.ts';
 import { openWorkspaceEvents } from '../changes/events.ts';
+import { resolveWorkspaceId } from '../organization/queries.ts';
 import type { AuthActor, SqlDb, WorkerEnv } from '../types.ts';
 
 export async function routeTrackerRequest(
@@ -18,7 +19,11 @@ export async function routeTrackerRequest(
   const url = new URL(request.url);
   const prefix = '/api/v1';
   if (!url.pathname.startsWith(prefix)) throw notFound();
-  const segments = url.pathname.slice(prefix.length).split('/').filter(Boolean);
+  const rawSegments = url.pathname
+    .slice(prefix.length)
+    .split('/')
+    .filter(Boolean);
+  const segments = canonicalWorkspacePath(sql, actor, rawSegments);
   const organization = await routeOrganization(
     request,
     sql,
@@ -29,6 +34,19 @@ export async function routeTrackerRequest(
   );
   if (organization !== null) return organization;
   return routeWorkspaceRequest(request, sql, storage, actor, state, segments);
+}
+
+function canonicalWorkspacePath(
+  sql: SqlDb,
+  actor: AuthActor,
+  segments: string[],
+): string[] {
+  if (segments[0] !== 'workspaces' || segments.length < 2) return segments;
+  return [
+    segments[0],
+    resolveWorkspaceId(sql, actor, segments[1]),
+    ...segments.slice(2),
+  ];
 }
 
 async function routeWorkspaceRequest(

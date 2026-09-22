@@ -6,7 +6,7 @@ import {
   fileContents,
   operationId,
   printResult,
-  workspaceIdFor,
+  workspaceRefFor,
 } from './command-utils.ts';
 import {
   getIssue,
@@ -17,7 +17,6 @@ import {
   resolveIssueId,
   resolveLabel,
   resolveProject,
-  resolveState,
   resolveTeam,
 } from './resolve.ts';
 import { registerCommentCommands } from './issue-comments.ts';
@@ -47,6 +46,8 @@ const listOptions = z.object({
   cursor: z.string().optional(),
   archived: z.boolean().default(false),
   deleted: z.boolean().default(false),
+  all: z.boolean().default(false),
+  closed: z.boolean().default(false),
 });
 export function registerIssueCommands(root: Command): void {
   const issue = root.command('issue').description('Manage issues');
@@ -74,26 +75,26 @@ function registerIssueCreate(issue: Command): void {
     .option('--label <label...>')
     .action(async (_, command) => {
       const { api, options } = apiFor(command);
-      const workspaceId = await workspaceIdFor(api, options);
+      const workspaceRef = await workspaceRefFor(api, options);
       const input = createOptions.parse(command.opts());
       const description =
         (await fileContents(input.descriptionFile, input.description)) ?? null;
-      const team = await resolveTeam(api, workspaceId, input.team);
+      const team = await resolveTeam(api, workspaceRef, input.team);
       const stateId = input.state
-        ? await resolveIssueMutationStateId(api, workspaceId, input.state)
+        ? await resolveIssueMutationStateId(api, workspaceRef, input.state)
         : undefined;
       const assigneeId = input.assignee
-        ? await resolveAssigneeId(api, workspaceId, input.assignee)
+        ? await resolveAssigneeId(api, workspaceRef, input.assignee)
         : null;
       const projectId = input.project
-        ? (await resolveProject(api, workspaceId, input.project)).id
+        ? (await resolveProject(api, workspaceRef, input.project)).id
         : null;
       const parentId = input.parent
-        ? await resolveIssueId(api, workspaceId, input.parent)
+        ? await resolveIssueId(api, workspaceRef, input.parent)
         : null;
       const labelIds = await Promise.all(
         parseRepeated(input.label).map(
-          async (ref) => (await resolveLabel(api, workspaceId, ref)).id,
+          async (ref) => (await resolveLabel(api, workspaceRef, ref)).id,
         ),
       );
       const body = {
@@ -112,7 +113,7 @@ function registerIssueCreate(issue: Command): void {
       printResult(
         await requestRecord(
           api,
-          `/workspaces/${workspaceId}/issues`,
+          `/workspaces/${encodeURIComponent(workspaceRef)}/issues`,
           issueSchema,
           { method: 'POST', body, operationId: operationId() },
         ),
@@ -132,31 +133,25 @@ function registerIssueList(issue: Command): void {
     .option('--cursor <cursor>')
     .option('--archived', 'show archived issues')
     .option('--deleted', 'show deleted issues')
+    .option('--closed', 'show completed and canceled issues')
+    .option('--all', 'show open, completed, and canceled issues')
     .action(async (_, command) => {
       const { api, options } = apiFor(command);
-      const workspaceId = await workspaceIdFor(api, options);
+      const workspaceRef = await workspaceRefFor(api, options);
       const input = listOptions.parse(command.opts());
-      const teamId = input.team
-        ? (await resolveTeam(api, workspaceId, input.team)).id
-        : undefined;
-      const stateId = input.state
-        ? (await resolveState(api, workspaceId, input.state)).id
-        : undefined;
-      const assigneeId = input.assignee
-        ? await resolveAssigneeId(api, workspaceId, input.assignee)
-        : undefined;
-      const projectId = input.project
-        ? (await resolveProject(api, workspaceId, input.project)).id
-        : undefined;
-      const items = await listIssues(api, workspaceId, {
-        teamId,
-        stateId,
-        assigneeId,
-        projectId,
+      if (input.all && input.closed)
+        throw new Error('Use only one of --all and --closed.');
+      const lifecycle = listLifecycle(input);
+      const items = await listIssues(api, workspaceRef, {
+        team: input.team,
+        state: input.state,
+        assignee: input.assignee,
+        project: input.project,
         q: input.search,
         cursor: input.cursor,
         archived: String(input.archived),
         deleted: String(input.deleted),
+        lifecycle,
       });
       printResult(items, options.json);
     });
@@ -168,7 +163,14 @@ function registerIssueGet(issue: Command): void {
     .argument('<identifier>')
     .action(async (identifier, _options, command) => {
       const { api, options } = apiFor(command);
-      const workspaceId = await workspaceIdFor(api, options);
-      printResult(await getIssue(api, workspaceId, identifier), options.json);
+      const workspaceRef = await workspaceRefFor(api, options);
+      printResult(await getIssue(api, workspaceRef, identifier), options.json);
     });
+}
+
+function listLifecycle(input: z.infer<typeof listOptions>) {
+  if (input.closed) return 'closed';
+  if (input.all) return 'all';
+  if (input.state || input.archived || input.deleted) return undefined;
+  return 'open';
 }

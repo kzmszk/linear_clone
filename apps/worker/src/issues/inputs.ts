@@ -15,3 +15,26 @@ export type IssueEdit = Partial<Omit<NewIssueInput, 'teamId'>> & {
   expectedVersion: number;
   archivedAt?: string | null;
 };
+
+export type IssueLifecycle = 'open' | 'closed' | 'all';
+
+export type IssueListFilter = {
+  teamId: string | null;
+  team: string | null;
+  projectId: string | null;
+  project: string | null;
+  stateId: string | null;
+  state: string | null;
+  assigneeId: string | null;
+  assignee: string | null;
+  query: string | null;
+  cursor: string | null;
+  deleted: boolean;
+  archived: boolean;
+  lifecycle: IssueLifecycle | null;
+};
+
+export type ResolvedIssueListFilter = Omit<
+  IssueListFilter,
+  'team' | 'project' | 'state' | 'assignee'
+>;

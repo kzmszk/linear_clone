@@ -33,6 +33,14 @@ export async function workspaceIdFor(
   return (await resolveWorkspace(api, options.workspace)).id;
 }
 
+export async function workspaceRefFor(
+  api: ApiContext,
+  options: GlobalOptions,
+): Promise<string> {
+  if (options.workspace) return options.workspace;
+  return (await resolveWorkspace(api, undefined)).id;
+}
+
 export async function fileContents(
   path: string | undefined,
   inline: string | undefined,

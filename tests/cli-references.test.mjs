@@ -42,6 +42,31 @@ async function rejectsCommand(args, message, email) {
   });
 }
 
+async function assertLifecycleLists(parent, child) {
+  assert.deepEqual(
+    (await cli(['issue', 'list'], 'owner@example.test', 'development')).map(
+      (record) => record.id,
+    ),
+    [parent.id],
+  );
+  assert.deepEqual(
+    (
+      await cli(
+        ['issue', 'list', '--closed'],
+        'owner@example.test',
+        'development',
+      )
+    ).map((record) => record.id),
+    [child.id],
+  );
+  assert.deepEqual(
+    (await cli(['issue', 'list', '--all'], 'owner@example.test', 'development'))
+      .map((record) => record.id)
+      .sort(),
+    [child.id, parent.id].sort(),
+  );
+}
+
 test('CLI resolves mixed names and IDs and saves an assignee user rather than membership ID', async () => {
   const project = (
     await cli(['project', 'create', '--name', 'Delivery', '--team', 'DEV'])
@@ -79,6 +104,17 @@ test('CLI resolves mixed names and IDs and saves an assignee user rather than me
   assert.equal(child.assigneeId, owner.userId);
   assert.equal(child.parentId, parent.id);
   assert.equal(child.stateId, done.id);
+  await assertLifecycleLists(parent, child);
+  assert.equal(
+    (
+      await cli(
+        ['issue', 'get', child.identifier.toLowerCase()],
+        'owner@example.test',
+        'development',
+      )
+    ).id,
+    child.id,
+  );
   const records = await cli([
     'issue',
     'list',
@@ -98,6 +134,44 @@ test('CLI resolves mixed names and IDs and saves an assignee user rather than me
   const stored = await request(`${fixture.base}/issues/${child.id}`);
   assert.equal(stored.body.title, 'Assigned child');
   assert.equal(stored.body.assigneeId, owner.userId);
+});
+
+test('CLI rejects conflicting lifecycle switches', async () => {
+  await rejectsCommand(
+    ['issue', 'list', '--all', '--closed'],
+    'Use only one of --all and --closed.',
+  );
+});
+
+test('CLI does not treat an unknown workspace UUID as a slug', async () => {
+  const uuidSlug = crypto.randomUUID();
+  const collision = await request('/workspaces', {
+    method: 'POST',
+    body: { slug: uuidSlug, name: 'UUID slug' },
+  });
+  assert.equal(collision.status, 201);
+  const workspace = collision.body.current;
+  const team = await request(`/workspaces/${workspace.id}/teams`, {
+    method: 'POST',
+    body: { key: 'UUID', name: 'UUID team' },
+  });
+  assert.equal(team.status, 201);
+
+  await assert.rejects(
+    cli(
+      ['issue', 'create', '--team', 'UUID', '--title', 'Wrong workspace'],
+      'owner@example.test',
+      uuidSlug,
+    ),
+    (error) => {
+      assert.equal(error.code, 1);
+      assert.equal(JSON.parse(error.stderr).error.code, 'not_found');
+      return true;
+    },
+  );
+  const stored = await request(`/workspaces/${workspace.id}/issues`);
+  assert.equal(stored.status, 200);
+  assert.deepEqual(stored.body.items, []);
 });
 
 test('CLI metadata respects private teams and excludes archived projects', async () => {

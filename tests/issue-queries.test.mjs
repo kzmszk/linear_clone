@@ -27,6 +27,14 @@ async function titles(query = '', actor = request) {
   return result.body.items.map((issue) => issue.title).sort();
 }
 
+async function setStateType(stateId, expectedVersion, type) {
+  const result = await request(`${fixture.base}/states/${stateId}`, {
+    method: 'PATCH',
+    body: { expectedVersion, type },
+  });
+  assert.equal(result.status, 200);
+}
+
 test('combined list filters track project, state and assignee changes', async () => {
   const project = await request(`${fixture.base}/projects`, {
     method: 'POST',
@@ -69,6 +77,112 @@ test('combined list filters track project, state and assignee changes', async ()
   assert.deepEqual(await titles(filter), ['検索 target']);
   const listed = await request(`${fixture.base}/issues?${filter}`);
   assert.equal(listed.body.items[0].version, 3);
+});
+
+test('lifecycle filters use the current workflow state type', async () => {
+  const metadata = (await request(`${fixture.base}/metadata`)).body;
+  const backlog = metadata.states.find((state) => state.type === 'backlog');
+  const done = metadata.states.find((state) => state.type === 'completed');
+  const canceled = await request(`${fixture.base}/states`, {
+    method: 'POST',
+    body: {
+      teamId: fixture.team.id,
+      name: 'Canceled',
+      type: 'canceled',
+    },
+  });
+  assert.equal(canceled.status, 201);
+  const openIssue = await createIssue('Open issue', { stateId: backlog.id });
+  const completedIssue = await createIssue('Completed issue', {
+    stateId: done.id,
+  });
+  await createIssue('Canceled issue', { stateId: canceled.body.current.id });
+
+  assert.deepEqual(await titles(), [
+    'Canceled issue',
+    'Completed issue',
+    'Open issue',
+  ]);
+  assert.deepEqual(await titles('lifecycle=open'), ['Open issue']);
+  assert.deepEqual(await titles('lifecycle=closed'), [
+    'Canceled issue',
+    'Completed issue',
+  ]);
+  assert.deepEqual(await titles('lifecycle=all'), [
+    'Canceled issue',
+    'Completed issue',
+    'Open issue',
+  ]);
+
+  const completedAt = completedIssue.completedAt;
+  assert.notEqual(completedAt, null);
+  await setStateType(done.id, done.version, 'unstarted');
+  assert.deepEqual(await titles('lifecycle=open'), [
+    'Completed issue',
+    'Open issue',
+  ]);
+  assert.deepEqual(await titles('lifecycle=closed'), ['Canceled issue']);
+  const sameStateIssue = (
+    await request(`${fixture.base}/issues/${completedIssue.id}`)
+  ).body;
+  assert.equal(sameStateIssue.stateId, done.id);
+  assert.equal(sameStateIssue.completedAt, completedAt);
+  await setStateType(done.id, done.version + 1, 'completed');
+  assert.deepEqual(await titles('lifecycle=open'), ['Open issue']);
+  assert.deepEqual(await titles('lifecycle=closed'), [
+    'Canceled issue',
+    'Completed issue',
+  ]);
+
+  const reopened = await request(
+    `${fixture.base}/issues/${completedIssue.id}`,
+    {
+      method: 'PATCH',
+      body: { expectedVersion: completedIssue.version, stateId: backlog.id },
+    },
+  );
+  assert.equal(reopened.status, 200);
+  assert.deepEqual(await titles('lifecycle=open'), [
+    'Completed issue',
+    'Open issue',
+  ]);
+  assert.equal(
+    (
+      await request(
+        `/workspaces/development/issues/${openIssue.identifier.toLowerCase()}`,
+      )
+    ).body.id,
+    openIssue.id,
+  );
+  assert.equal(
+    (await request(`${fixture.base}/issues?lifecycle=invalid`)).status,
+    400,
+  );
+});
+
+test('open lifecycle filtering happens before the issue page limit', async () => {
+  const metadata = (await request(`${fixture.base}/metadata`)).body;
+  const backlog = metadata.states.find((state) => state.type === 'backlog');
+  const done = metadata.states.find((state) => state.type === 'completed');
+  const openIssues = await Promise.all(
+    Array.from({ length: 20 }, (_, index) =>
+      createIssue(`Open ${index}`, { stateId: backlog.id }),
+    ),
+  );
+  await new Promise((resolve) => setTimeout(resolve, 2));
+  await Promise.all(
+    Array.from({ length: 200 }, (_, index) =>
+      createIssue(`Closed ${index}`, { stateId: done.id }),
+    ),
+  );
+
+  const result = await request(`${fixture.base}/issues?lifecycle=open`);
+  assert.equal(result.status, 200);
+  assert.equal(result.body.cursor, null);
+  assert.deepEqual(
+    result.body.items.map((issue) => issue.id).sort(),
+    openIssues.map((issue) => issue.id).sort(),
+  );
 });
 
 test('active, archived and trash lists stay separate after deletion and restoration', async () => {
@@ -142,6 +256,11 @@ test('search and direct reads hide private team issues until membership is grant
   const denied = await reader(`${fixture.base}/issues/${secret.id}`);
   assert.equal(denied.status, 404);
   assert.equal(denied.body.error.code, 'not_found');
+  const deniedAlias = await reader(
+    `/workspaces/development/issues/${secret.identifier.toLowerCase()}`,
+  );
+  assert.equal(deniedAlias.status, 404);
+  assert.equal(deniedAlias.body.error.code, 'not_found');
   const member = (await request(`${fixture.base}/members`)).body.find(
     (item) => item.email === 'reader@example.test',
   );
@@ -156,6 +275,14 @@ test('search and direct reads hide private team issues until membership is grant
   ]);
   assert.equal(
     (await reader(`${fixture.base}/issues/${secret.id}`)).body.title,
+    'Needle secret',
+  );
+  assert.equal(
+    (
+      await reader(
+        `/workspaces/development/issues/${secret.identifier.toLowerCase()}`,
+      )
+    ).body.title,
     'Needle secret',
   );
 });

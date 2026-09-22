@@ -6,7 +6,7 @@ import {
   fileContents,
   operationId,
   printResult,
-  workspaceIdFor,
+  workspaceRefFor,
 } from './command-utils.ts';
 import { resolveIssueId } from './resolve.ts';
 import { commentSchema } from './types.ts';
@@ -38,12 +38,12 @@ function registerCommentList(comments: Command): void {
     .argument('<identifier>')
     .action(async (identifier, _options, command) => {
       const { api, options } = apiFor(command);
-      const workspaceId = await workspaceIdFor(api, options);
-      const issueId = await resolveIssueId(api, workspaceId, identifier);
+      const workspaceRef = await workspaceRefFor(api, options);
+      const issueId = await resolveIssueId(api, workspaceRef, identifier);
       printResult(
         await listRecords(
           api,
-          `/workspaces/${workspaceId}/issues/${issueId}/comments`,
+          `/workspaces/${encodeURIComponent(workspaceRef)}/issues/${issueId}/comments`,
           commentSchema,
         ),
         options.json,
@@ -60,15 +60,15 @@ function registerCommentCreate(comments: Command): void {
     .option('--parent <comment>')
     .action(async (identifier, _options, command) => {
       const { api, options } = apiFor(command);
-      const workspaceId = await workspaceIdFor(api, options);
-      const issueId = await resolveIssueId(api, workspaceId, identifier);
+      const workspaceRef = await workspaceRefFor(api, options);
+      const issueId = await resolveIssueId(api, workspaceRef, identifier);
       const input = commentCreateOptions.parse(command.opts());
       const body = await fileContents(input.bodyFile, input.body);
       if (!body) throw new Error('Provide --body or --body-file.');
       printResult(
         await requestRecord(
           api,
-          `/workspaces/${workspaceId}/issues/${issueId}/comments`,
+          `/workspaces/${encodeURIComponent(workspaceRef)}/issues/${issueId}/comments`,
           commentSchema,
           {
             method: 'POST',
@@ -91,11 +91,11 @@ function registerCommentUpdate(comments: Command): void {
     .option('--expected-version <number>');
   update.action(async (identifier, commentId, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspaceId = await workspaceIdFor(api, options);
-    const issueId = await resolveIssueId(api, workspaceId, identifier);
+    const workspaceRef = await workspaceRefFor(api, options);
+    const issueId = await resolveIssueId(api, workspaceRef, identifier);
     const input = commentUpdateOptions.parse(command.opts());
     const body = await fileContents(input.bodyFile, input.body);
-    const path = `/workspaces/${workspaceId}/issues/${issueId}/comments/${commentId}`;
+    const path = `/workspaces/${encodeURIComponent(workspaceRef)}/issues/${issueId}/comments/${commentId}`;
     const current = await requestRecord(api, path, commentSchema);
     const existing = 'current' in current ? current.current : current;
     const patch = {
@@ -123,9 +123,9 @@ function registerCommentDelete(comments: Command): void {
     .option('--expected-version <number>');
   remove.action(async (identifier, commentId, _options, command) => {
     const { api, options } = apiFor(command);
-    const workspaceId = await workspaceIdFor(api, options);
-    const issueId = await resolveIssueId(api, workspaceId, identifier);
-    const path = `/workspaces/${workspaceId}/issues/${issueId}/comments/${commentId}`;
+    const workspaceRef = await workspaceRefFor(api, options);
+    const issueId = await resolveIssueId(api, workspaceRef, identifier);
+    const path = `/workspaces/${encodeURIComponent(workspaceRef)}/issues/${issueId}/comments/${commentId}`;
     const current = await requestRecord(api, path, commentSchema);
     const existing = 'current' in current ? current.current : current;
     const input = z

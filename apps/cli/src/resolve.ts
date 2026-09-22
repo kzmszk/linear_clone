@@ -199,7 +199,7 @@ export async function resolveLabel(
 
 export async function listIssues(
   api: ApiContext,
-  workspaceId: string,
+  workspaceRef: string,
   params: Record<string, string | undefined> = {},
 ): Promise<Issue[]> {
   const items: Issue[] = [];
@@ -207,7 +207,7 @@ export async function listIssues(
   const seen = new Set<string>();
   do {
     const path = queryPath(
-      `/workspaces/${encodeURIComponent(workspaceId)}/issues`,
+      `/workspaces/${encodeURIComponent(workspaceRef)}/issues`,
       { ...params, cursor },
     );
     const value = await api.client.request(path, issueListSchema);
@@ -222,45 +222,23 @@ export async function listIssues(
 
 export async function getIssue(
   api: ApiContext,
-  workspaceId: string,
+  workspaceRef: string,
   ref: string,
 ): Promise<Issue> {
-  if (isUuid(ref)) {
-    const value = await requestRecord(
-      api,
-      `/workspaces/${encodeURIComponent(workspaceId)}/issues/${encodeURIComponent(ref)}`,
-      issueSchema,
-    );
-    return recordFromMutation(value);
-  }
-  const filters = [
-    {},
-    { archived: 'true' },
-    { deleted: 'true' },
-    { archived: 'true', deleted: 'true' },
-  ];
-  const seen = new Set<string>();
-  let match: Issue | undefined;
-  for (const filter of filters) {
-    const issues = await listIssues(api, workspaceId, { q: ref, ...filter });
-    match = issues.find(
-      (issue) =>
-        !seen.has(issue.id) &&
-        issue.identifier.toLowerCase() === ref.toLowerCase(),
-    );
-    for (const issue of issues) seen.add(issue.id);
-    if (match) break;
-  }
-  if (!match) throw new Error(`Issue not found: ${ref}`);
-  return match;
+  const value = await requestRecord(
+    api,
+    `/workspaces/${encodeURIComponent(workspaceRef)}/issues/${encodeURIComponent(ref)}`,
+    issueSchema,
+  );
+  return recordFromMutation(value);
 }
 
 export async function resolveIssueId(
   api: ApiContext,
-  workspaceId: string,
+  workspaceRef: string,
   ref: string,
 ): Promise<string> {
-  return (await getIssue(api, workspaceId, ref)).id;
+  return (await getIssue(api, workspaceRef, ref)).id;
 }
 
 export function parseRepeated(values: string[] | undefined): string[] {

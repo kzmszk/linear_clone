@@ -30,6 +30,7 @@ export function createComment(
   operationId: string,
   requestHash: string,
   input: CommentInput,
+  options: { id?: string } = {},
 ): MutationResponse<Comment> {
   return runMutation({
     sql,
@@ -40,6 +41,15 @@ export function createComment(
     workspaceId,
     authorize: () => authorizeIssue(sql, actor, workspaceId, issueId),
     apply: () => {
+      if (
+        options.id !== undefined &&
+        one<{ id: string } & SqlRow>(
+          sql,
+          'SELECT id FROM comments WHERE id = ?',
+          options.id,
+        ) !== null
+      )
+        throw conflict('entity_id_taken', 'Comment ID is already in use');
       const user = requireUser(sql, actor);
       const issue = issueRow(sql, issueId);
       if (issue === null) throw notFound();
@@ -53,7 +63,7 @@ export function createComment(
           throw notFound('Parent comment was not found');
       }
       const timestamp = now();
-      const commentId = newId();
+      const commentId = options.id ?? newId();
       sql.exec(
         'INSERT INTO comments (id, workspace_id, issue_id, body, author_id, author_name, parent_comment_id, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?)',
         commentId,

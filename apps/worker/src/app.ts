@@ -1,7 +1,10 @@
 import { Hono } from 'hono';
-import { errorResponse } from './errors.ts';
+import { bodyLimit } from 'hono/body-limit';
+import { syncRequestMaxBytes } from '../../../packages/contracts/src/sync.ts';
+import { errorResponse, payloadTooLarge } from './errors.ts';
 import { verifyMutationOrigin } from './auth.ts';
 import { handleIssueFile } from './files/routes.ts';
+import { apiPathSegments } from './http/path.ts';
 import type { AuthActor, WorkerEnv } from './types.ts';
 
 export type Authenticator = (
@@ -13,6 +16,18 @@ export function createApp(
   authenticate: Authenticator,
 ): Hono<{ Bindings: WorkerEnv }> {
   const app = new Hono<{ Bindings: WorkerEnv }>();
+  const limitSyncBody = bodyLimit({
+    maxSize: syncRequestMaxBytes,
+    onError: () => errorResponse(payloadTooLarge()),
+  });
+  app.use('*', (context, next) => {
+    const segments = apiPathSegments(context.req.path);
+    const isSync =
+      segments?.length === 3 &&
+      segments[0] === 'workspaces' &&
+      segments[2] === 'sync';
+    return isSync ? limitSyncBody(context, next) : next();
+  });
   app.all('*', async (context) => {
     if (!context.req.path.startsWith('/api/'))
       return context.env.ASSETS.fetch(context.req.raw);

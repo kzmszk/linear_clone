@@ -26,6 +26,7 @@ export function createIssue(
   operationId: string,
   requestHash: string,
   input: NewIssueInput,
+  options: { id?: string } = {},
 ): MutationResponse<Issue> {
   return runMutation({
     sql,
@@ -36,6 +37,7 @@ export function createIssue(
     workspaceId,
     authorize: () => requireTeamAccess(sql, actor, input.teamId),
     apply: () => {
+      ensureIssueIdAvailable(sql, options.id);
       const team = one<
         { id: string; workspace_id: string; next_issue_number: number } & SqlRow
       >(
@@ -51,7 +53,7 @@ export function createIssue(
         input.stateId,
       );
       validateReferences(sql, workspaceId, input);
-      const issueId = newId();
+      const issueId = options.id ?? newId();
       const timestamp = now();
       sql.exec(
         'UPDATE teams SET next_issue_number = next_issue_number + 1 WHERE id = ?',
@@ -90,6 +92,18 @@ export function createIssue(
     },
     current: (entityId) => getIssue(sql, actor, workspaceId, entityId),
   });
+}
+
+function ensureIssueIdAvailable(sql: SqlDb, issueId: string | undefined): void {
+  if (
+    issueId !== undefined &&
+    one<{ id: string } & SqlRow>(
+      sql,
+      'SELECT id FROM issues WHERE id = ?',
+      issueId,
+    ) !== null
+  )
+    throw conflict('entity_id_taken', 'Issue ID is already in use');
 }
 
 export function patchIssue(

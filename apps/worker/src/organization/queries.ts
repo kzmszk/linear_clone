@@ -151,13 +151,21 @@ export function listProjects(
     workspaceId,
     includeArchived ? 1 : 0,
   )
-    .map((project) => ({ project, teamIds: projectTeamIds(sql, project.id) }))
+    .map((project) => {
+      const teamIds = projectTeamIds(sql, project.id);
+      return {
+        project,
+        teamIds,
+        visibleTeamIds: visibleTeamIds(sql, user.id, teamIds),
+      };
+    })
     .filter(
-      ({ teamIds }) =>
-        teamIds.length === 0 ||
-        teamIds.some((teamId) => canAccessTeam(sql, user.id, teamId)),
+      ({ teamIds, visibleTeamIds: accessible }) =>
+        teamIds.length === 0 || accessible.length > 0,
     )
-    .map(({ project, teamIds }) => projectRecord(project, teamIds));
+    .map(({ project, visibleTeamIds: accessible }) =>
+      projectRecord(project, accessible),
+    );
 }
 
 export function listMembers(
@@ -165,6 +173,7 @@ export function listMembers(
   actor: AuthActor,
   workspaceId: string,
 ): ReturnType<typeof memberRecord>[] {
+  const viewer = requireUser(sql, actor);
   requireMembership(sql, actor, workspaceId);
   const memberships = rows<WorkspaceMembershipRow>(
     sql,
@@ -172,17 +181,21 @@ export function listMembers(
     workspaceId,
   );
   const activeMembers = memberships.flatMap((membership) => {
-    const user = one<UserRow>(
+    const memberUser = one<UserRow>(
       sql,
       'SELECT * FROM users WHERE id = ?',
       membership.user_id,
     );
-    if (user === null) return [];
+    if (memberUser === null) return [];
     return [
       memberRecord(
         membership,
-        user,
-        memberTeamIds(sql, membership.user_id, workspaceId),
+        memberUser,
+        visibleTeamIds(
+          sql,
+          viewer.id,
+          memberTeamIds(sql, membership.user_id, workspaceId),
+        ),
       ),
     ];
   });
@@ -190,7 +203,12 @@ export function listMembers(
     sql,
     "SELECT * FROM invitations WHERE workspace_id = ? AND status = 'pending' ORDER BY created_at, id",
     workspaceId,
-  ).map(invitationRecord);
+  )
+    .map(invitationRecord)
+    .map((member) => ({
+      ...member,
+      teamIds: visibleTeamIds(sql, viewer.id, member.teamIds),
+    }));
   return activeMembers.concat(pending);
 }
 
@@ -251,4 +269,12 @@ function projectTeamIds(sql: SqlDb, projectId: string): string[] {
     'SELECT team_id FROM project_teams WHERE project_id = ? ORDER BY team_id',
     projectId,
   ).map((row) => row.team_id);
+}
+
+function visibleTeamIds(
+  sql: SqlDb,
+  userId: string,
+  teamIds: string[],
+): string[] {
+  return teamIds.filter((teamId) => canAccessTeam(sql, userId, teamId));
 }

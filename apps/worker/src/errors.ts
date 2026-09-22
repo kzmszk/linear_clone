@@ -21,6 +21,12 @@ export function badRequest(message: string): HttpError {
   return new HttpError(400, 'invalid_input', message);
 }
 
+export function payloadTooLarge(
+  message = 'Request body is too large',
+): HttpError {
+  return new HttpError(413, 'payload_too_large', message);
+}
+
 export function unauthorized(message = 'Authentication required'): HttpError {
   return new HttpError(401, 'unauthorized', message);
 }

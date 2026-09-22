@@ -4,6 +4,8 @@ import { routeOrganization } from './organization-routes.ts';
 import { routeIssues } from './issue-routes.ts';
 import { routeImports } from './import-routes.ts';
 import { routeChanges } from './change-routes.ts';
+import { routeSync } from './sync-route.ts';
+import { apiPathSegments } from './path.ts';
 import { openWorkspaceEvents } from '../changes/events.ts';
 import { resolveWorkspaceId } from '../organization/queries.ts';
 import type { AuthActor, SqlDb, WorkerEnv } from '../types.ts';
@@ -17,12 +19,8 @@ export async function routeTrackerRequest(
   state: DurableObjectState,
 ): Promise<Response> {
   const url = new URL(request.url);
-  const prefix = '/api/v1';
-  if (!url.pathname.startsWith(prefix)) throw notFound();
-  const rawSegments = url.pathname
-    .slice(prefix.length)
-    .split('/')
-    .filter(Boolean);
+  const rawSegments = apiPathSegments(url.pathname);
+  if (rawSegments === null) throw notFound();
   const segments = canonicalWorkspacePath(sql, actor, rawSegments);
   const organization = await routeOrganization(
     request,
@@ -33,7 +31,22 @@ export async function routeTrackerRequest(
     env.BOOTSTRAP_OWNER_EMAIL,
   );
   if (organization !== null) return organization;
+  const sync = await routeSyncPath(request, sql, storage, actor, segments);
+  if (sync !== null) return sync;
   return routeWorkspaceRequest(request, sql, storage, actor, state, segments);
+}
+
+async function routeSyncPath(
+  request: Request,
+  sql: SqlDb,
+  storage: DurableObjectStorage,
+  actor: AuthActor,
+  segments: string[],
+): Promise<Response | null> {
+  if (segments[0] !== 'workspaces') return null;
+  if (segments[2] !== 'sync') return null;
+  if (segments.length !== 3) return null;
+  return routeSync(request, sql, storage, actor, segments[1]);
 }
 
 function canonicalWorkspacePath(

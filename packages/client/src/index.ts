@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import * as z from 'zod';
 import { errorSchema, fileUploadSchema } from '../../contracts/src/index.ts';
 
 export class ApiError extends Error {

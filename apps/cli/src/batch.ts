@@ -1,6 +1,6 @@
 import { createInterface } from 'node:readline';
 import type { Command } from 'commander';
-import { z } from 'zod';
+import * as z from 'zod';
 import { apiFor, workspaceIdFor } from './command-utils.ts';
 import { optionsFor, printError, type GlobalOptions } from './output.ts';
 

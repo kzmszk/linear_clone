@@ -1,6 +1,6 @@
 import { execFile, spawn } from 'node:child_process';
 import { promisify } from 'node:util';
-import { z } from 'zod';
+import * as z from 'zod';
 import {
   isLocalUrl,
   loadProfile,

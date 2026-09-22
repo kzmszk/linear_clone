@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import * as z from 'zod';
 import { asRecord, stringValue, type ImportTransport } from './model.ts';
 import type { LoadedExport, LoadedRecord } from './plan.ts';
 import type { DestinationFile, Mapping } from './destination-schema.ts';

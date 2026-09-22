@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { z } from 'zod';
+import * as z from 'zod';
 import { requestRecord } from './api.ts';
 import {
   apiFor,

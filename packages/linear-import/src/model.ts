@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { z } from 'zod';
+import * as z from 'zod';
 import { importFileSchema, importKinds } from '../../contracts/src/index.ts';
 import type {
   ImportFile,

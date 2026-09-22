@@ -1,0 +1,815 @@
+{
+  "capturedAt": "2026-09-22T08:36:25.588Z",
+  "node": "v26.8.1",
+  "nodeBinary": "/home/kazu/.hermes/node/bin/node",
+  "timingBoundary": "spawn through child close; verification excluded",
+  "trialsPerWorkload": 30,
+  "artifacts": {
+    "before": {
+      "sourcePath": "dist/cli/linc-startup-before.mjs",
+      "resolvedPath": "/home/kazu/work/linear_clone/dist/cli/linc-startup-before.mjs",
+      "bytes": 1025897,
+      "sha256": "ed541cfbd1b22a793c44f7739579d5b10df6561e0135f27907f65bce021c93de"
+    },
+    "after": {
+      "sourcePath": "dist/cli/linc.mjs",
+      "resolvedPath": "/home/kazu/work/linear_clone/dist/cli/linc.mjs",
+      "bytes": 461549,
+      "sha256": "2b8d160013b172cbe00d2d98e31f591176442806539a882b0de10f5412a322a4"
+    }
+  },
+  "workloads": [
+    {
+      "name": "root-help",
+      "command": ["--help"],
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "beforeMs": 54.435,
+          "afterMs": 48.779
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "beforeMs": 55.627,
+          "afterMs": 47.392
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "beforeMs": 53.635,
+          "afterMs": 46.031
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "beforeMs": 49.711,
+          "afterMs": 45.178
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "beforeMs": 49.749,
+          "afterMs": 40.854
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "beforeMs": 53.929,
+          "afterMs": 41.421
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "beforeMs": 54.176,
+          "afterMs": 40.863
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "beforeMs": 52.801,
+          "afterMs": 43.236
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "beforeMs": 55.133,
+          "afterMs": 44.739
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "beforeMs": 52.623,
+          "afterMs": 39.471
+        },
+        {
+          "trial": 11,
+          "order": ["before", "after"],
+          "beforeMs": 52.523,
+          "afterMs": 43.763
+        },
+        {
+          "trial": 12,
+          "order": ["after", "before"],
+          "beforeMs": 54.509,
+          "afterMs": 43.815
+        },
+        {
+          "trial": 13,
+          "order": ["before", "after"],
+          "beforeMs": 56.784,
+          "afterMs": 44.562
+        },
+        {
+          "trial": 14,
+          "order": ["after", "before"],
+          "beforeMs": 53.011,
+          "afterMs": 45.336
+        },
+        {
+          "trial": 15,
+          "order": ["before", "after"],
+          "beforeMs": 52.977,
+          "afterMs": 42.577
+        },
+        {
+          "trial": 16,
+          "order": ["after", "before"],
+          "beforeMs": 53.764,
+          "afterMs": 42.545
+        },
+        {
+          "trial": 17,
+          "order": ["before", "after"],
+          "beforeMs": 52.845,
+          "afterMs": 42.479
+        },
+        {
+          "trial": 18,
+          "order": ["after", "before"],
+          "beforeMs": 54.919,
+          "afterMs": 43.429
+        },
+        {
+          "trial": 19,
+          "order": ["before", "after"],
+          "beforeMs": 54.441,
+          "afterMs": 42.898
+        },
+        {
+          "trial": 20,
+          "order": ["after", "before"],
+          "beforeMs": 55.906,
+          "afterMs": 45.674
+        },
+        {
+          "trial": 21,
+          "order": ["before", "after"],
+          "beforeMs": 55.469,
+          "afterMs": 47.099
+        },
+        {
+          "trial": 22,
+          "order": ["after", "before"],
+          "beforeMs": 52.713,
+          "afterMs": 43.803
+        },
+        {
+          "trial": 23,
+          "order": ["before", "after"],
+          "beforeMs": 54.796,
+          "afterMs": 45.598
+        },
+        {
+          "trial": 24,
+          "order": ["after", "before"],
+          "beforeMs": 56.055,
+          "afterMs": 43.891
+        },
+        {
+          "trial": 25,
+          "order": ["before", "after"],
+          "beforeMs": 53.27,
+          "afterMs": 44.203
+        },
+        {
+          "trial": 26,
+          "order": ["after", "before"],
+          "beforeMs": 53.81,
+          "afterMs": 42.11
+        },
+        {
+          "trial": 27,
+          "order": ["before", "after"],
+          "beforeMs": 53.007,
+          "afterMs": 43.88
+        },
+        {
+          "trial": 28,
+          "order": ["after", "before"],
+          "beforeMs": 54.252,
+          "afterMs": 43.736
+        },
+        {
+          "trial": 29,
+          "order": ["before", "after"],
+          "beforeMs": 54.642,
+          "afterMs": 45.045
+        },
+        {
+          "trial": 30,
+          "order": ["after", "before"],
+          "beforeMs": 54.807,
+          "afterMs": 42.984
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 54.053,
+          "p95Ms": 56.055
+        },
+        "after": {
+          "medianMs": 43.809,
+          "p95Ms": 47.392
+        },
+        "ratioOfMedians": 1.234,
+        "ratioOfP95": 1.183
+      }
+    },
+    {
+      "name": "issue-help",
+      "command": ["issue", "--help"],
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "beforeMs": 48.257,
+          "afterMs": 42.854
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "beforeMs": 49.252,
+          "afterMs": 40.382
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "beforeMs": 51.316,
+          "afterMs": 44.836
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "beforeMs": 54.682,
+          "afterMs": 43.471
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "beforeMs": 55.92,
+          "afterMs": 43.614
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "beforeMs": 53.544,
+          "afterMs": 40.771
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "beforeMs": 54.672,
+          "afterMs": 42.911
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "beforeMs": 54.203,
+          "afterMs": 42.195
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "beforeMs": 52.667,
+          "afterMs": 43.329
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "beforeMs": 52.996,
+          "afterMs": 40.309
+        },
+        {
+          "trial": 11,
+          "order": ["before", "after"],
+          "beforeMs": 57.98,
+          "afterMs": 40.564
+        },
+        {
+          "trial": 12,
+          "order": ["after", "before"],
+          "beforeMs": 54.648,
+          "afterMs": 45.349
+        },
+        {
+          "trial": 13,
+          "order": ["before", "after"],
+          "beforeMs": 52.388,
+          "afterMs": 44.556
+        },
+        {
+          "trial": 14,
+          "order": ["after", "before"],
+          "beforeMs": 52.957,
+          "afterMs": 44.839
+        },
+        {
+          "trial": 15,
+          "order": ["before", "after"],
+          "beforeMs": 53.434,
+          "afterMs": 43.96
+        },
+        {
+          "trial": 16,
+          "order": ["after", "before"],
+          "beforeMs": 55.255,
+          "afterMs": 43.131
+        },
+        {
+          "trial": 17,
+          "order": ["before", "after"],
+          "beforeMs": 52.799,
+          "afterMs": 43.717
+        },
+        {
+          "trial": 18,
+          "order": ["after", "before"],
+          "beforeMs": 53.442,
+          "afterMs": 42.034
+        },
+        {
+          "trial": 19,
+          "order": ["before", "after"],
+          "beforeMs": 53.964,
+          "afterMs": 45.326
+        },
+        {
+          "trial": 20,
+          "order": ["after", "before"],
+          "beforeMs": 59.754,
+          "afterMs": 44.879
+        },
+        {
+          "trial": 21,
+          "order": ["before", "after"],
+          "beforeMs": 50.309,
+          "afterMs": 39.35
+        },
+        {
+          "trial": 22,
+          "order": ["after", "before"],
+          "beforeMs": 55.336,
+          "afterMs": 45.955
+        },
+        {
+          "trial": 23,
+          "order": ["before", "after"],
+          "beforeMs": 52.534,
+          "afterMs": 44.402
+        },
+        {
+          "trial": 24,
+          "order": ["after", "before"],
+          "beforeMs": 57.538,
+          "afterMs": 45.415
+        },
+        {
+          "trial": 25,
+          "order": ["before", "after"],
+          "beforeMs": 51.395,
+          "afterMs": 48.428
+        },
+        {
+          "trial": 26,
+          "order": ["after", "before"],
+          "beforeMs": 50.102,
+          "afterMs": 41.633
+        },
+        {
+          "trial": 27,
+          "order": ["before", "after"],
+          "beforeMs": 53.604,
+          "afterMs": 43.093
+        },
+        {
+          "trial": 28,
+          "order": ["after", "before"],
+          "beforeMs": 53.206,
+          "afterMs": 39.949
+        },
+        {
+          "trial": 29,
+          "order": ["before", "after"],
+          "beforeMs": 50.186,
+          "afterMs": 47.941
+        },
+        {
+          "trial": 30,
+          "order": ["after", "before"],
+          "beforeMs": 54.009,
+          "afterMs": 45.224
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 53.438,
+          "p95Ms": 57.98
+        },
+        "after": {
+          "medianMs": 43.543,
+          "p95Ms": 47.941
+        },
+        "ratioOfMedians": 1.227,
+        "ratioOfP95": 1.209
+      }
+    },
+    {
+      "name": "issue-create-help",
+      "command": ["issue", "create", "--help"],
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "beforeMs": 56.709,
+          "afterMs": 41.007
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "beforeMs": 53.606,
+          "afterMs": 42.574
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "beforeMs": 50.063,
+          "afterMs": 44.201
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "beforeMs": 49.739,
+          "afterMs": 44.035
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "beforeMs": 54.106,
+          "afterMs": 45.731
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "beforeMs": 51.564,
+          "afterMs": 43.932
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "beforeMs": 52.745,
+          "afterMs": 43.768
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "beforeMs": 54.43,
+          "afterMs": 46.743
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "beforeMs": 49.846,
+          "afterMs": 44.152
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "beforeMs": 54.334,
+          "afterMs": 43.6
+        },
+        {
+          "trial": 11,
+          "order": ["before", "after"],
+          "beforeMs": 51.979,
+          "afterMs": 45.037
+        },
+        {
+          "trial": 12,
+          "order": ["after", "before"],
+          "beforeMs": 55.287,
+          "afterMs": 45.14
+        },
+        {
+          "trial": 13,
+          "order": ["before", "after"],
+          "beforeMs": 50.681,
+          "afterMs": 45.253
+        },
+        {
+          "trial": 14,
+          "order": ["after", "before"],
+          "beforeMs": 54.493,
+          "afterMs": 44.959
+        },
+        {
+          "trial": 15,
+          "order": ["before", "after"],
+          "beforeMs": 51.456,
+          "afterMs": 44.378
+        },
+        {
+          "trial": 16,
+          "order": ["after", "before"],
+          "beforeMs": 56.341,
+          "afterMs": 41.089
+        },
+        {
+          "trial": 17,
+          "order": ["before", "after"],
+          "beforeMs": 54.178,
+          "afterMs": 46.414
+        },
+        {
+          "trial": 18,
+          "order": ["after", "before"],
+          "beforeMs": 52.671,
+          "afterMs": 43.908
+        },
+        {
+          "trial": 19,
+          "order": ["before", "after"],
+          "beforeMs": 54.841,
+          "afterMs": 41.857
+        },
+        {
+          "trial": 20,
+          "order": ["after", "before"],
+          "beforeMs": 53.243,
+          "afterMs": 43.475
+        },
+        {
+          "trial": 21,
+          "order": ["before", "after"],
+          "beforeMs": 54.118,
+          "afterMs": 45.741
+        },
+        {
+          "trial": 22,
+          "order": ["after", "before"],
+          "beforeMs": 53.795,
+          "afterMs": 43.733
+        },
+        {
+          "trial": 23,
+          "order": ["before", "after"],
+          "beforeMs": 50.014,
+          "afterMs": 41.201
+        },
+        {
+          "trial": 24,
+          "order": ["after", "before"],
+          "beforeMs": 52.378,
+          "afterMs": 41.748
+        },
+        {
+          "trial": 25,
+          "order": ["before", "after"],
+          "beforeMs": 53.47,
+          "afterMs": 42.473
+        },
+        {
+          "trial": 26,
+          "order": ["after", "before"],
+          "beforeMs": 53.066,
+          "afterMs": 40.983
+        },
+        {
+          "trial": 27,
+          "order": ["before", "after"],
+          "beforeMs": 46.601,
+          "afterMs": 43.095
+        },
+        {
+          "trial": 28,
+          "order": ["after", "before"],
+          "beforeMs": 50.828,
+          "afterMs": 43.519
+        },
+        {
+          "trial": 29,
+          "order": ["before", "after"],
+          "beforeMs": 54.256,
+          "afterMs": 44.321
+        },
+        {
+          "trial": 30,
+          "order": ["after", "before"],
+          "beforeMs": 53.06,
+          "afterMs": 44.919
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 53.155,
+          "p95Ms": 56.341
+        },
+        "after": {
+          "medianMs": 43.92,
+          "p95Ms": 46.414
+        },
+        "ratioOfMedians": 1.21,
+        "ratioOfP95": 1.214
+      }
+    },
+    {
+      "name": "import-help",
+      "command": ["import", "linear", "--help"],
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "beforeMs": 52.574,
+          "afterMs": 41.524
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "beforeMs": 53.828,
+          "afterMs": 41.323
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "beforeMs": 52.086,
+          "afterMs": 43.551
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "beforeMs": 53.458,
+          "afterMs": 41.036
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "beforeMs": 54.031,
+          "afterMs": 40.265
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "beforeMs": 54.198,
+          "afterMs": 44.513
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "beforeMs": 52.594,
+          "afterMs": 46.08
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "beforeMs": 54.499,
+          "afterMs": 43.243
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "beforeMs": 54.242,
+          "afterMs": 41.073
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "beforeMs": 46.454,
+          "afterMs": 43.508
+        },
+        {
+          "trial": 11,
+          "order": ["before", "after"],
+          "beforeMs": 52.456,
+          "afterMs": 44.113
+        },
+        {
+          "trial": 12,
+          "order": ["after", "before"],
+          "beforeMs": 53.779,
+          "afterMs": 43.568
+        },
+        {
+          "trial": 13,
+          "order": ["before", "after"],
+          "beforeMs": 53.039,
+          "afterMs": 42.821
+        },
+        {
+          "trial": 14,
+          "order": ["after", "before"],
+          "beforeMs": 46.444,
+          "afterMs": 41.607
+        },
+        {
+          "trial": 15,
+          "order": ["before", "after"],
+          "beforeMs": 51.725,
+          "afterMs": 41.471
+        },
+        {
+          "trial": 16,
+          "order": ["after", "before"],
+          "beforeMs": 52.755,
+          "afterMs": 43.782
+        },
+        {
+          "trial": 17,
+          "order": ["before", "after"],
+          "beforeMs": 54.152,
+          "afterMs": 42.923
+        },
+        {
+          "trial": 18,
+          "order": ["after", "before"],
+          "beforeMs": 53.412,
+          "afterMs": 40.238
+        },
+        {
+          "trial": 19,
+          "order": ["before", "after"],
+          "beforeMs": 52.468,
+          "afterMs": 46.309
+        },
+        {
+          "trial": 20,
+          "order": ["after", "before"],
+          "beforeMs": 49.471,
+          "afterMs": 43.427
+        },
+        {
+          "trial": 21,
+          "order": ["before", "after"],
+          "beforeMs": 52.299,
+          "afterMs": 43.576
+        },
+        {
+          "trial": 22,
+          "order": ["after", "before"],
+          "beforeMs": 53.107,
+          "afterMs": 42.378
+        },
+        {
+          "trial": 23,
+          "order": ["before", "after"],
+          "beforeMs": 52.984,
+          "afterMs": 45.132
+        },
+        {
+          "trial": 24,
+          "order": ["after", "before"],
+          "beforeMs": 49.804,
+          "afterMs": 42.164
+        },
+        {
+          "trial": 25,
+          "order": ["before", "after"],
+          "beforeMs": 50.567,
+          "afterMs": 43.875
+        },
+        {
+          "trial": 26,
+          "order": ["after", "before"],
+          "beforeMs": 55.333,
+          "afterMs": 37.291
+        },
+        {
+          "trial": 27,
+          "order": ["before", "after"],
+          "beforeMs": 50.899,
+          "afterMs": 40.636
+        },
+        {
+          "trial": 28,
+          "order": ["after", "before"],
+          "beforeMs": 56.42,
+          "afterMs": 46.117
+        },
+        {
+          "trial": 29,
+          "order": ["before", "after"],
+          "beforeMs": 51.047,
+          "afterMs": 44.457
+        },
+        {
+          "trial": 30,
+          "order": ["after", "before"],
+          "beforeMs": 54.039,
+          "afterMs": 42.764
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 52.87,
+          "p95Ms": 55.333
+        },
+        "after": {
+          "medianMs": 43.083,
+          "p95Ms": 46.117
+        },
+        "ratioOfMedians": 1.227,
+        "ratioOfP95": 1.2
+      }
+    }
+  ]
+}

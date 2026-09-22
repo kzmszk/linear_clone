@@ -1,7 +1,7 @@
 import { chmod, mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { z } from 'zod';
+import * as z from 'zod';
 
 const profileSchema = z.object({
   url: z.string().url(),

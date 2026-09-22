@@ -1,5 +1,5 @@
 import { ApiError } from '../../../packages/client/src/index.ts';
-import { z } from 'zod';
+import * as z from 'zod';
 
 const globalOptionsSchema = z.object({
   url: z.string(),

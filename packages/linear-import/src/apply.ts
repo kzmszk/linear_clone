@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { z } from 'zod';
+import * as z from 'zod';
 import { isPrivateRelativePath, readJson, writePrivateJson } from './files.ts';
 import {
   asRecord,

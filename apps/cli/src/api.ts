@@ -9,7 +9,7 @@ import {
 import { headersFor } from './auth.ts';
 import { normalizeUrl } from './config.ts';
 import { mutationSchema } from './types.ts';
-import { z } from 'zod';
+import * as z from 'zod';
 
 type DownloadedFile = {
   bytes: Uint8Array;

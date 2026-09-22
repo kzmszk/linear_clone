@@ -36,8 +36,12 @@ export function WorkspaceDialog({
         }}
       >
         <label className="form-field">
-          <span>Name</span>
+          <span>
+            Name <em aria-hidden="true">Required</em>
+          </span>
           <input
+            aria-label="Name"
+            aria-required="true"
             data-dialog-autofocus
             required
             value={name}
@@ -46,8 +50,12 @@ export function WorkspaceDialog({
           />
         </label>
         <label className="form-field">
-          <span>Slug</span>
+          <span>
+            Slug <em aria-hidden="true">Required</em>
+          </span>
           <input
+            aria-label="Slug"
+            aria-required="true"
             required
             pattern="[a-z0-9-]{1,40}"
             value={slug}

@@ -33,7 +33,7 @@ test('manages workspaces, teams, projects, and members in settings', async ({
   await createProject(page, projectName);
   await inviteMember(page, memberEmail);
   await editWorkspace(page, workspaceName, `${workspaceName} updated`);
-  await editTeam(page, teamName, `${teamName} updated`);
+  await editTeam(page, teamName, `${teamName} updated`, true);
   await editProject(page, projectName);
   await editMember(page, memberEmail);
   await inviteMember(page, revokedEmail);
@@ -45,7 +45,19 @@ test('manages workspaces, teams, projects, and members in settings', async ({
   const metadata = await metadataResponse.json();
   expect(
     metadata.projects.some(
-      (item: { name: string }) => item.name === projectName,
+      (item: { name: string; status: string }) =>
+        item.name === projectName && item.status === 'started',
+    ),
+  ).toBeTruthy();
+  const teams = await (
+    await request.get(`/api/v1/workspaces/${workspaceId}/teams`)
+  ).json();
+  expect(
+    teams.some(
+      (item: { key: string; name: string; private: boolean }) =>
+        item.key === teamKey &&
+        item.name === `${teamName} updated` &&
+        item.private,
     ),
   ).toBeTruthy();
   expect(
@@ -83,9 +95,12 @@ async function openSettings(page: Page, section: string) {
 async function createWorkspace(page: Page, name: string) {
   await openSettings(page, 'Workspaces');
   const main = page.getByRole('main');
+  const save = main.getByRole('button', { name: 'Save', exact: true });
+  await expect(save).toBeDisabled();
   await main.getByLabel('Name', { exact: true }).fill(name);
   await main.getByLabel('Slug', { exact: true }).fill(workspaceSlug);
-  await main.getByRole('button', { name: 'Save', exact: true }).click();
+  await expect(save).toBeEnabled();
+  await save.click();
   await expect(main.getByText(name, { exact: true })).toBeVisible();
 }
 
@@ -102,9 +117,19 @@ async function readWorkspace(request: APIRequestContext) {
 async function createTeam(page: Page, name: string, key: string) {
   await openSettings(page, 'Teams');
   const main = page.getByRole('main');
-  await main.getByLabel('Team name').fill(name);
-  await main.getByLabel('Team key').fill(key);
-  await main.getByRole('button', { name: 'Add team', exact: true }).click();
+  await expect(main.getByLabel('Team name')).toHaveCount(0);
+  await main.getByRole('button', { name: 'New team', exact: true }).click();
+  const dialog = main.getByRole('dialog', { name: 'Create team' });
+  const addTeam = dialog.getByRole('button', {
+    name: 'Create team',
+    exact: true,
+  });
+  await expect(addTeam).toBeDisabled();
+  await dialog.getByLabel('Team name').fill(name);
+  await dialog.getByLabel('Team key').fill(key);
+  await expect(addTeam).toBeEnabled();
+  await addTeam.click();
+  await expect(dialog).toHaveCount(0);
   await expect(main.getByText(name, { exact: true })).toBeVisible();
 }
 
@@ -119,24 +144,47 @@ async function readTeam(request: APIRequestContext, key: string) {
 async function createProject(page: Page, name: string) {
   await openSettings(page, 'Projects');
   const main = page.getByRole('main');
-  await main.getByLabel('Project name').fill(name);
-  await main
+  await expect(main.getByLabel('Project name')).toHaveCount(0);
+  await main.getByRole('button', { name: 'New project', exact: true }).click();
+  const dialog = main.getByRole('dialog', { name: 'Create project' });
+  const addProject = dialog.getByRole('button', {
+    name: 'Create project',
+    exact: true,
+  });
+  await expect(addProject).toBeDisabled();
+  await dialog.getByLabel('Project name').fill(name);
+  await dialog
     .getByLabel('Project description')
     .fill('Browser-managed release work.');
-  await main.getByLabel('Teams').selectOption(teamId);
-  await main.getByRole('button', { name: 'Add project', exact: true }).click();
+  await expect(addProject).toBeDisabled();
+  await dialog.getByLabel('Teams').selectOption(teamId);
+  await expect(addProject).toBeEnabled();
+  await addProject.click();
+  await expect(dialog).toHaveCount(0);
   await expect(main.getByText(name, { exact: true })).toBeVisible();
 }
 
 async function inviteMember(page: Page, email: string) {
   await openSettings(page, 'Members');
   const main = page.getByRole('main');
-  await main.getByLabel('Member email').fill(email);
-  await main.getByLabel('Member name').fill('Browser Member');
-  await main.getByLabel('Teams').selectOption(teamId);
+  await expect(main.getByLabel('Member email')).toHaveCount(0);
   await main
     .getByRole('button', { name: 'Invite member', exact: true })
     .click();
+  const dialog = main.getByRole('dialog', {
+    name: 'Invite to your workspace',
+  });
+  const invite = dialog.getByRole('button', {
+    name: 'Send invites',
+    exact: true,
+  });
+  await expect(invite).toBeDisabled();
+  await dialog.getByLabel('Member email').fill(email);
+  await dialog.getByLabel('Member name').fill('Browser Member');
+  await dialog.getByLabel('Teams').selectOption(teamId);
+  await expect(invite).toBeEnabled();
+  await invite.click();
+  await expect(dialog).toHaveCount(0);
   await expect(main.getByText(email, { exact: false })).toBeVisible();
 }
 
@@ -157,7 +205,12 @@ async function editWorkspace(page: Page, oldName: string, newName: string) {
   await expect(main.getByText(newName, { exact: true })).toBeVisible();
 }
 
-async function editTeam(page: Page, oldName: string, newName: string) {
+async function editTeam(
+  page: Page,
+  oldName: string,
+  newName: string,
+  privateTeam = false,
+) {
   await openSettings(page, 'Teams');
   const main = page.getByRole('main');
   await main
@@ -165,6 +218,9 @@ async function editTeam(page: Page, oldName: string, newName: string) {
     .click();
   const dialog = page.getByRole('dialog');
   await dialog.getByLabel('Name', { exact: true }).fill(newName);
+  if (privateTeam) {
+    await dialog.getByRole('checkbox', { name: 'Private team' }).check();
+  }
   await dialog
     .getByRole('button', { name: 'Save changes', exact: true })
     .click();

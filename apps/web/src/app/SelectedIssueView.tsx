@@ -1,5 +1,6 @@
 import { api, ApiError } from '../api.ts';
 import { IssueDetail } from '../components/IssueDetail.tsx';
+import { ErrorNotice, Loading } from '../components/ui.tsx';
 import type { useWorkspaceController } from './useWorkspaceController.ts';
 
 type Controller = ReturnType<typeof useWorkspaceController>;
@@ -20,9 +21,17 @@ export function SelectedIssueView({ controller }: { controller: Controller }) {
     addComment,
   } = controller;
   const issue = selectedIssue.data;
-  if (!issue || !workspace || !metadata.data) return null;
+  if (!workspace || !metadata.data) return null;
+  if (!issue) return <SelectedIssueState query={selectedIssue} />;
+  const actionError = issueActionError(deleteIssue.error, restoreIssue.error);
+  const lifecycleAction = deleteIssue.isPending
+    ? 'delete'
+    : restoreIssue.isPending
+      ? 'restore'
+      : undefined;
   return (
     <IssueDetail
+      key={issue.id}
       issue={issue}
       metadata={metadata.data}
       comments={comments.data ?? []}
@@ -31,13 +40,8 @@ export function SelectedIssueView({ controller }: { controller: Controller }) {
       relations={relations.data ?? []}
       onSelectIssue={setSelectedIssueId}
       loading={comments.isLoading || activity.isLoading}
-      actionError={
-        deleteIssue.error instanceof ApiError
-          ? deleteIssue.error.message
-          : deleteIssue.error
-            ? 'Could not delete the issue'
-            : undefined
-      }
+      actionError={actionError}
+      lifecycleAction={lifecycleAction}
       onClose={() => setSelectedIssueId(undefined)}
       onSavePatch={(patch, expectedVersion) =>
         updateIssue
@@ -49,12 +53,13 @@ export function SelectedIssueView({ controller }: { controller: Controller }) {
           .then(() => undefined)
       }
       onDelete={() => {
-        if (window.confirm(`Move ${issue.identifier} to trash?`))
-          void deleteIssue.mutateAsync();
+        void deleteIssue.mutateAsync().catch(() => undefined);
       }}
-      onRestore={() => void restoreIssue.mutateAsync()}
-      onAddComment={(body) =>
-        addComment.mutateAsync(body).then(() => undefined)
+      onRestore={() => {
+        void restoreIssue.mutateAsync().catch(() => undefined);
+      }}
+      onAddComment={(body, operationId) =>
+        addComment.mutateAsync({ body, operationId }).then(() => undefined)
       }
       onUploadFile={(file) => api.uploadFile(workspace.id, issue.id, file)}
       onCopyIdentifier={() =>
@@ -62,4 +67,34 @@ export function SelectedIssueView({ controller }: { controller: Controller }) {
       }
     />
   );
+}
+
+function SelectedIssueState({ query }: { query: Controller['selectedIssue'] }) {
+  if (query.isLoading)
+    return (
+      <main className="detail-pane detail-state">
+        <Loading label="Loading issue" />
+      </main>
+    );
+  return (
+    <main className="detail-pane detail-state">
+      <ErrorNotice
+        message={
+          query.error instanceof ApiError
+            ? query.error.message
+            : 'Could not load the issue'
+        }
+        onRetry={() => void query.refetch()}
+      />
+    </main>
+  );
+}
+
+function issueActionError(
+  deleteError: unknown,
+  restoreError: unknown,
+): string | undefined {
+  if (deleteError instanceof ApiError) return deleteError.message;
+  if (restoreError instanceof ApiError) return restoreError.message;
+  return deleteError || restoreError ? 'Could not update the issue' : undefined;
 }

@@ -14,3 +14,7 @@ ts	phase	decision	why	evidence	result
 2026-09-21T19:44:52.968299+00:00	import-fidelity	移行teamには固定default stateを作らずLinearの状態を取り込む	既定名との衝突で色と並び順が変わる問題を実データ照合で検出	apps/worker/src/imports/organization.ts;reports/real-import-summary.json	2428レコードと添付6ファイルの照合差分0
 2026-09-21T19:44:52.968302+00:00	source-members	元データの担当者・投稿者はsource identityとして保存	移行だけでログイン権限を付与せず元の表示名を保持するため	apps/worker/src/imports/secondary.ts;tests/import.test.mjs	実データの著者保持、合成データでログインmemberが増えないことを確認
 2026-09-21T19:50:43.700299+00:00	socket-verification	メンバー除外時のWebSocket終了はChromiumで検証する	Node内蔵WebSocketでは終了を受信しない一方、同じWorkerに接続したChromiumは1008を受信した	tests/events.test.mjs	不要なclose handler追加では改善せず撤回。実ブラウザーで通知秘匿・除外後のHTTP拒否と1008を確認
+2026-09-22T02:22:40Z	ui-audit	削除確認をブラウザ標準confirmからアプリ内dialogへ変更し、ごみ箱一覧を追加	従来のE2Eは標準confirmを自動承認して操作不能を見落としていた。詳細を閉じても復元できる導線が必要	本番UI再現;tests/e2e/detail-behavior.spec.ts;tests/e2e/navigation-layout.spec.ts	キャンセル・削除・再読込・ごみ箱からの復元を実Workerで検証
+2026-09-22T02:22:40Z	ui-audit	詳細は一覧を置き換える全幅表示としURLとブラウザ履歴へ選択状態を保存	Linear本家は左半分に一覧を残さず本文と右プロパティを表示する	Linear実画面;docs/ui-comparison.md;tests/e2e/navigation-layout.spec.ts	長い識別子の重なりとbodyの960px固定幅を修正
+2026-09-22T02:22:40Z	ui-audit	コメントを送信直後に表示してdraftを空にし、失敗時は同じoperationIdで再試行	通信完了を待つ旧UIが操作を遅く見せていた。応答だけが失われても重複投稿を避ける	tests/e2e/detail-behavior.spec.ts;apps/web/src/app/useCommentMutation.ts	遅延・失敗・再送と確定件数を実APIで検証
+2026-09-22T02:22:40Z	maintainability	CSSをナビ・一覧・詳細・編集・dialogなど画面の責任ごとに分割	base.cssとdetail.cssへさらに機能を集めず、読者が対象画面の定義を追えるようにする	apps/web/src/styles.css;AGENTS.md	関数・ファイルのlint制限を変更せずに実装

@@ -35,7 +35,7 @@ export function BootstrapScreen({
         <h1>Make space for focused work.</h1>
         <p className="bootstrap-lead">
           Set up the first workspace for your team. You can add teams and
-          projects after you’re in.
+          projects after you’re in. Add a team before creating your first issue.
         </p>
         {error ? <ErrorNotice message={error} /> : null}
         <BootstrapForm
@@ -78,8 +78,12 @@ function BootstrapForm({
       }}
     >
       <label className="form-field">
-        <span>Workspace name</span>
+        <span>
+          Workspace name <em aria-hidden="true">Required</em>
+        </span>
         <input
+          aria-label="Workspace name"
+          aria-required="true"
           autoFocus
           required
           value={name}
@@ -88,10 +92,14 @@ function BootstrapForm({
         />
       </label>
       <label className="form-field">
-        <span>Workspace URL</span>
+        <span>
+          Workspace URL <em aria-hidden="true">Required</em>
+        </span>
         <div className="slug-input">
           <span>linear.local/</span>
           <input
+            aria-label="Workspace URL"
+            aria-required="true"
             required
             pattern="[a-z0-9-]{1,40}"
             value={slug}

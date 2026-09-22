@@ -44,7 +44,6 @@ function WorkspaceHeader({ onCreate }: { onCreate: () => void }) {
   return (
     <div className="settings-section-heading">
       <div>
-        <h2>Workspaces</h2>
         <p>Separate teams and permissions by workspace.</p>
       </div>
       <Button tone="primary" onClick={onCreate}>
@@ -107,18 +106,31 @@ function WorkspaceCreateForm({
     <div className="inline-create">
       <h3>Create workspace</h3>
       <div className="form-grid">
-        <input
-          aria-label="Name"
-          value={name}
-          onChange={(event) => onName(event.target.value)}
-          placeholder="Name"
-        />
-        <input
-          aria-label="Slug"
-          value={slug}
-          onChange={(event) => onSlug(event.target.value)}
-          placeholder="slug"
-        />
+        <label className="form-field">
+          <span>
+            Name <em aria-hidden="true">Required</em>
+          </span>
+          <input
+            aria-label="Name"
+            required
+            value={name}
+            onChange={(event) => onName(event.target.value)}
+            placeholder="Name"
+          />
+        </label>
+        <label className="form-field">
+          <span>
+            Slug <em aria-hidden="true">Required</em>
+          </span>
+          <input
+            aria-label="Slug"
+            required
+            pattern="[a-z0-9-]{1,40}"
+            value={slug}
+            onChange={(event) => onSlug(event.target.value)}
+            placeholder="slug"
+          />
+        </label>
       </div>
       <Button
         tone="primary"

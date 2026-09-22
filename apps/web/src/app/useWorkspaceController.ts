@@ -7,12 +7,12 @@ import {
   useWorkspaceSelection,
 } from './useAppEffects.ts';
 import {
-  useCommentMutation,
   useCreateIssueMutation,
   useIssueLifecycleMutations,
   useUpdateIssueMutation,
   useWorkspaceMutations,
 } from './useWorkspaceMutations.ts';
+import { useCommentMutation } from './useCommentMutation.ts';
 import { useWorkspaceState } from './useWorkspaceState.ts';
 
 export function useWorkspaceController() {

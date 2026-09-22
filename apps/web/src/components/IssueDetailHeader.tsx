@@ -1,10 +1,12 @@
-import { ArrowLeft, Copy, RotateCcw, Trash2, X } from 'lucide-react';
+import { ArrowLeft, Copy, RotateCcw, Trash2 } from 'lucide-react';
 import { IconButton } from './ui.tsx';
 
 export function IssueDetailHeader({
   identifier,
   projectName,
   deleted,
+  lifecyclePending,
+  lifecycleStatus,
   onClose,
   onDelete,
   onRestore,
@@ -13,6 +15,8 @@ export function IssueDetailHeader({
   identifier: string;
   projectName: string;
   deleted: boolean;
+  lifecyclePending: boolean;
+  lifecycleStatus?: string;
   onClose: () => void;
   onDelete: () => void;
   onRestore: () => void;
@@ -32,14 +36,18 @@ export function IssueDetailHeader({
         <span>{projectName}</span>
       </div>
       <div className="detail-header-actions">
+        {lifecycleStatus ? (
+          <span className="detail-action-status" role="status">
+            {lifecycleStatus}
+          </span>
+        ) : null}
         <IconButton
           label={deleted ? 'Restore issue' : 'Delete issue'}
           onClick={deleted ? onRestore : onDelete}
+          disabled={lifecyclePending}
+          aria-busy={lifecyclePending}
         >
           {deleted ? <RotateCcw size={16} /> : <Trash2 size={16} />}
-        </IconButton>
-        <IconButton label="Close issue" onClick={onClose}>
-          <X size={17} />
         </IconButton>
       </div>
     </header>

@@ -1,3 +1,11 @@
 @import './base.css';
+@import './sidebar.css';
+@import './layout.css';
+@import './controls.css';
+@import './issue-list.css';
+@import './dialog.css';
+@import './bootstrap.css';
 @import './detail.css';
+@import './issue-editor.css';
+@import './issue-activity.css';
 @import './settings.css';

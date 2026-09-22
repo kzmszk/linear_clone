@@ -25,7 +25,15 @@ export function useCreateIssueSubmit({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   async function submit() {
-    if (!title.trim() || !teamId) return;
+    if (submitting) return;
+    if (!title.trim()) {
+      setError('Title is required.');
+      return;
+    }
+    if (!teamId) {
+      setError('Create a team before creating an issue.');
+      return;
+    }
     setSubmitting(true);
     setError('');
     try {

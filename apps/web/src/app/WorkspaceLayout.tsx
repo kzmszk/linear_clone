@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react';
 import type { useWorkspaceController } from './useWorkspaceController.ts';
 import { IssuesRoute } from './IssuesRoute.tsx';
-import { Sidebar } from '../components/Sidebar.tsx';
+import { ResponsiveSidebar } from '../components/ResponsiveSidebar.tsx';
 import { Topbar } from './Topbar.tsx';
 import { WorkspaceModals } from './WorkspaceModals.tsx';
 import { Loading } from '../components/ui.tsx';
@@ -24,71 +24,46 @@ export function WorkspaceLayout({ controller }: { controller: Controller }) {
     workspace,
     metadata,
     me,
-    selectedIssue,
+    selectedIssueId,
     view,
-    settingsSection,
     teamId,
     projectId,
     search,
-    darkMode,
-    setWorkspaceId,
-    setSelectedIssueId,
-    setTeamId,
-    setProjectId,
-    setView,
-    setSettingsSection,
-    setSearch,
-    setShowCreate,
-    setShowWorkspaceCreate,
-    setDarkMode,
   } = controller;
   if (!workspace || !metadata.data || !me.data) return null;
-  const title = workspaceTitle(view, teamId, projectId, metadata.data);
+  const title =
+    controller.showTrash && view === 'issues'
+      ? 'Trash'
+      : workspaceTitle(view, teamId, projectId, metadata.data);
   return (
-    <div className={`app-shell ${selectedIssue.data ? 'has-detail' : ''}`}>
-      <Sidebar
-        workspace={workspace}
-        workspaces={me.data.workspaces}
-        teams={metadata.data.teams}
-        projects={metadata.data.projects}
-        activeTeamId={teamId}
-        activeProjectId={projectId}
-        view={view}
-        settingsSection={settingsSection}
-        darkMode={darkMode}
-        onWorkspaceChange={(id) => {
-          setWorkspaceId(id);
-          setSelectedIssueId(undefined);
-          setTeamId(undefined);
-          setProjectId(undefined);
-        }}
-        onTeamChange={setTeamId}
-        onProjectChange={setProjectId}
-        onViewChange={setView}
-        onSettingsChange={setSettingsSection}
-        onCreateIssue={() => setShowCreate(true)}
-        onCreateWorkspace={() => setShowWorkspaceCreate(true)}
-        onToggleTheme={() => setDarkMode((current) => !current)}
-      />
-      <div className="main-column">
+    <div
+      className={`app-shell ${selectedIssueId && view === 'issues' ? 'has-detail' : ''}`}
+    >
+      <ResponsiveSidebar controller={controller} />
+      <div
+        className="main-column"
+        hidden={Boolean(selectedIssueId) && view === 'issues'}
+      >
         <Topbar
           workspaceName={workspace.name}
           title={title}
           search={search}
-          onSearch={setSearch}
-          onCreate={() => setShowCreate(true)}
+          onSearch={controller.setSearch}
+          onCreate={() => controller.setShowCreate(true)}
         />
         <Suspense fallback={<RouteLoading />}>
           {view === 'settings' ? (
             <LazySettingsRoute controller={controller} />
           ) : (
-            <IssuesRoute controller={controller} />
+            <IssuesRoute controller={controller} title={title} />
           )}
         </Suspense>
       </div>
-      <Suspense fallback={null}>
-        <LazySelectedIssueView controller={controller} />
-      </Suspense>
+      {selectedIssueId && view === 'issues' ? (
+        <Suspense fallback={<RouteLoading />}>
+          <LazySelectedIssueView controller={controller} />
+        </Suspense>
+      ) : null}
       <WorkspaceModals controller={controller} />
     </div>
   );

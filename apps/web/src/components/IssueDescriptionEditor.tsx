@@ -228,15 +228,29 @@ function TitleField({
   onChange: (value: string) => void;
   onSave: (expectedVersion?: number) => void;
 }) {
+  const titleRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    const textarea = titleRef.current;
+    if (!textarea) return;
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  }, [title]);
   return (
-    <input
+    <textarea
+      ref={titleRef}
       className="issue-title-input"
       aria-label="Issue title"
+      rows={1}
       value={title}
       onChange={(event) => onChange(event.target.value)}
       onBlur={() => onSave()}
       onKeyDown={(event) => {
-        if (event.key === 'Enter') {
+        if (
+          !event.nativeEvent.isComposing &&
+          event.keyCode !== 229 &&
+          event.key === 'Enter' &&
+          !event.shiftKey
+        ) {
           event.preventDefault();
           event.currentTarget.blur();
         }

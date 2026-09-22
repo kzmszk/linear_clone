@@ -5,18 +5,23 @@ export function TeamMultiSelect({
   value,
   onChange,
   label = 'Teams',
+  required = false,
 }: {
   teams: Team[];
   value: string[];
   onChange: (teamIds: string[]) => void;
   label?: string;
+  required?: boolean;
 }) {
   return (
     <label className="form-field">
-      <span>{label}</span>
+      <span>
+        {label} {required ? <em aria-hidden="true">Required</em> : null}
+      </span>
       <select
         className="multi-select"
         aria-label={label}
+        required={required}
         multiple
         value={value}
         onChange={(event) =>

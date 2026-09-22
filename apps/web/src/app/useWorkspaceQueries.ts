@@ -7,7 +7,13 @@ import type { useWorkspaceState } from './useWorkspaceState.ts';
 
 type WorkspaceSelection = Pick<
   ReturnType<typeof useWorkspaceState>,
-  'workspaceId' | 'teamId' | 'projectId' | 'search' | 'view' | 'selectedIssueId'
+  | 'workspaceId'
+  | 'teamId'
+  | 'projectId'
+  | 'search'
+  | 'view'
+  | 'selectedIssueId'
+  | 'showTrash'
 >;
 
 export function useWorkspaceQueries(
@@ -23,11 +29,12 @@ export function useWorkspaceQueries(
   const metadata = useWorkspaceMetadata(workspace?.id, fallbackInterval);
   const filters = useMemo(
     () => ({
+      deleted: state.showTrash,
       teamId: state.teamId,
       projectId: state.projectId,
       q: state.search.trim() || undefined,
     }),
-    [state.projectId, state.search, state.teamId],
+    [state.projectId, state.search, state.teamId, state.showTrash],
   );
   const issueQueries = useIssueQueries(
     workspace?.id,

@@ -1,4 +1,4 @@
-import { ChevronDown, Layers3, Moon, Plus, Sun } from 'lucide-react';
+import { ChevronDown, Layers3, Moon, Plus, Sun, Trash2 } from 'lucide-react';
 import type { Project, Team, Workspace } from '../api.ts';
 import { IconButton } from './ui.tsx';
 import {
@@ -22,6 +22,8 @@ type SidebarProps = {
   activeTeamId: string | undefined;
   activeProjectId: string | undefined;
   view: SidebarView;
+  showTrash: boolean;
+  onTrashChange: (show: boolean) => void;
   settingsSection: SettingsSection;
   darkMode: boolean;
   onWorkspaceChange: (id: string) => void;
@@ -51,6 +53,8 @@ export function Sidebar(props: SidebarProps) {
       />
       <MainNav
         view={view}
+        showTrash={props.showTrash}
+        onTrashChange={props.onTrashChange}
         activeTeamId={props.activeTeamId}
         activeProjectId={props.activeProjectId}
         onViewChange={props.onViewChange}
@@ -159,6 +163,8 @@ function SidebarActions({
 
 function MainNav({
   view,
+  showTrash,
+  onTrashChange,
   activeTeamId,
   activeProjectId,
   onViewChange,
@@ -166,6 +172,8 @@ function MainNav({
   onProjectChange,
 }: {
   view: SidebarView;
+  showTrash: boolean;
+  onTrashChange: (show: boolean) => void;
   activeTeamId: string | undefined;
   activeProjectId: string | undefined;
   onViewChange: (view: SidebarView) => void;
@@ -176,7 +184,7 @@ function MainNav({
     <nav className="sidebar-nav" aria-label="Main navigation">
       <button
         className={
-          view === 'issues' && !activeTeamId && !activeProjectId
+          view === 'issues' && !showTrash && !activeTeamId && !activeProjectId
             ? 'nav-item active'
             : 'nav-item'
         }
@@ -188,6 +196,18 @@ function MainNav({
       >
         <Layers3 size={16} />
         <span>All issues</span>
+      </button>
+      <button
+        className={`nav-item ${showTrash && view === 'issues' ? 'active' : ''}`}
+        onClick={() => {
+          onViewChange('issues');
+          onTeamChange(undefined);
+          onProjectChange(undefined);
+          onTrashChange(true);
+        }}
+      >
+        <Trash2 size={16} />
+        <span>Trash</span>
       </button>
     </nav>
   );

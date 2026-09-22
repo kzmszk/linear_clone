@@ -8,6 +8,9 @@ export function WorkspaceModals({ controller }: { controller: Controller }) {
   const {
     metadata,
     teamId,
+    projectId,
+    setView,
+    setSettingsSection,
     showCreate,
     showWorkspaceCreate,
     setShowCreate,
@@ -22,7 +25,13 @@ export function WorkspaceModals({ controller }: { controller: Controller }) {
         <CreateIssueModal
           metadata={metadata.data}
           defaultTeamId={teamId}
+          defaultProjectId={projectId}
           onClose={() => setShowCreate(false)}
+          onCreateTeam={() => {
+            setShowCreate(false);
+            setView('settings');
+            setSettingsSection('teams');
+          }}
           onCreate={(input) =>
             createIssue.mutateAsync(input).then(() => undefined)
           }

@@ -111,11 +111,13 @@ function TeamSettings({
       name={form.name}
       teamKey={form.teamKey}
       privateTeam={form.teamPrivate}
+      formError={form.formError}
       onName={form.setName}
       onKey={form.setTeamKey}
       onPrivate={form.setTeamPrivate}
       submitting={form.submitting}
-      onSubmit={() => void actions.submitCreate('team')}
+      onSubmit={() => actions.submitCreate('team')}
+      onReset={form.resetForm}
       onEdit={form.beginEdit}
     />
   );
@@ -140,12 +142,14 @@ function ProjectSettings({
       description={form.description}
       status={form.status}
       teamIds={form.teamIds}
+      formError={form.formError}
       onName={form.setName}
       onDescription={form.setDescription}
       onStatus={form.setStatus}
       onTeamIds={form.setTeamIds}
       submitting={form.submitting}
-      onSubmit={() => void actions.submitCreate('project')}
+      onSubmit={() => actions.submitCreate('project')}
+      onReset={form.resetForm}
       onEdit={form.beginEdit}
     />
   );
@@ -170,12 +174,14 @@ function MemberSettings({
       email={form.email}
       role={form.role}
       teamIds={form.teamIds}
+      formError={form.formError}
       onName={form.setName}
       onEmail={form.setEmail}
       onRole={form.setRole}
       onTeamIds={form.setTeamIds}
       submitting={form.submitting}
-      onSubmit={() => void actions.submitCreate('member')}
+      onSubmit={() => actions.submitCreate('member')}
+      onReset={form.resetForm}
       onEdit={form.beginEdit}
     />
   );

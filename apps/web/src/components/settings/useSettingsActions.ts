@@ -19,7 +19,11 @@ export function useSettingsActions(
 ) {
   const submitCreate = useCallback(
     async (kind: 'workspace' | 'team' | 'project' | 'member') => {
-      await runSubmit(form, () => createSettingsResource(kind, form, actions));
+      const succeeded = await runSubmit(form, () =>
+        createSettingsResource(kind, form, actions),
+      );
+      if (succeeded) form.resetForm();
+      return succeeded;
     },
     [actions, form],
   );

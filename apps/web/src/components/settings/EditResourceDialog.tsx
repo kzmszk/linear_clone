@@ -84,6 +84,7 @@ function EditResourceForm({
   close: () => void;
 }) {
   const member = editing.kind === 'member';
+  const valid = isEditFormValid(editing, member, name, slug);
   return (
     <>
       {formError ? <ErrorNotice message={formError} /> : null}
@@ -123,11 +124,25 @@ function EditResourceForm({
           pending={pending}
           active={active}
           submitting={submitting}
+          valid={valid}
           onClose={close}
           onDeactivate={onDeactivate}
         />
       </form>
     </>
+  );
+}
+
+function isEditFormValid(
+  editing: EditTarget,
+  member: boolean,
+  name: string,
+  slug: string,
+): boolean {
+  return (
+    member ||
+    (Boolean(name.trim()) &&
+      (editing.kind !== 'workspace' || Boolean(slug.trim())))
   );
 }
 
@@ -149,8 +164,12 @@ function NameFields({
   return (
     <>
       <label className="form-field">
-        <span>{member ? 'Display name' : 'Name'}</span>
+        <span>
+          {member ? 'Display name' : 'Name'}{' '}
+          {!member && <em aria-hidden="true">Required</em>}
+        </span>
         <input
+          aria-label={member ? 'Display name' : 'Name'}
           data-dialog-autofocus
           required
           readOnly={member}
@@ -160,8 +179,11 @@ function NameFields({
       </label>
       {editing.kind === 'workspace' ? (
         <label className="form-field">
-          <span>Slug</span>
+          <span>
+            Slug <em aria-hidden="true">Required</em>
+          </span>
           <input
+            aria-label="Slug"
             required
             value={slug}
             onChange={(event) => onSlug(event.target.value.toLowerCase())}
@@ -238,6 +260,7 @@ function EditFooter({
   pending,
   active,
   submitting,
+  valid,
   onClose,
   onDeactivate,
 }: {
@@ -245,6 +268,7 @@ function EditFooter({
   pending: boolean;
   active: boolean;
   submitting: boolean;
+  valid: boolean;
   onClose: () => void;
   onDeactivate: () => void;
 }) {
@@ -264,7 +288,7 @@ function EditFooter({
       <Button type="button" onClick={onClose}>
         Cancel
       </Button>
-      <Button type="submit" tone="primary" disabled={submitting}>
+      <Button type="submit" tone="primary" disabled={submitting || !valid}>
         <Check size={14} /> Save changes
       </Button>
     </footer>

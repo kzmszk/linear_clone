@@ -5,18 +5,17 @@ let teamId: string;
 
 test.beforeAll(async ({ request }) => {
   const me = await (await request.get('/api/v1/me')).json();
-  if (me.workspaces.length) {
-    workspaceId = me.workspaces[0].id;
-    const teams = await (
-      await request.get(`/api/v1/workspaces/${workspaceId}/teams`)
-    ).json();
-    teamId = teams[0].id;
-    return;
-  }
-  const workspace = await request.post('/api/v1/bootstrap', {
-    headers: { 'Idempotency-Key': crypto.randomUUID() },
-    data: { name: 'Product development', slug: 'product' },
-  });
+  const suffix = Date.now().toString(36);
+  const workspace = await request.post(
+    me.workspaces.length ? '/api/v1/workspaces' : '/api/v1/bootstrap',
+    {
+      headers: { 'Idempotency-Key': crypto.randomUUID() },
+      data: {
+        name: 'Product development',
+        slug: `issues-${suffix}`,
+      },
+    },
+  );
   expect(workspace.ok()).toBeTruthy();
   workspaceId = (await workspace.json()).current.id;
   const team = await request.post(`/api/v1/workspaces/${workspaceId}/teams`, {
@@ -31,7 +30,7 @@ test('create, edit Markdown, comment, attach and delete through the browser', as
   page,
   request,
 }) => {
-  await page.goto('/');
+  await page.goto(`/?workspace=${workspaceId}`);
   await page
     .getByRole('banner')
     .getByRole('button', { name: /^New issue/ })
@@ -77,7 +76,9 @@ test('create, edit Markdown, comment, attach and delete through the browser', as
     page.getByText('Verified from the browser.', { exact: true }),
   ).toBeVisible();
   await page.reload();
-  await page.getByText('Ship the tested release', { exact: true }).click();
+  await expect(page.getByRole('textbox', { name: 'Issue title' })).toHaveValue(
+    'Ship the tested release',
+  );
   await expect(
     page.getByRole('heading', { name: 'Updated plan' }),
   ).toBeVisible();
@@ -93,11 +94,12 @@ test('create, edit Markdown, comment, attach and delete through the browser', as
     path: 'reports/screenshots/issue-detail.png',
     fullPage: true,
   });
-  page.once('dialog', (dialog) => dialog.accept());
   await page.getByRole('button', { name: 'Delete issue', exact: true }).click();
-  await expect(
-    page.getByText('Ship the tested release', { exact: true }),
-  ).toHaveCount(0);
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await page
+    .getByRole('button', { name: 'Move to trash', exact: true })
+    .click();
+  await expect(page.getByText('This issue is in the trash.')).toBeVisible();
   const deleted = await request.get(
     `/api/v1/workspaces/${workspaceId}/issues/${issue.id}`,
   );
@@ -112,7 +114,7 @@ test('creation and cached details open without waiting for a server response', a
     headers: { 'Idempotency-Key': crypto.randomUUID() },
     data: { teamId, title: 'Ready for keyboard navigation' },
   });
-  await page.goto('/');
+  await page.goto(`/?workspace=${workspaceId}`);
   await expect(
     page.getByText('Ready for keyboard navigation', { exact: true }),
   ).toBeVisible();

@@ -13,6 +13,7 @@ import type {
 import { Button } from './ui.tsx';
 import { IssueActivity } from './IssueActivity.tsx';
 import { IssueAttachments } from './IssueAttachments.tsx';
+import { IssueDeleteDialog } from './IssueDeleteDialog.tsx';
 import { IssueDescriptionEditor } from './IssueDescriptionEditor.tsx';
 import { IssueDetailHeader } from './IssueDetailHeader.tsx';
 import { IssueProperties } from './IssueProperties.tsx';
@@ -27,6 +28,7 @@ type IssueDetailProps = {
   relations: IssueRelation[];
   loading: boolean;
   actionError?: string;
+  lifecycleAction?: 'delete' | 'restore';
   onClose: () => void;
   onSavePatch: (
     patch: Omit<IssuePatch, 'expectedVersion'>,
@@ -34,7 +36,7 @@ type IssueDetailProps = {
   ) => Promise<void>;
   onDelete: () => void;
   onRestore: () => void;
-  onAddComment: (body: string) => Promise<void>;
+  onAddComment: (body: string, operationId: string) => Promise<void>;
   onUploadFile: (file: Blob) => Promise<FileUpload>;
   onCopyIdentifier: () => void;
   onSelectIssue: (issueId: string) => void;
@@ -49,6 +51,7 @@ export function IssueDetail({
   relations,
   loading,
   actionError,
+  lifecycleAction,
   onClose,
   onSavePatch,
   onDelete,
@@ -58,36 +61,56 @@ export function IssueDetail({
   onCopyIdentifier,
   onSelectIssue,
 }: IssueDetailProps) {
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const project = metadata.projects.find((item) => item.id === issue.projectId);
   return (
-    <aside className="detail-pane" aria-label={`Issue ${issue.identifier}`}>
-      <IssueDetailHeader
-        identifier={issue.identifier}
-        projectName={project?.name ?? 'Issue'}
-        deleted={Boolean(issue.deletedAt)}
-        onClose={onClose}
-        onDelete={onDelete}
-        onRestore={onRestore}
-        onCopy={onCopyIdentifier}
-      />
-      <div className="detail-scroll">
-        {actionError ? <ActionError message={actionError} /> : null}
-        {issue.deletedAt ? <DeletedBanner onRestore={onRestore} /> : null}
-        <IssueDetailBody
-          issue={issue}
-          metadata={metadata}
-          comments={comments}
-          activity={activity}
-          attachments={attachments}
-          relations={relations}
-          loading={loading}
-          onSavePatch={onSavePatch}
-          onAddComment={onAddComment}
-          onUploadFile={onUploadFile}
-          onSelectIssue={onSelectIssue}
+    <>
+      <aside className="detail-pane" aria-label={`Issue ${issue.identifier}`}>
+        <IssueDetailHeader
+          identifier={issue.identifier}
+          projectName={project?.name ?? 'Issue'}
+          deleted={Boolean(issue.deletedAt)}
+          lifecyclePending={Boolean(lifecycleAction)}
+          lifecycleStatus={lifecycleStatus(lifecycleAction)}
+          onClose={onClose}
+          onDelete={() => setDeleteOpen(true)}
+          onRestore={onRestore}
+          onCopy={onCopyIdentifier}
         />
-      </div>
-    </aside>
+        <div className="detail-scroll">
+          {actionError ? <ActionError message={actionError} /> : null}
+          {issue.deletedAt ? (
+            <DeletedBanner
+              onRestore={onRestore}
+              pending={Boolean(lifecycleAction)}
+            />
+          ) : null}
+          <IssueDetailBody
+            issue={issue}
+            metadata={metadata}
+            comments={comments}
+            activity={activity}
+            attachments={attachments}
+            relations={relations}
+            loading={loading}
+            onSavePatch={onSavePatch}
+            onAddComment={onAddComment}
+            onUploadFile={onUploadFile}
+            onSelectIssue={onSelectIssue}
+          />
+        </div>
+      </aside>
+      {deleteOpen ? (
+        <IssueDeleteDialog
+          identifier={issue.identifier}
+          onClose={() => setDeleteOpen(false)}
+          onConfirm={() => {
+            setDeleteOpen(false);
+            onDelete();
+          }}
+        />
+      ) : null}
+    </>
   );
 }
 
@@ -126,40 +149,57 @@ function IssueDetailBody({
   }
   return (
     <div className="detail-main">
-      <IssueDescriptionEditor
-        issue={issue}
-        onSavePatch={onSavePatch}
-        onUploadFile={onUploadFile}
-      />
-      <IssueAttachments attachments={attachments} />
-      <IssueRelations relations={relations} onSelectIssue={onSelectIssue} />
-      <IssueProperties
-        issue={issue}
-        metadata={metadata}
-        onSave={saveProperty}
-        onError={setPropertyError}
-      />
-      {propertyError ? (
-        <div className="inline-error" role="alert">
-          {propertyError}
-        </div>
-      ) : null}
-      <IssueActivity
-        comments={comments}
-        activity={activity}
-        loading={loading}
-        onAddComment={onAddComment}
-      />
+      <div className="detail-content">
+        <IssueDescriptionEditor
+          issue={issue}
+          onSavePatch={onSavePatch}
+          onUploadFile={onUploadFile}
+        />
+        <IssueAttachments attachments={attachments} />
+        <IssueRelations relations={relations} onSelectIssue={onSelectIssue} />
+        <IssueActivity
+          comments={comments}
+          activity={activity}
+          loading={loading}
+          onAddComment={onAddComment}
+        />
+      </div>
+      <aside className="detail-properties" aria-label="Properties">
+        <h3>Properties</h3>
+        <IssueProperties
+          issue={issue}
+          metadata={metadata}
+          onSave={saveProperty}
+          onError={setPropertyError}
+        />
+        {propertyError ? (
+          <div className="inline-error" role="alert">
+            {propertyError}
+          </div>
+        ) : null}
+      </aside>
     </div>
   );
 }
 
-function DeletedBanner({ onRestore }: { onRestore: () => void }) {
+function lifecycleStatus(action: 'delete' | 'restore' | undefined) {
+  if (action === 'delete') return 'Moving to trash…';
+  if (action === 'restore') return 'Restoring…';
+  return undefined;
+}
+
+function DeletedBanner({
+  onRestore,
+  pending,
+}: {
+  onRestore: () => void;
+  pending: boolean;
+}) {
   return (
     <div className="deleted-banner">
       <Trash2 size={15} />
       <span>This issue is in the trash.</span>
-      <Button onClick={onRestore}>
+      <Button onClick={onRestore} disabled={pending} aria-busy={pending}>
         <RotateCcw size={14} /> Restore
       </Button>
     </div>

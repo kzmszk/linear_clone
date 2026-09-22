@@ -8,7 +8,6 @@ import {
 const syncSlug = 'browser-sync';
 let syncWorkspaceId = '';
 let syncWorkspaceName = '';
-let syncTeamId = '';
 
 test.beforeAll(async ({ request }) => {
   await ensureSyncWorkspace(request);
@@ -94,7 +93,6 @@ async function ensureSyncWorkspace(request: APIRequestContext) {
     expect(created.ok()).toBeTruthy();
     team = (await created.json()).current;
   }
-  syncTeamId = team.id;
 }
 
 async function selectSyncWorkspace(page: Page) {
@@ -113,7 +111,8 @@ async function createIssue(page: Page, title: string) {
     .click();
   const dialog = page.getByRole('dialog');
   await dialog.getByRole('textbox', { name: 'Title', exact: true }).fill(title);
-  await dialog.getByLabel('Team').selectOption(syncTeamId);
+  await dialog.getByRole('button', { name: 'Team', exact: true }).click();
+  await dialog.getByRole('option', { name: /Sync team/ }).click();
   await dialog
     .getByRole('button', { name: 'Create issue', exact: true })
     .click();

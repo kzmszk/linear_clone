@@ -94,7 +94,7 @@ export function SettingsView({
   return (
     <main className="settings-pane">
       <SettingsHeader workspace={workspace} title={sectionTitle} />
-      {form.formError && !form.editing ? (
+      {form.formError && !form.editing && section === 'workspaces' ? (
         <ErrorNotice message={form.formError} />
       ) : null}
       <SettingsSectionContent
@@ -152,7 +152,6 @@ function SettingsHeader({
         <span className="eyebrow">Settings · {workspace.name}</span>
         <h1>{title}</h1>
       </div>
-      <span className="settings-version">Workspace v{workspace.version}</span>
     </header>
   );
 }

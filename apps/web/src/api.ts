@@ -181,7 +181,7 @@ export const api = {
   addComment: (
     workspaceId: string,
     issueId: string,
-    body: { body: string; parentCommentId: string | null },
+    body: z.input<typeof newCommentSchema> & { operationId?: string },
   ) =>
     client.request(
       resourcePath(workspaceId, 'issues', `${issueId}/comments`),
@@ -189,7 +189,7 @@ export const api = {
       {
         method: 'POST',
         body: newCommentSchema.parse(body),
-        operationId: crypto.randomUUID(),
+        operationId: body.operationId ?? crypto.randomUUID(),
       },
     ),
   getActivity: (workspaceId: string, issueId: string) =>

@@ -1,6 +1,8 @@
 import { Pencil, Plus } from 'lucide-react';
+import { useState } from 'react';
 import type { Team } from '../../api.ts';
 import { Button, IconButton } from '../ui.tsx';
+import { CreateResourceDialog } from './CreateResourceDialog.tsx';
 import type { EditTarget } from './types.ts';
 
 export function TeamPanel({
@@ -8,49 +10,77 @@ export function TeamPanel({
   name,
   teamKey,
   privateTeam,
+  formError,
   onName,
   onKey,
   onPrivate,
   submitting,
   onSubmit,
+  onReset,
   onEdit,
 }: {
   teams: Team[];
   name: string;
   teamKey: string;
   privateTeam: boolean;
+  formError: string;
   onName: (value: string) => void;
   onKey: (value: string) => void;
   onPrivate: (value: boolean) => void;
   submitting: boolean;
-  onSubmit: () => void;
+  onSubmit: () => Promise<boolean>;
+  onReset: () => void;
   onEdit: (target: EditTarget) => void;
 }) {
+  const [createOpen, setCreateOpen] = useState(false);
+  function openCreate() {
+    onReset();
+    setCreateOpen(true);
+  }
+  function closeCreate() {
+    setCreateOpen(false);
+    onReset();
+  }
+  async function submitCreate() {
+    if (await onSubmit()) setCreateOpen(false);
+  }
   return (
     <div className="settings-section">
-      <TeamHeader />
+      <TeamHeader onCreate={openCreate} />
       <TeamRows teams={teams} onEdit={onEdit} />
-      <TeamCreateForm
-        name={name}
-        teamKey={teamKey}
-        privateTeam={privateTeam}
-        onName={onName}
-        onKey={onKey}
-        onPrivate={onPrivate}
+      <CreateResourceDialog
+        open={createOpen}
+        title="Create team"
+        description="Set the identifier used by new issues."
+        error={formError}
         submitting={submitting}
-        onSubmit={onSubmit}
-      />
+        valid={Boolean(name.trim() && teamKey.trim())}
+        submitLabel="Create team"
+        onClose={closeCreate}
+        onSubmit={() => void submitCreate()}
+      >
+        <TeamCreateFields
+          name={name}
+          teamKey={teamKey}
+          privateTeam={privateTeam}
+          onName={onName}
+          onKey={onKey}
+          onPrivate={onPrivate}
+        />
+      </CreateResourceDialog>
     </div>
   );
 }
 
-function TeamHeader() {
+function TeamHeader({ onCreate }: { onCreate: () => void }) {
   return (
     <div className="settings-section-heading">
       <div>
-        <h2>Teams</h2>
         <p>Teams own issue workflows and identifiers.</p>
       </div>
+      <Button tone="primary" onClick={onCreate}>
+        <Plus size={15} /> New team
+      </Button>
     </div>
   );
 }
@@ -90,15 +120,13 @@ function TeamRows({
   );
 }
 
-function TeamCreateForm({
+function TeamCreateFields({
   name,
   teamKey,
   privateTeam,
   onName,
   onKey,
   onPrivate,
-  submitting,
-  onSubmit,
 }: {
   name: string;
   teamKey: string;
@@ -106,26 +134,36 @@ function TeamCreateForm({
   onName: (value: string) => void;
   onKey: (value: string) => void;
   onPrivate: (value: boolean) => void;
-  submitting: boolean;
-  onSubmit: () => void;
 }) {
   return (
-    <div className="inline-create">
-      <h3>Add team</h3>
+    <>
       <div className="form-grid">
-        <input
-          aria-label="Team name"
-          value={name}
-          onChange={(event) => onName(event.target.value)}
-          placeholder="Engineering"
-        />
-        <input
-          aria-label="Team key"
-          value={teamKey}
-          onChange={(event) => onKey(event.target.value)}
-          placeholder="ENG"
-          maxLength={10}
-        />
+        <label className="form-field">
+          <span>
+            Team name <em aria-hidden="true">Required</em>
+          </span>
+          <input
+            aria-label="Team name"
+            required
+            value={name}
+            onChange={(event) => onName(event.target.value)}
+            placeholder="Engineering"
+          />
+        </label>
+        <label className="form-field">
+          <span>
+            Team key <em aria-hidden="true">Required</em>
+          </span>
+          <input
+            aria-label="Team key"
+            required
+            pattern="[A-Z][A-Z0-9]{0,9}"
+            value={teamKey}
+            onChange={(event) => onKey(event.target.value)}
+            placeholder="ENG"
+            maxLength={10}
+          />
+        </label>
       </div>
       <label className="checkbox-field">
         <input
@@ -135,13 +173,6 @@ function TeamCreateForm({
         />{' '}
         Private team
       </label>
-      <Button
-        tone="primary"
-        disabled={submitting || !name.trim() || !teamKey.trim()}
-        onClick={onSubmit}
-      >
-        <Plus size={15} /> Add team
-      </Button>
-    </div>
+    </>
   );
 }

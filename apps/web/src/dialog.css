@@ -1,0 +1,141 @@
+.dialog-backdrop {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgb(14 14 24 / 44%);
+  backdrop-filter: blur(2px);
+}
+.dialog {
+  width: min(510px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+.dialog-wide {
+  width: min(660px, 100%);
+}
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 21px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.dialog-header h2 {
+  margin-bottom: 5px;
+}
+.dialog-header p {
+  color: var(--muted);
+  font-size: 12px;
+}
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 19px 21px 21px;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--muted-strong);
+  font-size: 11px;
+  font-weight: 650;
+}
+.form-field em {
+  margin-left: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+}
+.form-help {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+.form-field input,
+.form-field select,
+.form-field textarea,
+.inline-create input,
+.inline-create select,
+.inline-create textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: 0;
+  background: var(--panel-subtle);
+  color: var(--text);
+  font-size: 12px;
+}
+.form-field input,
+.form-field select,
+.inline-create input,
+.inline-create select {
+  height: 33px;
+  padding: 6px 9px;
+}
+.form-field textarea,
+.inline-create textarea {
+  padding: 9px;
+  resize: vertical;
+  line-height: 1.5;
+}
+.multi-select {
+  min-height: 76px;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus,
+.inline-create input:focus,
+.inline-create textarea:focus,
+.inline-create select:focus {
+  border-color: var(--accent);
+  background: var(--panel);
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+}
+.dialog-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+}
+.dialog-footer > div {
+  display: flex;
+  gap: 7px;
+}
+.dialog-shortcut {
+  color: var(--muted);
+  font-size: 10px;
+}
+.dialog-shortcut kbd + kbd {
+  margin-left: 2px;
+}
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted-strong);
+  font-size: 12px;
+}
+.checkbox-field input {
+  accent-color: var(--accent);
+}
+
+.dialog > .dialog-footer {
+  margin: 0;
+  padding: 16px 20px;
+}

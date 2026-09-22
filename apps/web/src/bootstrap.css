@@ -1,0 +1,81 @@
+.bootstrap-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 30px;
+  background: radial-gradient(
+    circle at 50% 20%,
+    var(--accent-soft),
+    var(--bg) 50%
+  );
+}
+.bootstrap-card {
+  width: min(430px, 100%);
+  padding: 42px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+.brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 25px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: white;
+}
+.bootstrap-card h1 {
+  margin-bottom: 10px;
+  font-size: 29px;
+  line-height: 1.12;
+}
+.bootstrap-lead {
+  margin-bottom: 25px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.bootstrap-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.bootstrap-card form > .button {
+  align-self: flex-start;
+  margin-top: 3px;
+}
+.slug-input {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 33px;
+  padding-left: 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel-subtle);
+  color: var(--muted);
+  font-size: 12px;
+}
+.slug-input input {
+  min-width: 0;
+  flex: 1;
+  height: 100%;
+  padding: 0 8px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+}
+.bootstrap-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 31px;
+  color: var(--muted);
+  font-size: 10px;
+}

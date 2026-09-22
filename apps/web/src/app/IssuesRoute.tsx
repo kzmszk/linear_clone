@@ -4,7 +4,13 @@ import type { useWorkspaceController } from './useWorkspaceController.ts';
 
 type Controller = ReturnType<typeof useWorkspaceController>;
 
-export function IssuesRoute({ controller }: { controller: Controller }) {
+export function IssuesRoute({
+  controller,
+  title,
+}: {
+  controller: Controller;
+  title: string;
+}) {
   const { metadata, issues, selectedIssueId, selectIssue, setShowCreate } =
     controller;
   if (!metadata.data) return null;
@@ -17,6 +23,7 @@ export function IssuesRoute({ controller }: { controller: Controller }) {
         : undefined;
   return (
     <IssueList
+      title={title}
       issues={items}
       metadata={metadata.data}
       selectedIssueId={selectedIssueId}

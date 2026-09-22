@@ -274,25 +274,3 @@ function restoreIssueDelete(
     );
   }
 }
-
-export function useCommentMutation(
-  queryClient: QueryClient,
-  workspaceId: string | undefined,
-  issueId: string | undefined,
-) {
-  return useMutation({
-    mutationFn: (body: string) =>
-      api.addComment(workspaceId ?? '', issueId ?? '', {
-        body,
-        parentCommentId: null,
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['comments', workspaceId, issueId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ['activity', workspaceId, issueId],
-      });
-    },
-  });
-}

@@ -1,0 +1,226 @@
+.sidebar {
+  width: 228px;
+  flex: 0 0 228px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 13px 10px 10px;
+  border-right: 1px solid var(--border);
+  background: var(--panel-subtle);
+}
+.workspace-picker {
+  position: relative;
+  margin: 0 3px 12px;
+}
+.workspace-picker select {
+  width: 100%;
+  padding: 8px 28px 8px 9px;
+  border: 0;
+  border-radius: 7px;
+  appearance: none;
+  background: transparent;
+  font-weight: 650;
+  color: var(--text);
+}
+.workspace-picker select:hover {
+  background: var(--border);
+}
+.select-chevron {
+  pointer-events: none;
+  position: absolute;
+  top: 10px;
+  right: 7px;
+  color: var(--muted);
+}
+.sidebar-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 3px 14px;
+}
+.new-issue-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 9px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--accent);
+  color: white;
+  font-size: 12px;
+  font-weight: 650;
+  box-shadow: 0 1px 2px rgb(29 26 94 / 15%);
+}
+.new-issue-button:hover {
+  filter: brightness(1.06);
+}
+.new-issue-button kbd {
+  margin-left: auto;
+  color: rgb(255 255 255 / 85%);
+  background: transparent;
+  border-color: rgb(255 255 255 / 30%);
+}
+.icon-button,
+.toolbar-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted-strong);
+}
+.icon-button:hover,
+.toolbar-icon:hover {
+  background: var(--border);
+  color: var(--text);
+}
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nav-item,
+.side-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 31px;
+  width: 100%;
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  text-align: left;
+  color: var(--muted-strong);
+  font-size: 12px;
+}
+.nav-item:hover,
+.nav-item.active,
+.side-link:hover,
+.side-link.active {
+  color: var(--text);
+  background: var(--border);
+}
+.nav-item.active,
+.side-link.active {
+  font-weight: 650;
+}
+.settings-nav {
+  display: grid;
+  gap: 1px;
+  margin: 3px 0 0 25px;
+  padding-left: 8px;
+  border-left: 1px solid var(--border);
+}
+.settings-nav-item {
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  text-align: left;
+}
+.settings-nav-item:hover,
+.settings-nav-item.active {
+  background: var(--border);
+  color: var(--text);
+}
+.nav-hint {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--muted);
+}
+.sidebar-section {
+  margin-top: 21px;
+}
+.sidebar-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 9px 6px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.sidebar-section-heading button {
+  display: inline-flex;
+  border: 0;
+  padding: 1px;
+  background: transparent;
+  color: var(--muted);
+}
+.sidebar-section-heading button:hover {
+  color: var(--text);
+}
+.sidebar-empty {
+  padding: 5px 9px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.side-link {
+  min-height: 30px;
+}
+.side-key {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 10px;
+}
+.team-dot {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: 50%;
+}
+.team-dot.large {
+  width: 12px;
+  height: 12px;
+}
+.project-glyph {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  border: 2px solid #f0a66c;
+  border-radius: 3px;
+}
+.project-glyph.large {
+  width: 13px;
+  height: 13px;
+}
+.sidebar-spacer {
+  flex: 1;
+  min-height: 22px;
+}
+.sidebar-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 9px;
+}
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 9px 1px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.footer-add {
+  display: inline-flex;
+  margin-left: auto;
+  padding: 2px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted);
+}
+.footer-add:hover {
+  background: var(--border);
+  color: var(--text);
+}

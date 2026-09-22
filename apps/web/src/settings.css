@@ -113,13 +113,13 @@
 .settings-table {
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: 9px;
+  border-radius: 6px;
 }
 .settings-row {
   display: flex;
   align-items: center;
   gap: 11px;
-  min-height: 57px;
+  min-height: 48px;
   padding: 8px 13px;
   border-bottom: 1px solid var(--border);
 }

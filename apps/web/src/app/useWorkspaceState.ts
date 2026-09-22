@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useWorkspaceLocation } from './useWorkspaceLocation.ts';
 
 export function useWorkspaceState() {
-  const [workspaceId, setWorkspaceId] = useState('');
+  const location = useWorkspaceLocation();
   const [view, setView] = useState<'issues' | 'settings'>('issues');
   const [settingsSection, setSettingsSection] = useState<
     'overview' | 'workspaces' | 'teams' | 'projects' | 'members'
@@ -9,15 +10,23 @@ export function useWorkspaceState() {
   const [teamId, setTeamId] = useState<string>();
   const [projectId, setProjectId] = useState<string>();
   const [search, setSearch] = useState('');
-  const [selectedIssueId, setSelectedIssueId] = useState<string>();
+  const [showTrash, setShowTrash] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [showWorkspaceCreate, setShowWorkspaceCreate] = useState(false);
   const [darkMode, setDarkMode] = useState(
     () => window.localStorage.getItem('linear-clone-theme') === 'dark',
   );
+  useEffect(() => {
+    setTeamId(undefined);
+    setProjectId(undefined);
+    setSearch('');
+    setShowTrash(false);
+  }, [location.workspaceId]);
+  useEffect(() => {
+    if (location.selectedIssueId) setView('issues');
+  }, [location.selectedIssueId]);
   return {
-    workspaceId,
-    setWorkspaceId,
+    ...location,
     view,
     setView,
     settingsSection,
@@ -28,8 +37,8 @@ export function useWorkspaceState() {
     setProjectId,
     search,
     setSearch,
-    selectedIssueId,
-    setSelectedIssueId,
+    showTrash,
+    setShowTrash,
     showCreate,
     setShowCreate,
     showWorkspaceCreate,

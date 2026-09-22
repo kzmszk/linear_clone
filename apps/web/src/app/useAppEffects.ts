@@ -2,17 +2,17 @@ import { useEffect } from 'react';
 
 export function useWorkspaceSelection(
   workspaceId: string,
-  setWorkspaceId: (id: string) => void,
+  setWorkspaceId: (id: string, replace?: boolean) => void,
   workspaces: Array<{ id: string }> | undefined,
 ) {
   useEffect(() => {
-    if (!workspaceId && workspaces?.[0]) setWorkspaceId(workspaces[0].id);
+    if (!workspaceId && workspaces?.[0]) setWorkspaceId(workspaces[0].id, true);
     if (
       workspaceId &&
       workspaces &&
       !workspaces.some((item) => item.id === workspaceId)
     )
-      setWorkspaceId(workspaces[0]?.id ?? '');
+      setWorkspaceId(workspaces[0]?.id ?? '', true);
   }, [setWorkspaceId, workspaceId, workspaces]);
 }
 
@@ -38,7 +38,13 @@ export function useKeyboardShortcuts(
       target instanceof HTMLTextAreaElement ||
       (target instanceof HTMLElement && target.isContentEditable);
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.isComposing || isTextInput(event.target)) return;
+      if (
+        event.defaultPrevented ||
+        event.isComposing ||
+        isTextInput(event.target)
+      )
+        return;
+      if (document.querySelector('[role=dialog], [role=listbox]')) return;
       if (event.key.toLowerCase() === 'c' && view === 'issues') {
         event.preventDefault();
         setCreateOpen(true);

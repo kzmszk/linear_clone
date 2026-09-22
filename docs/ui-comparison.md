@@ -1,0 +1,30 @@
+# Linear UI comparison
+
+This audit follows the bugs reported on `linc manual test`. Reference screens were inspected in the signed-in Linear browser on 2026-09-22 JST. The reference workspace was read-only: no issues, comments, projects, members, or settings were changed.
+
+The previous deletion test automatically accepted the browser's native confirmation. It proved the delete request worked but did not exercise the confirmation that the user saw. The new tests operate the application's confirmation dialog and verify both cancellation and restoration.
+
+## Observed reference screens
+
+| Screen                | Linear route                                            | Observed behavior                                                                                   | Linc change and verification                                                                                                        |
+| --------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Issue list            | `/fuchikoma/team/FUC/all`                               | Dense single-line rows; identifier before status and title; long titles truncate                    | Fixed identifier column, flexible title column, keyboard row navigation; `navigation-layout.spec.ts` checks 1440, 880, and 640px    |
+| Issue detail          | `/fuchikoma/issue/FUC-258/…`                            | Opening replaces the list. Body is left, properties right; title wraps                              | Full main-area detail, wrapping title, right properties, persistent URL and browser history; navigation and detail tests            |
+| Create issue          | Project overview → Create new issue                     | Centered compact modal, focused title, description, property pills; project comes from current view | Searchable property buttons, contextual defaults, visible required title and team, actionable missing-team guidance; creation tests |
+| Property selection    | Create issue → Status                                   | Searchable popup, selected option, keyboard control                                                 | Shared `PropertySelect`; picker tests cover search, keyboard, dismissal, and persisted selection                                    |
+| Comments and activity | Issue detail                                            | Activity and comments share a chronological flow. Preferences show Ctrl+Enter to submit             | Optimistic comments, immediate composer clearing, visible failure and draft recovery; detail tests delay or reject HTTP responses   |
+| Workspace settings    | `/fuchikoma/settings/workspace`                         | Centered settings content; label/input rows for workspace name and URL                              | Required name and slug hints; management tests cover creation, editing, and workspace selection                                     |
+| Teams                 | `/fuchikoma/settings/teams`                             | Compact list with create action and per-team settings                                               | New team opens a focused dialog with required name and identifier; management tests exercise create and edit                        |
+| Create team           | `/fuchikoma/settings/new-team`                          | Dedicated form with name, identifier, and issue-key explanation                                     | The missing-team path opens team management, then issue creation works; creation tests                                              |
+| Edit team             | `/fuchikoma/settings/teams/FUC/general`                 | Name and identifier card, separate description                                                      | Required inputs and edit persistence; management tests                                                                              |
+| Projects              | `/fuchikoma/projects/all` and New project               | List and large create modal; name, description, property row                                        | New project opens a dialog with required name and teams; management tests cover create and edit                                     |
+| Project overview      | `/fuchikoma/project/linear-clone-a373cc31bdf1/overview` | Overview/Activity/Issues tabs, editable title and properties                                        | Linc supports project settings and project-filtered issues; overview and project activity tabs are outside the implemented scope    |
+| Members               | `/fuchikoma/settings/members` and Invite                | Compact member list; invite opens email dialog                                                      | Invite opens a dialog with required email and membership controls; management tests cover invitation, role edits, and revocation    |
+
+## Scope and evidence limits
+
+The comparison concerns the implemented features and their interaction patterns. Linc omits Linear's templates, cycles, initiatives, agents, custom views, milestones, and project updates. Cloudflare Access owns sign-in; Linc's initial workspace bootstrap has no equivalent authenticated Linear screen.
+
+Reference create dialogs and pickers were opened and dismissed without submitting. Destructive reference actions were not tested. Linc's delete/restore behavior is verified against its real Worker using disposable local records.
+
+The E2E tests use a real Worker and SQLite Durable Object. Request interception only introduces delay or a failed response for recovery checks. It does not replace successful CRUD with a mock server. The local timings demonstrate that cached opening and optimistic comments do not wait for the network. They do not prove identical p95 latency to Linear or pixel-identical rendering.

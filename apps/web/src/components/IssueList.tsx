@@ -1,4 +1,5 @@
-import { ChevronRight, Inbox } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { Inbox } from 'lucide-react';
 import type { Issue, Metadata } from '../api.ts';
 import {
   Avatar,
@@ -37,6 +38,7 @@ function projectFor(issue: Issue, metadata: Metadata) {
 }
 
 export function IssueList({
+  title,
   issues,
   metadata,
   selectedIssueId,
@@ -47,6 +49,7 @@ export function IssueList({
   onSelect,
   onCreate,
 }: {
+  title: string;
   issues: Issue[];
   metadata: Metadata;
   selectedIssueId?: string;
@@ -57,14 +60,14 @@ export function IssueList({
   onSelect: (issue: Issue) => void;
   onCreate: () => void;
 }) {
+  useReturnFocus(selectedIssueId);
   if (loading && issues.length === 0) return <IssueListState loading />;
   if (error) return <IssueListState error={error} />;
   return (
     <main className="issue-list-pane">
       <div className="list-toolbar">
         <div>
-          <span className="eyebrow">Issues</span>
-          <h1>All issues</h1>
+          <h1>{title}</h1>
         </div>
       </div>
       <div className="list-meta">
@@ -173,21 +176,44 @@ function IssueRow({
     <button
       className={`issue-row ${selected ? 'selected' : ''}`}
       role="listitem"
+      data-issue-id={issue.id}
+      onKeyDown={(event) => {
+        if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+        event.preventDefault();
+        const sibling =
+          event.key === 'ArrowDown'
+            ? event.currentTarget.nextElementSibling
+            : event.currentTarget.previousElementSibling;
+        if (sibling instanceof HTMLElement) sibling.focus();
+      }}
       onClick={() => onSelect(issue)}
     >
+      <PriorityIcon priority={issue.priority} />
+      <span className="issue-identifier">{issue.identifier}</span>
       <span className="issue-status" title={state?.name ?? 'Unknown status'}>
         <StatusIcon type={state?.type ?? 'unstarted'} color={state?.color} />
       </span>
-      <PriorityIcon priority={issue.priority} />
-      <span className="issue-identifier">{issue.identifier}</span>
       <span className="issue-title">{issue.title}</span>
       <span className="issue-row-project">{project?.name ?? ''}</span>
-      <span className="issue-row-date">{formatDate(issue.updatedAt)}</span>
       <Avatar
         name={assignee?.name ?? issue.assigneeName}
         email={assignee?.email}
       />
-      <ChevronRight size={14} className="issue-chevron" />
+      <span className="issue-row-date">{formatDate(issue.updatedAt)}</span>
     </button>
   );
+}
+
+function useReturnFocus(selectedIssueId: string | undefined) {
+  const lastSelection = useRef(selectedIssueId);
+  useEffect(() => {
+    if (!selectedIssueId && lastSelection.current) {
+      document
+        .querySelector<HTMLElement>(
+          `[data-issue-id="${lastSelection.current}"]`,
+        )
+        ?.focus();
+    }
+    lastSelection.current = selectedIssueId;
+  }, [selectedIssueId]);
 }

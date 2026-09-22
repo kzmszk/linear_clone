@@ -1,4 +1,4 @@
-import type { EditTarget } from './types.ts';
+import type { EditDraft } from './types.ts';
 
 export type SettingsFormValues = {
   name: string;
@@ -10,7 +10,6 @@ export type SettingsFormValues = {
   email: string;
   role: 'owner' | 'admin' | 'member';
   teamIds: string[];
-  active: boolean;
 };
 
 export type SettingsSubmitActions = {
@@ -99,44 +98,45 @@ export async function createSettingsResource(
 }
 
 export async function updateSettingsResource(
-  editing: EditTarget,
-  form: SettingsFormValues,
+  draft: EditDraft,
   actions: SettingsSubmitActions,
   deactivate = false,
 ): Promise<void> {
-  if (editing.kind === 'workspace') {
-    await actions.onUpdateWorkspace(editing.item.id, {
-      name: form.name.trim(),
-      slug: form.slug.trim().toLowerCase(),
-      expectedVersion: editing.item.version,
-    });
-    return;
+  switch (draft.kind) {
+    case 'workspace':
+      await actions.onUpdateWorkspace(draft.item.id, {
+        name: draft.name.trim(),
+        slug: draft.slug.trim().toLowerCase(),
+        expectedVersion: draft.item.version,
+      });
+      return;
+    case 'team':
+      await actions.onUpdateTeam(draft.item.id, {
+        name: draft.name.trim(),
+        private: draft.private,
+        expectedVersion: draft.item.version,
+      });
+      return;
+    case 'project':
+      await actions.onUpdateProject(draft.item.id, {
+        name: draft.name.trim(),
+        description: draft.description || null,
+        status: draft.status,
+        teamIds: draft.teamIds,
+        expectedVersion: draft.item.version,
+      });
+      return;
+    case 'member': {
+      const pending = draft.item.userId === null;
+      await actions.onUpdateMember(draft.item.id, {
+        role: draft.role,
+        ...(deactivate || !pending
+          ? { active: deactivate ? false : draft.active }
+          : {}),
+        teamIds: draft.teamIds,
+        expectedVersion: draft.item.version,
+      });
+      return;
+    }
   }
-  if (editing.kind === 'team') {
-    await actions.onUpdateTeam(editing.item.id, {
-      name: form.name.trim(),
-      private: form.teamPrivate,
-      expectedVersion: editing.item.version,
-    });
-    return;
-  }
-  if (editing.kind === 'project') {
-    await actions.onUpdateProject(editing.item.id, {
-      name: form.name.trim(),
-      description: form.description || null,
-      status: form.status,
-      teamIds: form.teamIds,
-      expectedVersion: editing.item.version,
-    });
-    return;
-  }
-  const pending = editing.item.userId === null;
-  await actions.onUpdateMember(editing.item.id, {
-    role: form.role,
-    ...(deactivate || !pending
-      ? { active: deactivate ? false : form.active }
-      : {}),
-    teamIds: form.teamIds,
-    expectedVersion: editing.item.version,
-  });
 }

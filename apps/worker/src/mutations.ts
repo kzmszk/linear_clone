@@ -1,5 +1,5 @@
 import { conflict } from './errors.ts';
-import { newId, now, one } from './db.ts';
+import { now, one } from './db.ts';
 import type { DurableObjectStorage } from '@cloudflare/workers-types';
 import type {
   AppliedMutation,
@@ -147,8 +147,4 @@ export function requireOperationId(value: string | null): string {
     throw conflict('missing_idempotency_key', 'Idempotency-Key must be a UUID');
   }
   return value;
-}
-
-export function newOperationId(): string {
-  return newId();
 }

@@ -1,12 +1,11 @@
 import type { DurableObjectStorage } from '@cloudflare/workers-types';
-import { hashPayload, requireOperationId } from '../mutations.ts';
-import { parseBody, response } from './parse.ts';
 import {
-  applyImportBatch,
   importBatchSchema,
   importVerifySchema,
-  withPayloadHashes,
-} from '../imports/service.ts';
+} from '../../../../packages/contracts/src/index.ts';
+import { hashPayload, requireOperationId } from '../mutations.ts';
+import { parseBody, response } from './parse.ts';
+import { applyImportBatch, withPayloadHashes } from '../imports/service.ts';
 import {
   getImportRun,
   listImportRuns,

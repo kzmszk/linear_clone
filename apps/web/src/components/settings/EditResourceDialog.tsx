@@ -1,90 +1,42 @@
 import { Check } from 'lucide-react';
-import type { Dispatch, SetStateAction } from 'react';
 import type { Team } from '../../api.ts';
 import { Button, Dialog, ErrorNotice } from '../ui.tsx';
 import { TeamMultiSelect } from './TeamMultiSelect.tsx';
-import type { EditTarget } from './types.ts';
+import type { EditDraft } from './types.ts';
 import { MemberFields } from './MemberEditFields.tsx';
 
 export type EditResourceDialogProps = {
-  editing: EditTarget;
+  draft: EditDraft;
   teams: Team[];
-  name: string;
-  slug: string;
-  description: string;
-  status: string;
-  teamPrivate: boolean;
-  teamIds: string[];
-  role: 'owner' | 'admin' | 'member';
-  active: boolean;
   formError: string;
   submitting: boolean;
-  setEditing: Dispatch<SetStateAction<EditTarget | null>>;
-  resetForm: () => void;
-  setName: (value: string) => void;
-  setSlug: (value: string) => void;
-  setDescription: (value: string) => void;
-  setStatus: (value: string) => void;
-  setTeamPrivate: (value: boolean) => void;
-  setTeamIds: (value: string[]) => void;
-  setRole: (value: 'owner' | 'admin' | 'member') => void;
-  setActive: (value: boolean) => void;
+  onClose: () => void;
+  onDraftChange: (draft: EditDraft) => void;
   onSubmit: () => void;
   onDeactivate: () => void;
 };
 
 export function EditResourceDialog(props: EditResourceDialogProps) {
-  const { editing, setEditing, resetForm } = props;
-  function close() {
-    setEditing(null);
-    resetForm();
-  }
-  const member = editing.kind === 'member';
-  const pending = member && editing.item.userId === null;
+  const { draft, onClose } = props;
+  const member = draft.kind === 'member';
   return (
-    <Dialog title={`Edit ${editing.kind}`} onClose={close} wide={member}>
-      <EditResourceForm
-        {...props}
-        member={member}
-        pending={pending}
-        close={close}
-      />
+    <Dialog title={`Edit ${draft.kind}`} onClose={onClose} wide={member}>
+      <EditResourceForm {...props} />
     </Dialog>
   );
 }
 
 function EditResourceForm({
-  editing,
+  draft,
   teams,
-  name,
-  slug,
-  description,
-  status,
-  teamPrivate,
-  teamIds,
-  role,
-  active,
   formError,
   submitting,
-  setName,
-  setSlug,
-  setDescription,
-  setStatus,
-  setTeamPrivate,
-  setTeamIds,
-  setRole,
-  setActive,
+  onClose,
+  onDraftChange,
   onSubmit,
   onDeactivate,
-  pending,
-  close,
-}: EditResourceDialogProps & {
-  member: boolean;
-  pending: boolean;
-  close: () => void;
-}) {
-  const member = editing.kind === 'member';
-  const valid = isEditFormValid(editing, member, name, slug);
+}: EditResourceDialogProps) {
+  const valid = isEditFormValid(draft);
   return (
     <>
       {formError ? <ErrorNotice message={formError} /> : null}
@@ -95,37 +47,17 @@ function EditResourceForm({
           onSubmit();
         }}
       >
-        <NameFields
-          editing={editing}
-          member={member}
-          name={name}
-          slug={slug}
-          onName={setName}
-          onSlug={setSlug}
-        />
+        <NameFields draft={draft} onDraftChange={onDraftChange} />
         <ResourceFields
-          editing={editing}
+          draft={draft}
           teams={teams}
-          description={description}
-          status={status}
-          teamPrivate={teamPrivate}
-          teamIds={teamIds}
-          role={role}
-          active={active}
-          onDescription={setDescription}
-          onStatus={setStatus}
-          onTeamPrivate={setTeamPrivate}
-          onTeamIds={setTeamIds}
-          onRole={setRole}
-          onActive={setActive}
+          onDraftChange={onDraftChange}
         />
         <EditFooter
-          member={member}
-          pending={pending}
-          active={active}
+          draft={draft}
           submitting={submitting}
           valid={valid}
-          onClose={close}
+          onClose={onClose}
           onDeactivate={onDeactivate}
         />
       </form>
@@ -133,34 +65,22 @@ function EditResourceForm({
   );
 }
 
-function isEditFormValid(
-  editing: EditTarget,
-  member: boolean,
-  name: string,
-  slug: string,
-): boolean {
-  return (
-    member ||
-    (Boolean(name.trim()) &&
-      (editing.kind !== 'workspace' || Boolean(slug.trim())))
+function isEditFormValid(draft: EditDraft): boolean {
+  if (draft.kind === 'member') return true;
+  return Boolean(
+    draft.name.trim() && (draft.kind !== 'workspace' || draft.slug.trim()),
   );
 }
 
 function NameFields({
-  editing,
-  member,
-  name,
-  slug,
-  onName,
-  onSlug,
+  draft,
+  onDraftChange,
 }: {
-  editing: EditTarget;
-  member: boolean;
-  name: string;
-  slug: string;
-  onName: (value: string) => void;
-  onSlug: (value: string) => void;
+  draft: EditDraft;
+  onDraftChange: (draft: EditDraft) => void;
 }) {
+  const member = draft.kind === 'member';
+  const name = member ? draft.item.name : draft.name;
   return (
     <>
       <label className="form-field">
@@ -174,10 +94,14 @@ function NameFields({
           required
           readOnly={member}
           value={name}
-          onChange={(event) => onName(event.target.value)}
+          onChange={
+            member
+              ? undefined
+              : (event) => onDraftChange({ ...draft, name: event.target.value })
+          }
         />
       </label>
-      {editing.kind === 'workspace' ? (
+      {draft.kind === 'workspace' ? (
         <label className="form-field">
           <span>
             Slug <em aria-hidden="true">Required</em>
@@ -185,8 +109,13 @@ function NameFields({
           <input
             aria-label="Slug"
             required
-            value={slug}
-            onChange={(event) => onSlug(event.target.value.toLowerCase())}
+            value={draft.slug}
+            onChange={(event) =>
+              onDraftChange({
+                ...draft,
+                slug: event.target.value.toLowerCase(),
+              })
+            }
           />
         </label>
       ) : null}
@@ -195,86 +124,72 @@ function NameFields({
 }
 
 function ResourceFields({
-  editing,
+  draft,
   teams,
-  description,
-  status,
-  teamPrivate,
-  teamIds,
-  role,
-  active,
-  onTeamPrivate,
-  onDescription,
-  onStatus,
-  onTeamIds,
-  onRole,
-  onActive,
+  onDraftChange,
 }: {
-  editing: EditTarget;
+  draft: EditDraft;
   teams: Team[];
-  description: string;
-  status: string;
-  teamPrivate: boolean;
-  teamIds: string[];
-  role: 'owner' | 'admin' | 'member';
-  active: boolean;
-  onTeamPrivate: (value: boolean) => void;
-  onDescription: (value: string) => void;
-  onStatus: (value: string) => void;
-  onTeamIds: (value: string[]) => void;
-  onRole: (value: 'owner' | 'admin' | 'member') => void;
-  onActive: (value: boolean) => void;
+  onDraftChange: (draft: EditDraft) => void;
 }) {
-  if (editing.kind === 'team')
-    return <TeamFields checked={teamPrivate} onChange={onTeamPrivate} />;
-  if (editing.kind === 'project')
-    return (
-      <ProjectFields
-        description={description}
-        status={status}
-        teams={teams}
-        teamIds={teamIds}
-        onDescription={onDescription}
-        onStatus={onStatus}
-        onTeamIds={onTeamIds}
-      />
-    );
-  if (editing.kind === 'member')
-    return (
-      <MemberFields
-        email={editing.item.email}
-        role={role}
-        active={active}
-        teams={teams}
-        teamIds={teamIds}
-        onRole={onRole}
-        onActive={onActive}
-        onTeamIds={onTeamIds}
-      />
-    );
-  return null;
+  switch (draft.kind) {
+    case 'workspace':
+      return null;
+    case 'team':
+      return (
+        <TeamFields
+          checked={draft.private}
+          onChange={(value) => onDraftChange({ ...draft, private: value })}
+        />
+      );
+    case 'project':
+      return (
+        <ProjectFields
+          description={draft.description}
+          status={draft.status}
+          teams={teams}
+          teamIds={draft.teamIds}
+          onDescription={(value) =>
+            onDraftChange({ ...draft, description: value })
+          }
+          onStatus={(value) => onDraftChange({ ...draft, status: value })}
+          onTeamIds={(value) => onDraftChange({ ...draft, teamIds: value })}
+        />
+      );
+    case 'member':
+      return (
+        <MemberFields
+          email={draft.item.email}
+          role={draft.role}
+          active={draft.active}
+          teams={teams}
+          teamIds={draft.teamIds}
+          onRole={(value) => onDraftChange({ ...draft, role: value })}
+          onActive={(value) => onDraftChange({ ...draft, active: value })}
+          onTeamIds={(value) => onDraftChange({ ...draft, teamIds: value })}
+        />
+      );
+  }
 }
 
 function EditFooter({
-  member,
-  pending,
-  active,
+  draft,
   submitting,
   valid,
   onClose,
   onDeactivate,
 }: {
-  member: boolean;
-  pending: boolean;
-  active: boolean;
+  draft: EditDraft;
   submitting: boolean;
   valid: boolean;
   onClose: () => void;
   onDeactivate: () => void;
 }) {
+  const member = draft.kind === 'member' ? draft : undefined;
+  const pending = member?.item.userId === null;
   return (
     <footer className="dialog-footer">
-      {member && (active || pending) ? (
+      {member && (member.active || pending) ? (
         <Button
           type="button"
           tone="danger"

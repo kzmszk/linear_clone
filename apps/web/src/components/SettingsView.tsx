@@ -94,7 +94,7 @@ export function SettingsView({
   return (
     <main className="settings-pane">
       <SettingsHeader workspace={workspace} title={sectionTitle} />
-      {form.formError && !form.editing && section === 'workspaces' ? (
+      {form.formError && !form.editDraft && section === 'workspaces' ? (
         <ErrorNotice message={form.formError} />
       ) : null}
       <SettingsSectionContent
@@ -107,30 +107,14 @@ export function SettingsView({
         form={form}
         actions={actions}
       />
-      {form.editing ? (
+      {form.editDraft ? (
         <EditResourceDialog
-          editing={form.editing}
+          draft={form.editDraft}
           teams={teams}
-          name={form.name}
-          slug={form.slug}
-          description={form.description}
-          status={form.status}
-          teamPrivate={form.teamPrivate}
-          teamIds={form.teamIds}
-          role={form.role}
-          active={form.active}
           formError={form.formError}
           submitting={form.submitting}
-          setEditing={form.setEditing}
-          resetForm={form.resetForm}
-          setName={form.setName}
-          setSlug={form.setSlug}
-          setDescription={form.setDescription}
-          setStatus={form.setStatus}
-          setTeamPrivate={form.setTeamPrivate}
-          setTeamIds={form.setTeamIds}
-          setRole={form.setRole}
-          setActive={form.setActive}
+          onClose={form.closeEdit}
+          onDraftChange={form.setEditDraft}
           onSubmit={() => void actions.submitEdit()}
           onDeactivate={() => void actions.submitEdit(true)}
         />

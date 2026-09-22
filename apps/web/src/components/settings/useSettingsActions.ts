@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import type { EditTarget } from './types.ts';
+import type { EditDraft } from './types.ts';
 import {
   createSettingsResource,
   updateSettingsResource,
@@ -9,9 +9,9 @@ import {
 
 export function useSettingsActions(
   form: SettingsFormValues & {
-    editing: EditTarget | null;
+    editDraft: EditDraft | null;
     resetForm: () => void;
-    setEditing: (target: EditTarget | null) => void;
+    closeEdit: () => void;
     setFormError: (message: string) => void;
     setSubmitting: (value: boolean) => void;
   },
@@ -29,15 +29,12 @@ export function useSettingsActions(
   );
   const submitEdit = useCallback(
     async (deactivate = false) => {
-      const editing = form.editing;
-      if (!editing) return;
+      const draft = form.editDraft;
+      if (!draft) return;
       const succeeded = await runSubmit(form, () =>
-        updateSettingsResource(editing, form, actions, deactivate),
+        updateSettingsResource(draft, actions, deactivate),
       );
-      if (succeeded) {
-        form.setEditing(null);
-        form.resetForm();
-      }
+      if (succeeded) form.closeEdit();
     },
     [actions, form],
   );

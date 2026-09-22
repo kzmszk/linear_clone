@@ -20,12 +20,7 @@ export async function readJson(path: string): Promise<unknown> {
   return JSON.parse(await readFile(path, 'utf8')) as unknown;
 }
 
-export function safeRecordFile(kind: string, sourceId: string): string {
-  const encoded = encodeURIComponent(sourceId).replace(/%/gu, '_');
-  return join('records', kind, `${encoded}.json`);
-}
-
-export function safeFileName(sourceId: string, sourceUrl: string): string {
+function safeFileName(sourceId: string, sourceUrl: string): string {
   const suffix =
     sourceUrl
       .split('?')[0]

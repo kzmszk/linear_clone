@@ -28,7 +28,3 @@ export function parseBoolean(value: string | null, fallback: boolean): boolean {
   if (value === null) return fallback;
   return value === 'true' || value === '1';
 }
-
-export function asSqlBoolean(value: boolean): number {
-  return value ? 1 : 0;
-}

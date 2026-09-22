@@ -1,7 +1,7 @@
 import { ApiError } from '../../../packages/client/src/index.ts';
 import { z } from 'zod';
 
-export const globalOptionsSchema = z.object({
+const globalOptionsSchema = z.object({
   url: z.string(),
   workspace: z.string().optional(),
   json: z.boolean().default(false),

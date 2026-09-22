@@ -7,7 +7,7 @@ import { normalizeUrl } from './config.ts';
 import { mutationSchema } from './types.ts';
 import { z } from 'zod';
 
-export type DownloadedFile = {
+type DownloadedFile = {
   bytes: Uint8Array;
   contentType: string | null;
 };

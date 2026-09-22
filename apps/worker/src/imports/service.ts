@@ -1,5 +1,4 @@
 import type { DurableObjectStorage } from '@cloudflare/workers-types';
-import { z } from 'zod';
 import { now, one } from '../db.ts';
 import { runMutation } from '../mutations.ts';
 import { requireManager } from '../organization/authentication.ts';
@@ -16,45 +15,6 @@ import {
   type ImportResult,
 } from './status.ts';
 import type { ImportBatch, ImportItem } from './types.ts';
-
-export const importKindSchema = z.enum([
-  'team',
-  'state',
-  'label',
-  'member',
-  'project',
-  'issue',
-  'comment',
-  'relation',
-  'history',
-  'attachment',
-]);
-export const sourceIdentitySchema = z.object({
-  provider: z.literal('linear'),
-  sourceId: z.string(),
-  name: z.string(),
-  email: z.string().nullable(),
-});
-export const importBatchSchema = z.object({
-  runId: z.string().uuid(),
-  provider: z.literal('linear'),
-  sourceWorkspaceId: z.string().min(1),
-  kind: importKindSchema,
-  items: z.array(
-    z.object({
-      sourceId: z.string().min(1),
-      sourceRevision: z.string().min(1),
-      payload: z.unknown(),
-      sourceIdentity: sourceIdentitySchema.optional(),
-      file: z.unknown().optional(),
-    }),
-  ),
-});
-export const importVerifySchema = z.object({
-  runId: z.string().uuid(),
-  provider: z.literal('linear'),
-  sourceWorkspaceId: z.string().min(1),
-});
 
 export function applyImportBatch(
   sql: SqlDb,

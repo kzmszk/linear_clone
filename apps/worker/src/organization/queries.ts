@@ -4,7 +4,6 @@ import { one, rows } from '../db.ts';
 import { notFound } from '../errors.ts';
 import {
   canAccessTeam,
-  findMembership,
   findUser,
   isInstallationAdmin,
   requireMembership,
@@ -204,14 +203,6 @@ export function getMetadata(
     states: listStates(sql, actor, workspaceId),
     labels: listLabels(sql, actor, workspaceId),
   };
-}
-
-export function findWorkspaceMembership(
-  sql: SqlDb,
-  userId: string,
-  workspaceId: string,
-): WorkspaceMembershipRow | null {
-  return findMembership(sql, userId, workspaceId);
 }
 
 function listWorkspacesForUser(sql: SqlDb, userId: string): Workspace[] {

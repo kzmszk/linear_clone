@@ -1,8 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import type { Command } from 'commander';
-import type { ZodType } from 'zod';
-import { createApiContext, requestRecord, type ApiContext } from './api.ts';
+import { createApiContext, type ApiContext } from './api.ts';
 import { optionsFor, printValue, type GlobalOptions } from './output.ts';
 import { resolveWorkspace } from './resolve.ts';
 import { type Workspace } from './types.ts';
@@ -34,24 +33,6 @@ export async function fileContents(
     throw new Error('Use only one of --description-file and --description.');
   if (path) return readFile(path, 'utf8');
   return inline;
-}
-
-export function required(value: string | undefined, name: string): string {
-  if (!value) throw new Error(`Missing required option: ${name}`);
-  return value;
-}
-
-export async function createRecord<T>(
-  api: ApiContext,
-  path: string,
-  schema: ZodType<T>,
-  body: unknown,
-): Promise<T | { current: T }> {
-  return requestRecord(api, path, schema, {
-    method: 'POST',
-    body,
-    operationId: operationId(),
-  });
 }
 
 export function printResult(

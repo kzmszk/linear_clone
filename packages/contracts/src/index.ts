@@ -1,8 +1,23 @@
 import { z } from 'zod';
 
-export const id = z.string().uuid();
-export const version = z.number().int().positive();
-export const role = z.enum(['owner', 'admin', 'member']);
+export {
+  importBatchSchema,
+  importFileSchema,
+  importKinds,
+  importVerifySchema,
+} from './import.ts';
+export type {
+  ImportBatch,
+  ImportBatchItem,
+  ImportFile,
+  ImportKind,
+  ImportVerifyInput,
+  SourceIdentity,
+} from './import.ts';
+
+const id = z.string().uuid();
+const version = z.number().int().positive();
+const role = z.enum(['owner', 'admin', 'member']);
 export const principalSchema = z.object({
   subject: z.string(),
   email: z.email(),
@@ -127,7 +142,7 @@ export const fileUploadSchema = z.object({
   size: z.number(),
   contentType: z.string(),
 });
-export const receiptSchema = z.object({
+const receiptSchema = z.object({
   operationId: id,
   entityId: z.string(),
   version,

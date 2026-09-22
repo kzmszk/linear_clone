@@ -7,7 +7,7 @@ import {
 import { issueRow } from '../issues/queries.ts';
 import type { AuthActor, SqlDb, SqlRow } from '../types.ts';
 
-export type Change = {
+type Change = {
   sequence: number;
   entityKind: string;
   entityId: string;

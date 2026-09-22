@@ -1,17 +1,13 @@
 import { useDialogBehavior } from './useDialogBehavior.ts';
 import {
   AlertCircle,
-  Archive,
   Check,
   Circle,
   CircleDot,
   CircleEllipsis,
   CircleOff,
   LoaderCircle,
-  Plus,
-  RotateCcw,
   Search,
-  Trash2,
   X,
 } from 'lucide-react';
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
@@ -237,31 +233,4 @@ export function SaveStatus({
       </span>
     );
   return null;
-}
-
-export function ResourceIcon({
-  resource,
-}: {
-  resource:
-    | 'team'
-    | 'project'
-    | 'member'
-    | 'workspace'
-    | 'issue'
-    | 'archive'
-    | 'trash'
-    | 'restore';
-}) {
-  if (resource === 'team') return <CircleDot size={15} />;
-  if (resource === 'project') return <Archive size={15} />;
-  if (resource === 'member') return <Avatar name="M" />;
-  if (resource === 'workspace') return <Circle size={15} />;
-  if (resource === 'trash') return <Trash2 size={15} />;
-  if (resource === 'restore') return <RotateCcw size={15} />;
-  if (resource === 'archive') return <Archive size={15} />;
-  return <CircleDot size={15} />;
-}
-
-export function AddIcon() {
-  return <Plus size={16} />;
 }

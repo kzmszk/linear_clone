@@ -1,8 +1,12 @@
 import { useState } from 'react';
-import type { EditTarget } from './types.ts';
+import {
+  editDraftFromTarget,
+  type EditDraft,
+  type EditTarget,
+} from './types.ts';
 
 export function useSettingsForm() {
-  const [editing, setEditing] = useState<EditTarget | null>(null);
+  const [editDraft, setEditDraft] = useState<EditDraft | null>(null);
   const [formError, setFormError] = useState('');
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
@@ -13,7 +17,6 @@ export function useSettingsForm() {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<'owner' | 'admin' | 'member'>('member');
   const [teamIds, setTeamIds] = useState<string[]>([]);
-  const [active, setActive] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   function resetForm() {
@@ -26,29 +29,21 @@ export function useSettingsForm() {
     setEmail('');
     setRole('member');
     setTeamIds([]);
-    setActive(true);
     setFormError('');
   }
 
   function beginEdit(target: EditTarget) {
-    setEditing(target);
+    setEditDraft(editDraftFromTarget(target));
     setFormError('');
-    setName('name' in target.item ? target.item.name : '');
-    setSlug(target.kind === 'workspace' ? target.item.slug : '');
-    setTeamPrivate(target.kind === 'team' && target.item.private);
-    setDescription(
-      target.kind === 'project' ? (target.item.description ?? '') : '',
-    );
-    setStatus(target.kind === 'project' ? target.item.status : 'planned');
-    setEmail(target.kind === 'member' ? target.item.email : '');
-    setRole(target.kind === 'member' ? target.item.role : 'member');
-    setTeamIds('teamIds' in target.item ? target.item.teamIds : []);
-    setActive(target.kind === 'member' ? target.item.active : true);
+  }
+
+  function closeEdit() {
+    setEditDraft(null);
+    resetForm();
   }
 
   return {
-    editing,
-    setEditing,
+    editDraft,
     formError,
     setFormError,
     name,
@@ -69,11 +64,11 @@ export function useSettingsForm() {
     setRole,
     teamIds,
     setTeamIds,
-    active,
-    setActive,
     submitting,
     setSubmitting,
     resetForm,
     beginEdit,
+    setEditDraft,
+    closeEdit,
   };
 }

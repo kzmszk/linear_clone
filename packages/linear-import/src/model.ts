@@ -1,19 +1,20 @@
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
+import { importFileSchema, importKinds } from '../../contracts/src/index.ts';
+import type {
+  ImportFile,
+  ImportKind,
+  SourceIdentity,
+} from '../../contracts/src/index.ts';
 
-export const importKinds = [
-  'team',
-  'state',
-  'label',
-  'member',
-  'project',
-  'issue',
-  'comment',
-  'relation',
-  'history',
-  'attachment',
-] as const;
-export type ImportKind = (typeof importKinds)[number];
+export { importKinds } from '../../contracts/src/index.ts';
+export type {
+  ImportBatch,
+  ImportBatchItem,
+  ImportKind,
+  SourceIdentity,
+} from '../../contracts/src/index.ts';
+
 export const nestedKindMap = {
   comments: 'comment',
   history: 'history',
@@ -22,30 +23,19 @@ export const nestedKindMap = {
   labels: 'label',
 } as const satisfies Record<string, ImportKind>;
 
-export const connectionSchema = z.object({
+const connectionSchema = z.object({
   name: z.string(),
   status: z.enum(['complete', 'failed', 'missing']),
   count: z.number().int().nonnegative(),
   error: z.string().optional(),
 });
-export const recordSummarySchema = z.object({
+const recordSummarySchema = z.object({
   kind: z.enum(importKinds),
   sourceId: z.string(),
   sourceRevision: z.string(),
   payloadHash: z.string(),
   rawFile: z.string(),
   sourceUrl: z.string().nullable().optional(),
-});
-export const fileSummarySchema = z.object({
-  sourceId: z.string(),
-  sourceUrl: z.string(),
-  localFile: z.string().optional(),
-  checksum: z.string().optional(),
-  size: z.number().int().nonnegative().optional(),
-  contentType: z.string().optional(),
-  destinationUrl: z.string().optional(),
-  state: z.enum(['ready', 'missing', 'external']).default('missing'),
-  reason: z.string().optional(),
 });
 export const manifestSchema = z.object({
   schemaVersion: z.literal(1),
@@ -55,13 +45,13 @@ export const manifestSchema = z.object({
   sourceWorkspaceName: z.string().optional(),
   exportedAt: z.string(),
   records: z.array(recordSummarySchema),
-  files: z.array(fileSummarySchema),
+  files: z.array(importFileSchema),
   connections: z.array(connectionSchema),
   missing: z.array(z.string()),
 });
 export type Connection = z.infer<typeof connectionSchema>;
 export type RecordSummary = z.infer<typeof recordSummarySchema>;
-export type FileSummary = z.infer<typeof fileSummarySchema>;
+export type FileSummary = ImportFile;
 export type Manifest = z.infer<typeof manifestSchema>;
 
 export type ExportOptions = {
@@ -71,38 +61,16 @@ export type ExportOptions = {
   downloadFiles?: boolean;
 };
 
-export type ImportBatchItem = {
-  sourceId: string;
-  sourceRevision: string;
-  payload: unknown;
-  sourceIdentity?: SourceIdentity;
-  file?: FileSummary;
-};
-
-export type SourceIdentity = {
-  provider: 'linear';
-  sourceId: string;
-  name: string;
-  email: string | null;
-};
-export type FileUpload = {
+type FileUpload = {
   url: string;
   checksum: string;
   size: number;
   contentType: string;
 };
 
-export type FileDownload = {
+type FileDownload = {
   bytes: Uint8Array;
   contentType: string | null;
-};
-
-export type ImportBatch = {
-  runId: string;
-  provider: 'linear';
-  sourceWorkspaceId: string;
-  kind: ImportKind;
-  items: ImportBatchItem[];
 };
 
 export type ImportTransport = {
@@ -153,7 +121,7 @@ export function nestedRecord(
   return record ? asRecord(record[key]) : undefined;
 }
 
-export function nestedString(value: unknown, key: string): string | undefined {
+function nestedString(value: unknown, key: string): string | undefined {
   const record = asRecord(value);
   return record ? stringValue(record[key]) : undefined;
 }

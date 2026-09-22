@@ -9,7 +9,7 @@ export function record(value: unknown): UnknownRecord | null {
   return isRecord(value) ? value : null;
 }
 
-export function isRecord(value: unknown): value is UnknownRecord {
+function isRecord(value: unknown): value is UnknownRecord {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
@@ -50,7 +50,7 @@ export function sourceTime(
   return text(value, key) ?? fallback;
 }
 
-export function identity(value: unknown): SourceIdentity | null {
+function identity(value: unknown): SourceIdentity | null {
   const sourceId = text(value, 'id');
   const name = text(value, 'name') ?? text(value, 'displayName');
   if (sourceId === null || name === null) return null;

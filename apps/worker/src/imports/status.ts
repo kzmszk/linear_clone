@@ -1,6 +1,7 @@
 import { one } from '../db.ts';
 import { notFound } from '../errors.ts';
 import { requireManager } from '../organization/authentication.ts';
+import type { ImportVerifyInput } from '../../../../packages/contracts/src/index.ts';
 import type { AuthActor, SqlDb, SqlRow } from '../types.ts';
 import type { ImportBatch, ImportItem } from './types.ts';
 import { importedFiles } from './file-status.ts';
@@ -37,12 +38,6 @@ export type ImportResult = {
   version: number;
   records: ImportRecord[];
   unresolved: string[];
-};
-
-export type ImportVerifyInput = {
-  runId: string;
-  provider: string;
-  sourceWorkspaceId: string;
 };
 
 export function importRun(sql: SqlDb, runId: string): ImportRun | null {

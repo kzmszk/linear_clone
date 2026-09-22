@@ -26,11 +26,11 @@ import {
 const uuidPattern =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
 
-export function isUuid(value: string): boolean {
+function isUuid(value: string): boolean {
   return uuidPattern.test(value);
 }
 
-export async function listWorkspaces(api: ApiContext): Promise<Workspace[]> {
+async function listWorkspaces(api: ApiContext): Promise<Workspace[]> {
   return listRecords(api, '/workspaces', workspaceSchema);
 }
 
@@ -148,7 +148,7 @@ export async function resolveAssigneeId(
   return member.userId;
 }
 
-export async function listStates(
+async function listStates(
   api: ApiContext,
   workspaceId: string,
 ): Promise<WorkflowState[]> {
@@ -273,10 +273,4 @@ export function parseRepeated(values: string[] | undefined): string[] {
         .filter(Boolean),
     ) ?? []
   );
-}
-
-export function ensureOne<T>(items: T[], description: string): T {
-  if (items.length !== 1)
-    throw new Error(`Expected one ${description}, found ${items.length}.`);
-  return items[0];
 }

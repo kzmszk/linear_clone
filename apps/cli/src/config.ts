@@ -29,7 +29,7 @@ export function isLocalUrl(value: string): boolean {
   );
 }
 
-export function configPath(): string {
+function configPath(): string {
   const explicit = process.env.LINC_CONFIG;
   if (explicit) return explicit;
   const base = process.env.XDG_CONFIG_HOME ?? join(homedir(), '.config');

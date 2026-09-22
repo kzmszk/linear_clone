@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
-export const mappingSchema = z.object({
+const mappingSchema = z.object({
   kind: z.string(),
   sourceId: z.string(),
   sourceRevision: z.string(),
   payloadHash: z.string(),
   destinationId: z.string().nullable(),
 });
-export const referenceSchema = z.object({
+const referenceSchema = z.object({
   kind: z.string(),
   sourceId: z.string(),
   field: z.string(),
@@ -16,7 +16,7 @@ export const referenceSchema = z.object({
   destinationId: z.string().nullable(),
   targetDestinationId: z.string().nullable(),
 });
-export const fileSchema = z.object({
+const fileSchema = z.object({
   sourceId: z.string(),
   sourceUrl: z.string().optional(),
   issueId: z.string().nullable().optional(),
@@ -50,5 +50,4 @@ export type DestinationChecks = {
 };
 
 export type Mapping = z.infer<typeof mappingSchema>;
-export type Reference = z.infer<typeof referenceSchema>;
 export type DestinationFile = z.infer<typeof fileSchema>;

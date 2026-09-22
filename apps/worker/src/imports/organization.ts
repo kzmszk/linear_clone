@@ -14,7 +14,7 @@ import {
 } from './values.ts';
 import type { ImportBatch, ImportItem } from './types.ts';
 
-export function normalizeTeam(
+function normalizeTeam(
   sql: SqlDb,
   workspaceId: string,
   item: ImportItem,
@@ -256,7 +256,7 @@ function projectStatus(payload: unknown): string {
   return text(status, 'name') ?? text(payload, 'status') ?? 'planned';
 }
 
-export function markSourceDestination(
+function markSourceDestination(
   sql: SqlDb,
   workspaceId: string,
   batch: ImportBatch,

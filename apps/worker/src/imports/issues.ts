@@ -15,7 +15,7 @@ import {
 import { ensureIssueState } from './organization.ts';
 import type { ImportBatch, ImportItem } from './types.ts';
 
-export function normalizeIssue(
+function normalizeIssue(
   sql: SqlDb,
   workspaceId: string,
   batch: ImportBatch,

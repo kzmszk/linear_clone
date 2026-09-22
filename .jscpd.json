@@ -1,0 +1,10 @@
+{
+  "path": ["apps/cli/src", "apps/web/src", "apps/worker/src", "packages"],
+  "format": ["typescript", "tsx", "javascript"],
+  "minLines": 5,
+  "minTokens": 50,
+  "mode": "mild",
+  "reporters": ["json", "console"],
+  "output": "artifacts/private/quality/current",
+  "absolute": true
+}

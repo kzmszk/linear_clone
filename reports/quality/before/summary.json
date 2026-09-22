@@ -1,0 +1,169 @@
+{
+  "files": 147,
+  "lines": 19500,
+  "cognitiveOver15": [],
+  "largestFiles": [
+    {
+      "file": "apps/web/src/components/settings/EditResourceDialog.tsx",
+      "lines": 358
+    },
+    {
+      "file": "apps/web/src/api.ts",
+      "lines": 356
+    },
+    {
+      "file": "packages/linear-import/src/destination-children.ts",
+      "lines": 303
+    },
+    {
+      "file": "apps/worker/src/issues/mutations.ts",
+      "lines": 301
+    },
+    {
+      "file": "apps/worker/src/imports/organization.ts",
+      "lines": 298
+    },
+    {
+      "file": "apps/worker/src/imports/status.ts",
+      "lines": 295
+    },
+    {
+      "file": "apps/web/src/components/Sidebar.tsx",
+      "lines": 291
+    },
+    {
+      "file": "apps/cli/src/resolve.ts",
+      "lines": 282
+    },
+    {
+      "file": "apps/web/src/app/useWorkspaceMutations.ts",
+      "lines": 276
+    },
+    {
+      "file": "apps/web/src/components/PropertySelect.tsx",
+      "lines": 273
+    }
+  ],
+  "highestCognitive": [
+    {
+      "file": "packages/linear-import/src/destination-metadata.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 15 to the 0 allowed.",
+      "line": 49,
+      "column": 10,
+      "score": 15
+    },
+    {
+      "file": "apps/web/src/App.tsx",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 14 to the 0 allowed.",
+      "line": 9,
+      "column": 17,
+      "score": 14
+    },
+    {
+      "file": "packages/linear-import/src/apply.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 13 to the 0 allowed.",
+      "line": 47,
+      "column": 23,
+      "score": 13
+    },
+    {
+      "file": "packages/linear-import/src/destination-children.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 13 to the 0 allowed.",
+      "line": 66,
+      "column": 16,
+      "score": 13
+    },
+    {
+      "file": "apps/worker/src/http/router.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 12 to the 0 allowed.",
+      "line": 34,
+      "column": 16,
+      "score": 12
+    },
+    {
+      "file": "apps/worker/src/issues/references.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 12 to the 0 allowed.",
+      "line": 38,
+      "column": 17,
+      "score": 12
+    },
+    {
+      "file": "packages/linear-import/src/nested-export.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 12 to the 0 allowed.",
+      "line": 28,
+      "column": 17,
+      "score": 12
+    },
+    {
+      "file": "packages/linear-import/src/verify.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 12 to the 0 allowed.",
+      "line": 70,
+      "column": 16,
+      "score": 12
+    },
+    {
+      "file": "apps/worker/src/changes/events.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 11 to the 0 allowed.",
+      "line": 40,
+      "column": 17,
+      "score": 11
+    },
+    {
+      "file": "apps/cli/src/output.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 10 to the 0 allowed.",
+      "line": 56,
+      "column": 17,
+      "score": 10
+    },
+    {
+      "file": "packages/linear-import/src/destination-attachments.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 10 to the 0 allowed.",
+      "line": 20,
+      "column": 23,
+      "score": 10
+    },
+    {
+      "file": "packages/linear-import/src/destination-files.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 10 to the 0 allowed.",
+      "line": 26,
+      "column": 23,
+      "score": 10
+    },
+    {
+      "file": "packages/linear-import/src/destination-relations.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 10 to the 0 allowed.",
+      "line": 20,
+      "column": 23,
+      "score": 10
+    },
+    {
+      "file": "apps/cli/src/auth.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 9 to the 0 allowed.",
+      "line": 15,
+      "column": 23,
+      "score": 9
+    },
+    {
+      "file": "apps/cli/src/import-commands.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 9 to the 0 allowed.",
+      "line": 111,
+      "column": 16,
+      "score": 9
+    }
+  ]
+}

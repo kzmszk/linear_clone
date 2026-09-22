@@ -1,0 +1,20 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "apps/web/src/main.tsx",
+    "apps/worker/src/index.ts",
+    "apps/cli/src/main.ts",
+    "tests/**/*.mjs",
+    "tests/e2e/**/*.ts",
+    "scripts/**/*.mjs",
+    "apps/worker/src/local.ts"
+  ],
+  "project": [
+    "apps/**/*.{ts,tsx}",
+    "packages/**/*.ts",
+    "tests/**/*.{ts,mjs}",
+    "scripts/**/*.mjs"
+  ],
+  "ignoreDependencies": ["@cloudflare/workers-types", "cloudflare"],
+  "ignoreBinaries": ["git", "linear", "cloudflared"]
+}

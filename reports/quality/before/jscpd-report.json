@@ -1,0 +1,1229 @@
+{
+  "duplicates": [
+    {
+      "firstFile": {
+        "end": 43,
+        "endLoc": {
+          "column": 17,
+          "line": 43,
+          "position": 1307
+        },
+        "name": "apps/cli/src/issue-comments.ts",
+        "start": 38,
+        "startLoc": {
+          "column": 28,
+          "line": 38,
+          "position": 1052
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 6,
+      "secondFile": {
+        "end": 65,
+        "endLoc": {
+          "column": 11,
+          "line": 65,
+          "position": 1963
+        },
+        "name": "apps/cli/src/issue-comments.ts",
+        "start": 60,
+        "startLoc": {
+          "column": 32,
+          "line": 60,
+          "position": 1714
+        }
+      },
+      "tokens": 52
+    },
+    {
+      "firstFile": {
+        "end": 137,
+        "endLoc": {
+          "column": 30,
+          "line": 137,
+          "position": 4699
+        },
+        "name": "apps/cli/src/issue-comments.ts",
+        "start": 130,
+        "startLoc": {
+          "column": 69,
+          "line": 130,
+          "position": 4503
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 8,
+      "secondFile": {
+        "end": 205,
+        "endLoc": {
+          "column": 12,
+          "line": 205,
+          "position": 6392
+        },
+        "name": "apps/cli/src/issue-updates.ts",
+        "start": 197,
+        "startLoc": {
+          "column": 65,
+          "line": 197,
+          "position": 6187
+        }
+      },
+      "tokens": 50
+    },
+    {
+      "firstFile": {
+        "end": 81,
+        "endLoc": {
+          "column": 11,
+          "line": 81,
+          "position": 2638
+        },
+        "name": "apps/cli/src/issue-updates.ts",
+        "start": 71,
+        "startLoc": {
+          "column": 8,
+          "line": 71,
+          "position": 2136
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 11,
+      "secondFile": {
+        "end": 236,
+        "endLoc": {
+          "column": 56,
+          "line": 236,
+          "position": 7350
+        },
+        "name": "apps/cli/src/issue-updates.ts",
+        "start": 224,
+        "startLoc": {
+          "column": 9,
+          "line": 224,
+          "position": 6870
+        }
+      },
+      "tokens": 108
+    },
+    {
+      "firstFile": {
+        "end": 206,
+        "endLoc": {
+          "column": 35,
+          "line": 206,
+          "position": 6428
+        },
+        "name": "apps/cli/src/issue-updates.ts",
+        "start": 197,
+        "startLoc": {
+          "column": 64,
+          "line": 197,
+          "position": 6186
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 10,
+      "secondFile": {
+        "end": 134,
+        "endLoc": {
+          "column": 35,
+          "line": 134,
+          "position": 4110
+        },
+        "name": "apps/cli/src/management-members.ts",
+        "start": 125,
+        "startLoc": {
+          "column": 62,
+          "line": 125,
+          "position": 3868
+        }
+      },
+      "tokens": 55
+    },
+    {
+      "firstFile": {
+        "end": 206,
+        "endLoc": {
+          "column": 23,
+          "line": 206,
+          "position": 6416
+        },
+        "name": "apps/cli/src/issue-updates.ts",
+        "start": 197,
+        "startLoc": {
+          "column": 64,
+          "line": 197,
+          "position": 6186
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 10,
+      "secondFile": {
+        "end": 112,
+        "endLoc": {
+          "column": 46,
+          "line": 112,
+          "position": 3697
+        },
+        "name": "apps/cli/src/management.ts",
+        "start": 105,
+        "startLoc": {
+          "column": 74,
+          "line": 105,
+          "position": 3484
+        }
+      },
+      "tokens": 52
+    },
+    {
+      "firstFile": {
+        "end": 78,
+        "endLoc": {
+          "column": 11,
+          "line": 78,
+          "position": 2374
+        },
+        "name": "apps/cli/src/issues.ts",
+        "start": 73,
+        "startLoc": {
+          "column": 32,
+          "line": 73,
+          "position": 2162
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 6,
+      "secondFile": {
+        "end": 54,
+        "endLoc": {
+          "column": 11,
+          "line": 54,
+          "position": 1644
+        },
+        "name": "apps/cli/src/management-members.ts",
+        "start": 49,
+        "startLoc": {
+          "column": 30,
+          "line": 49,
+          "position": 1432
+        }
+      },
+      "tokens": 50
+    },
+    {
+      "firstFile": {
+        "end": 30,
+        "endLoc": {
+          "column": 15,
+          "line": 30,
+          "position": 721
+        },
+        "name": "apps/cli/src/management-labels.ts",
+        "start": 19,
+        "startLoc": {
+          "column": 18,
+          "line": 19,
+          "position": 484
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 12,
+      "secondFile": {
+        "end": 37,
+        "endLoc": {
+          "column": 15,
+          "line": 37,
+          "position": 894
+        },
+        "name": "apps/cli/src/management-members.ts",
+        "start": 26,
+        "startLoc": {
+          "column": 26,
+          "line": 26,
+          "position": 657
+        }
+      },
+      "tokens": 62
+    },
+    {
+      "firstFile": {
+        "end": 87,
+        "endLoc": {
+          "column": 25,
+          "line": 87,
+          "position": 2613
+        },
+        "name": "apps/cli/src/management-members.ts",
+        "start": 81,
+        "startLoc": {
+          "column": 27,
+          "line": 81,
+          "position": 2356
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 7,
+      "secondFile": {
+        "end": 100,
+        "endLoc": {
+          "column": 25,
+          "line": 100,
+          "position": 2978
+        },
+        "name": "apps/cli/src/management-projects.ts",
+        "start": 94,
+        "startLoc": {
+          "column": 31,
+          "line": 94,
+          "position": 2721
+        }
+      },
+      "tokens": 53
+    },
+    {
+      "firstFile": {
+        "end": 98,
+        "endLoc": {
+          "column": 18,
+          "line": 98,
+          "position": 2998
+        },
+        "name": "apps/cli/src/management-members.ts",
+        "start": 88,
+        "startLoc": {
+          "column": 31,
+          "line": 88,
+          "position": 2684
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 11,
+      "secondFile": {
+        "end": 111,
+        "endLoc": {
+          "column": 18,
+          "line": 111,
+          "position": 3371
+        },
+        "name": "apps/cli/src/management-projects.ts",
+        "start": 101,
+        "startLoc": {
+          "column": 38,
+          "line": 101,
+          "position": 3057
+        }
+      },
+      "tokens": 64
+    },
+    {
+      "firstFile": {
+        "end": 32,
+        "endLoc": {
+          "column": 40,
+          "line": 32,
+          "position": 1088
+        },
+        "name": "apps/web/src/app/useWorkspaceMutations.ts",
+        "start": 19,
+        "startLoc": {
+          "column": 35,
+          "line": 19,
+          "position": 659
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 14,
+      "secondFile": {
+        "end": 50,
+        "endLoc": {
+          "column": 40,
+          "line": 50,
+          "position": 1631
+        },
+        "name": "apps/web/src/app/useWorkspaceMutations.ts",
+        "start": 37,
+        "startLoc": {
+          "column": 29,
+          "line": 37,
+          "position": 1202
+        }
+      },
+      "tokens": 80
+    },
+    {
+      "firstFile": {
+        "end": 37,
+        "endLoc": {
+          "column": 37,
+          "line": 37,
+          "position": 855
+        },
+        "name": "apps/web/src/components/CreateIssueFields.tsx",
+        "start": 32,
+        "startLoc": {
+          "column": 17,
+          "line": 32,
+          "position": 658
+        }
+      },
+      "format": "tsx",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 6,
+      "secondFile": {
+        "end": 26,
+        "endLoc": {
+          "column": 37,
+          "line": 26,
+          "position": 791
+        },
+        "name": "apps/web/src/components/CreateIssueForm.tsx",
+        "start": 21,
+        "startLoc": {
+          "column": 31,
+          "line": 21,
+          "position": 594
+        }
+      },
+      "tokens": 54
+    },
+    {
+      "firstFile": {
+        "end": 194,
+        "endLoc": {
+          "column": 5,
+          "line": 194,
+          "position": 4419
+        },
+        "name": "apps/web/src/components/CreateIssueFields.tsx",
+        "start": 184,
+        "startLoc": {
+          "column": 4,
+          "line": 184,
+          "position": 4079
+        }
+      },
+      "format": "tsx",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 11,
+      "secondFile": {
+        "end": 165,
+        "endLoc": {
+          "column": 5,
+          "line": 165,
+          "position": 3973
+        },
+        "name": "apps/web/src/components/IssueProperties.tsx",
+        "start": 155,
+        "startLoc": {
+          "column": 4,
+          "line": 155,
+          "position": 3633
+        }
+      },
+      "tokens": 93
+    },
+    {
+      "firstFile": {
+        "end": 33,
+        "endLoc": {
+          "column": 4,
+          "line": 33,
+          "position": 765
+        },
+        "name": "apps/web/src/components/IssueEditorFields.tsx",
+        "start": 24,
+        "startLoc": {
+          "column": 18,
+          "line": 24,
+          "position": 490
+        }
+      },
+      "format": "tsx",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 10,
+      "secondFile": {
+        "end": 90,
+        "endLoc": {
+          "column": 4,
+          "line": 90,
+          "position": 1996
+        },
+        "name": "apps/web/src/components/IssueEditorFields.tsx",
+        "start": 81,
+        "startLoc": {
+          "column": 14,
+          "line": 81,
+          "position": 1721
+        }
+      },
+      "tokens": 69
+    },
+    {
+      "firstFile": {
+        "end": 337,
+        "endLoc": {
+          "column": 14,
+          "line": 337,
+          "position": 7564
+        },
+        "name": "apps/web/src/components/settings/EditResourceDialog.tsx",
+        "start": 329,
+        "startLoc": {
+          "column": 19,
+          "line": 329,
+          "position": 7369
+        }
+      },
+      "format": "tsx",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 9,
+      "secondFile": {
+        "end": 109,
+        "endLoc": {
+          "column": 14,
+          "line": 109,
+          "position": 2631
+        },
+        "name": "apps/web/src/components/settings/ProjectPanel.tsx",
+        "start": 101,
+        "startLoc": {
+          "column": 33,
+          "line": 101,
+          "position": 2436
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 354,
+        "endLoc": {
+          "column": 14,
+          "line": 354,
+          "position": 8108
+        },
+        "name": "apps/web/src/components/settings/EditResourceDialog.tsx",
+        "start": 347,
+        "startLoc": {
+          "column": 10,
+          "line": 347,
+          "position": 7833
+        }
+      },
+      "format": "tsx",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 8,
+      "secondFile": {
+        "end": 147,
+        "endLoc": {
+          "column": 14,
+          "line": 147,
+          "position": 3780
+        },
+        "name": "apps/web/src/components/settings/ProjectPanel.tsx",
+        "start": 140,
+        "startLoc": {
+          "column": 10,
+          "line": 140,
+          "position": 3505
+        }
+      },
+      "tokens": 68
+    },
+    {
+      "firstFile": {
+        "end": 57,
+        "endLoc": {
+          "column": 7,
+          "line": 57,
+          "position": 1370
+        },
+        "name": "apps/web/src/components/settings/MemberPanel.tsx",
+        "start": 36,
+        "startLoc": {
+          "column": 46,
+          "line": 36,
+          "position": 852
+        }
+      },
+      "format": "tsx",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 22,
+      "secondFile": {
+        "end": 56,
+        "endLoc": {
+          "column": 7,
+          "line": 56,
+          "position": 1322
+        },
+        "name": "apps/web/src/components/settings/ProjectPanel.tsx",
+        "start": 35,
+        "startLoc": {
+          "column": 26,
+          "line": 35,
+          "position": 804
+        }
+      },
+      "tokens": 121
+    },
+    {
+      "firstFile": {
+        "end": 57,
+        "endLoc": {
+          "column": 7,
+          "line": 57,
+          "position": 1370
+        },
+        "name": "apps/web/src/components/settings/MemberPanel.tsx",
+        "start": 37,
+        "startLoc": {
+          "column": 29,
+          "line": 37,
+          "position": 892
+        }
+      },
+      "format": "tsx",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 21,
+      "secondFile": {
+        "end": 49,
+        "endLoc": {
+          "column": 7,
+          "line": 49,
+          "position": 1123
+        },
+        "name": "apps/web/src/components/settings/TeamPanel.tsx",
+        "start": 29,
+        "startLoc": {
+          "column": 28,
+          "line": 29,
+          "position": 645
+        }
+      },
+      "tokens": 109
+    },
+    {
+      "firstFile": {
+        "end": 41,
+        "endLoc": {
+          "column": 20,
+          "line": 41,
+          "position": 1251
+        },
+        "name": "apps/worker/src/http/classification-routes.ts",
+        "start": 32,
+        "startLoc": {
+          "column": 28,
+          "line": 32,
+          "position": 1025
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 10,
+      "secondFile": {
+        "end": 89,
+        "endLoc": {
+          "column": 20,
+          "line": 89,
+          "position": 2444
+        },
+        "name": "apps/worker/src/http/classification-routes.ts",
+        "start": 80,
+        "startLoc": {
+          "column": 28,
+          "line": 80,
+          "position": 2218
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 41,
+        "endLoc": {
+          "column": 20,
+          "line": 41,
+          "position": 1251
+        },
+        "name": "apps/worker/src/http/classification-routes.ts",
+        "start": 32,
+        "startLoc": {
+          "column": 28,
+          "line": 32,
+          "position": 1025
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 10,
+      "secondFile": {
+        "end": 57,
+        "endLoc": {
+          "column": 20,
+          "line": 57,
+          "position": 1837
+        },
+        "name": "apps/worker/src/http/resource-routes.ts",
+        "start": 48,
+        "startLoc": {
+          "column": 27,
+          "line": 48,
+          "position": 1611
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 41,
+        "endLoc": {
+          "column": 20,
+          "line": 41,
+          "position": 1251
+        },
+        "name": "apps/worker/src/http/classification-routes.ts",
+        "start": 32,
+        "startLoc": {
+          "column": 28,
+          "line": 32,
+          "position": 1025
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 10,
+      "secondFile": {
+        "end": 115,
+        "endLoc": {
+          "column": 20,
+          "line": 115,
+          "position": 3284
+        },
+        "name": "apps/worker/src/http/resource-routes.ts",
+        "start": 106,
+        "startLoc": {
+          "column": 30,
+          "line": 106,
+          "position": 3058
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 41,
+        "endLoc": {
+          "column": 20,
+          "line": 41,
+          "position": 1251
+        },
+        "name": "apps/worker/src/http/classification-routes.ts",
+        "start": 32,
+        "startLoc": {
+          "column": 28,
+          "line": 32,
+          "position": 1025
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 10,
+      "secondFile": {
+        "end": 180,
+        "endLoc": {
+          "column": 20,
+          "line": 180,
+          "position": 4868
+        },
+        "name": "apps/worker/src/http/resource-routes.ts",
+        "start": 171,
+        "startLoc": {
+          "column": 29,
+          "line": 171,
+          "position": 4642
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 120,
+        "endLoc": {
+          "column": 32,
+          "line": 120,
+          "position": 3321
+        },
+        "name": "apps/worker/src/http/classification-routes.ts",
+        "start": 96,
+        "startLoc": {
+          "column": 17,
+          "line": 96,
+          "position": 2732
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 25,
+      "secondFile": {
+        "end": 88,
+        "endLoc": {
+          "column": 32,
+          "line": 88,
+          "position": 2711
+        },
+        "name": "apps/worker/src/http/resource-routes.ts",
+        "start": 64,
+        "startLoc": {
+          "column": 16,
+          "line": 64,
+          "position": 2122
+        }
+      },
+      "tokens": 111
+    },
+    {
+      "firstFile": {
+        "end": 120,
+        "endLoc": {
+          "column": 32,
+          "line": 120,
+          "position": 3321
+        },
+        "name": "apps/worker/src/http/classification-routes.ts",
+        "start": 96,
+        "startLoc": {
+          "column": 17,
+          "line": 96,
+          "position": 2732
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 25,
+      "secondFile": {
+        "end": 153,
+        "endLoc": {
+          "column": 32,
+          "line": 153,
+          "position": 4290
+        },
+        "name": "apps/worker/src/http/resource-routes.ts",
+        "start": 129,
+        "startLoc": {
+          "column": 19,
+          "line": 129,
+          "position": 3701
+        }
+      },
+      "tokens": 111
+    },
+    {
+      "firstFile": {
+        "end": 120,
+        "endLoc": {
+          "column": 32,
+          "line": 120,
+          "position": 3321
+        },
+        "name": "apps/worker/src/http/classification-routes.ts",
+        "start": 111,
+        "startLoc": {
+          "column": 2,
+          "line": 111,
+          "position": 3020
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 10,
+      "secondFile": {
+        "end": 180,
+        "endLoc": {
+          "column": 32,
+          "line": 180,
+          "position": 5111
+        },
+        "name": "apps/worker/src/http/organization-routes.ts",
+        "start": 171,
+        "startLoc": {
+          "column": 63,
+          "line": 171,
+          "position": 4810
+        }
+      },
+      "tokens": 56
+    },
+    {
+      "firstFile": {
+        "end": 96,
+        "endLoc": {
+          "column": 18,
+          "line": 96,
+          "position": 2373
+        },
+        "name": "apps/worker/src/imports/secondary.ts",
+        "start": 83,
+        "startLoc": {
+          "column": 25,
+          "line": 83,
+          "position": 2080
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 14,
+      "secondFile": {
+        "end": 150,
+        "endLoc": {
+          "column": 18,
+          "line": 150,
+          "position": 3871
+        },
+        "name": "apps/worker/src/imports/secondary.ts",
+        "start": 137,
+        "startLoc": {
+          "column": 28,
+          "line": 137,
+          "position": 3578
+        }
+      },
+      "tokens": 57
+    },
+    {
+      "firstFile": {
+        "end": 118,
+        "endLoc": {
+          "column": 25,
+          "line": 118,
+          "position": 3364
+        },
+        "name": "apps/worker/src/issues/comments.ts",
+        "start": 100,
+        "startLoc": {
+          "column": 21,
+          "line": 100,
+          "position": 2917
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 19,
+      "secondFile": {
+        "end": 181,
+        "endLoc": {
+          "column": 25,
+          "line": 181,
+          "position": 5016
+        },
+        "name": "apps/worker/src/issues/comments.ts",
+        "start": 163,
+        "startLoc": {
+          "column": 25,
+          "line": 163,
+          "position": 4569
+        }
+      },
+      "tokens": 85
+    },
+    {
+      "firstFile": {
+        "end": 218,
+        "endLoc": {
+          "column": 1,
+          "line": 218,
+          "position": 6094
+        },
+        "name": "apps/worker/src/issues/comments.ts",
+        "start": 205,
+        "startLoc": {
+          "column": 41,
+          "line": 205,
+          "position": 5798
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 14,
+      "secondFile": {
+        "end": 301,
+        "endLoc": {
+          "column": 1,
+          "line": 301,
+          "position": 9140
+        },
+        "name": "apps/worker/src/issues/mutations.ts",
+        "start": 288,
+        "startLoc": {
+          "column": 39,
+          "line": 288,
+          "position": 8844
+        }
+      },
+      "tokens": 72
+    },
+    {
+      "firstFile": {
+        "end": 213,
+        "endLoc": {
+          "column": 20,
+          "line": 213,
+          "position": 6819
+        },
+        "name": "apps/worker/src/issues/mutations.ts",
+        "start": 195,
+        "startLoc": {
+          "column": 27,
+          "line": 195,
+          "position": 6464
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 19,
+      "secondFile": {
+        "end": 236,
+        "endLoc": {
+          "column": 20,
+          "line": 236,
+          "position": 7226
+        },
+        "name": "apps/worker/src/issues/mutations.ts",
+        "start": 218,
+        "startLoc": {
+          "column": 28,
+          "line": 218,
+          "position": 6871
+        }
+      },
+      "tokens": 59
+    },
+    {
+      "firstFile": {
+        "end": 93,
+        "endLoc": {
+          "column": 5,
+          "line": 93,
+          "position": 2738
+        },
+        "name": "apps/worker/src/organization/workspaces.ts",
+        "start": 82,
+        "startLoc": {
+          "column": 79,
+          "line": 82,
+          "position": 2402
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 12,
+      "secondFile": {
+        "end": 215,
+        "endLoc": {
+          "column": 1,
+          "line": 215,
+          "position": 6123
+        },
+        "name": "apps/worker/src/organization/workspaces.ts",
+        "start": 204,
+        "startLoc": {
+          "column": 13,
+          "line": 204,
+          "position": 5831
+        }
+      },
+      "tokens": 62
+    },
+    {
+      "firstFile": {
+        "end": 76,
+        "endLoc": {
+          "column": 24,
+          "line": 76,
+          "position": 1884
+        },
+        "name": "packages/contracts/src/index.ts",
+        "start": 71,
+        "startLoc": {
+          "column": 50,
+          "line": 71,
+          "position": 1733
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 6,
+      "secondFile": {
+        "end": 185,
+        "endLoc": {
+          "column": 24,
+          "line": 185,
+          "position": 4925
+        },
+        "name": "packages/contracts/src/index.ts",
+        "start": 180,
+        "startLoc": {
+          "column": 34,
+          "line": 180,
+          "position": 4774
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 40,
+        "endLoc": {
+          "column": 15,
+          "line": 40,
+          "position": 948
+        },
+        "name": "packages/linear-import/src/destination-children.ts",
+        "start": 24,
+        "startLoc": {
+          "column": 37,
+          "line": 24,
+          "position": 582
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 17,
+      "secondFile": {
+        "end": 61,
+        "endLoc": {
+          "column": 15,
+          "line": 61,
+          "position": 1376
+        },
+        "name": "packages/linear-import/src/destination-children.ts",
+        "start": 45,
+        "startLoc": {
+          "column": 38,
+          "line": 45,
+          "position": 1010
+        }
+      },
+      "tokens": 72
+    },
+    {
+      "firstFile": {
+        "end": 47,
+        "endLoc": {
+          "column": 40,
+          "line": 47,
+          "position": 1191
+        },
+        "name": "packages/linear-import/src/destination-values.ts",
+        "start": 41,
+        "startLoc": {
+          "column": 25,
+          "line": 41,
+          "position": 998
+        }
+      },
+      "format": "typescript",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 7,
+      "secondFile": {
+        "end": 82,
+        "endLoc": {
+          "column": 40,
+          "line": 82,
+          "position": 2127
+        },
+        "name": "packages/linear-import/src/destination-values.ts",
+        "start": 76,
+        "startLoc": {
+          "column": 26,
+          "line": 76,
+          "position": 1934
+        }
+      },
+      "tokens": 52
+    }
+  ],
+  "statistics": {
+    "detectionDate": "2026-09-22T03:34:02.779Z",
+    "formats": {
+      "tsx": {
+        "clones": 7,
+        "duplicatedLines": 80,
+        "duplicatedTokens": 565,
+        "lines": 5463,
+        "newClones": 0,
+        "newDuplicatedLines": 0,
+        "percentage": 1.4643968515467691,
+        "percentageTokens": 1.9559648272519559,
+        "sources": 41,
+        "tokens": 28886
+      },
+      "typescript": {
+        "clones": 25,
+        "duplicatedLines": 278,
+        "duplicatedTokens": 1618,
+        "lines": 14026,
+        "newClones": 0,
+        "newDuplicatedLines": 0,
+        "percentage": 1.9820333666048766,
+        "percentageTokens": 2.106359435006184,
+        "sources": 104,
+        "tokens": 76815
+      }
+    },
+    "total": {
+      "clones": 32,
+      "duplicatedLines": 358,
+      "duplicatedTokens": 2183,
+      "lines": 19489,
+      "newClones": 0,
+      "newDuplicatedLines": 0,
+      "percentage": 1.836933654882241,
+      "percentageTokens": 2.065259552889755,
+      "sources": 145,
+      "tokens": 105701
+    }
+  }
+}

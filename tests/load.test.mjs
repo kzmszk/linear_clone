@@ -22,7 +22,7 @@ test('100 concurrent creates, retries and updates preserve all results', async (
       commands.map((command) => request(`${fixture.base}/issues`, command)),
     );
     for (const result of created)
-      assert.ok(result.status < 300, JSON.stringify(result));
+      assert.equal(result.status, 201, JSON.stringify(result));
     assert.equal(
       new Set(created.map((result) => result.body.current.identifier)).size,
       100,
@@ -40,6 +40,7 @@ test('100 concurrent creates, retries and updates preserve all results', async (
       ),
     );
     for (const [i, result] of updated.entries()) {
+      assert.equal(result.status, 200);
       assert.equal(result.body.current.title, `Updated ${i}`);
       assert.equal(result.body.current.version, 2);
       const stored = await request(
@@ -48,6 +49,12 @@ test('100 concurrent creates, retries and updates preserve all results', async (
       assert.equal(stored.body.title, `Updated ${i}`);
       assert.equal(stored.body.description, `Body ${i}`);
     }
+    const listed = await request(`${fixture.base}/issues`);
+    assert.equal(listed.status, 200);
+    assert.deepEqual(
+      listed.body.items.map((item) => item.id).sort(),
+      created.map((item) => item.body.current.id).sort(),
+    );
     const target = updated[0].body.current;
     const contenders = await Promise.all(
       Array.from({ length: 100 }, (_, i) =>
@@ -57,11 +64,18 @@ test('100 concurrent creates, retries and updates preserve all results', async (
         }),
       ),
     );
-    assert.equal(contenders.filter((result) => result.status < 300).length, 1);
+    assert.equal(
+      contenders.filter((result) => result.status === 200).length,
+      1,
+    );
     assert.equal(
       contenders.filter((result) => result.status === 409).length,
       99,
     );
+    const winner = contenders.find((result) => result.status === 200);
+    const savedWinner = await request(`${fixture.base}/issues/${target.id}`);
+    assert.equal(savedWinner.body.version, 3);
+    assert.equal(savedWinner.body.title, winner.body.current.title);
     process.stdout.write(
       `${JSON.stringify({ creates: 100, updates: 100, replays: 100, contentionConflicts: 99, elapsedMs: Math.round(performance.now() - started) })}\n`,
     );

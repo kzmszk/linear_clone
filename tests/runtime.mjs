@@ -6,6 +6,28 @@ import { setTimeout as delay } from 'node:timers/promises';
 
 export async function startRuntime(port = 8899, options = {}) {
   const storage = await mkdtemp(path.join(tmpdir(), 'linc-test-'));
+  let worker;
+  try {
+    worker = await launchRuntime(port, options, storage);
+  } catch (error) {
+    await rm(storage, { recursive: true, force: true });
+    throw error;
+  }
+  return {
+    url: worker.url,
+    output: () => worker.output(),
+    async restart() {
+      await worker.stop();
+      worker = await launchRuntime(port, options, storage);
+    },
+    async stop() {
+      await worker.stop();
+      await rm(storage, { recursive: true, force: true });
+    },
+  };
+}
+
+async function launchRuntime(port, options, storage) {
   const url = `http://127.0.0.1:${port}`;
   let output = '';
   const child = spawn(
@@ -36,16 +58,25 @@ export async function startRuntime(port = 8899, options = {}) {
   child.stderr.on('data', (chunk) => {
     output = (output + chunk).slice(-12000);
   });
-  async function stop() {
-    if (child.pid) {
-      try {
-        process.kill(-child.pid, 'SIGTERM');
-      } catch (error) {
-        if (error.code !== 'ESRCH') throw error;
-      }
+  const closed = new Promise((resolve) => child.once('close', resolve));
+  function signalWorker(signal) {
+    if (!child.pid) return;
+    try {
+      process.kill(-child.pid, signal);
+    } catch (error) {
+      if (error.code !== 'ESRCH') throw error;
     }
-    await delay(300);
-    await rm(storage, { recursive: true, force: true });
+  }
+  async function stop() {
+    if (child.pid && child.exitCode === null && child.signalCode === null) {
+      signalWorker('SIGTERM');
+    }
+    const stopped = await Promise.race([
+      closed.then(() => true),
+      delay(5000, false, { ref: false }),
+    ]);
+    if (!stopped) signalWorker('SIGKILL');
+    await closed;
   }
   const deadline = Date.now() + 30_000;
   while (Date.now() < deadline) {

@@ -1,15 +1,18 @@
 import assert from 'node:assert/strict';
-import { after, before, test } from 'node:test';
+import { afterEach, beforeEach, test } from 'node:test';
 import { api, seed, startRuntime } from './runtime.mjs';
 
 let runtime, request, fixture;
-before(async () => {
+beforeEach(async () => {
   runtime = await startRuntime();
   request = api(runtime.url);
   fixture = await seed(request);
 });
-after(async () => {
+afterEach(async () => {
   await runtime?.stop();
+  runtime = null;
+  request = null;
+  fixture = null;
 });
 
 test('issue lifecycle preserves Markdown, versions, replay and restore', async () => {
@@ -25,7 +28,7 @@ test('issue lifecycle preserves Markdown, versions, replay and restore', async (
     body,
     operationId,
   });
-  assert.ok(created.status < 300, JSON.stringify(created));
+  assert.equal(created.status, 201, JSON.stringify(created));
   const issue = created.body.current;
   assert.equal(issue.identifier, 'DEV-1');
   assert.equal(issue.version, 1);
@@ -48,6 +51,7 @@ test('issue lifecycle preserves Markdown, versions, replay and restore', async (
     body: { title: '古い編集', expectedVersion: 1 },
   });
   assert.equal(conflict.status, 409);
+  assert.equal(conflict.body.error.code, 'version_conflict');
   const removed = await request(`${fixture.base}/issues/${issue.id}`, {
     method: 'DELETE',
     body: { expectedVersion: 2 },
@@ -67,17 +71,16 @@ test('uninvited principals cannot access workspace data or bootstrap', async () 
   const outsider = api(runtime.url, 'outsider@example.test');
   const me = await outsider('/me');
   assert.deepEqual(me.body.workspaces, []);
-  assert.ok(
-    [403, 404].includes((await outsider(`${fixture.base}/issues`)).status),
-  );
-  assert.ok(
-    (
-      await outsider('/bootstrap', {
-        method: 'POST',
-        body: { slug: 'stolen', name: 'Stolen' },
-      })
-    ).status >= 400,
-  );
+  const issues = await outsider(`${fixture.base}/issues`);
+  assert.equal(issues.status, 404);
+  assert.equal(issues.body.error.code, 'not_found');
+  const bootstrap = await outsider('/bootstrap', {
+    method: 'POST',
+    body: { slug: 'stolen', name: 'Stolen' },
+  });
+  assert.equal(bootstrap.status, 403);
+  assert.equal(bootstrap.body.error.code, 'forbidden');
+  assert.equal((await request('/workspaces')).body.length, 1);
 });
 
 test('invalid input is rejected without consuming issue numbers', async () => {
@@ -86,11 +89,13 @@ test('invalid input is rejected without consuming issue numbers', async () => {
     body: { teamId: fixture.team.id, title: '' },
   });
   assert.equal(rejected.status, 400);
+  assert.equal(rejected.body.error.code, 'invalid_input');
   const created = await request(`${fixture.base}/issues`, {
     method: 'POST',
-    body: { teamId: fixture.team.id, title: 'Second issue' },
+    body: { teamId: fixture.team.id, title: 'First valid issue' },
   });
-  assert.equal(created.body.current.identifier, 'DEV-2');
+  assert.equal(created.status, 201);
+  assert.equal(created.body.current.identifier, 'DEV-1');
 });
 
 test('private R2 files require issue access and preserve uploaded bytes', async () => {
@@ -118,10 +123,16 @@ test('private R2 files require issue access and preserve uploaded bytes', async 
   const denied = await fetch(`${runtime.url}${metadata.url}`, {
     headers: { 'x-test-email': 'outsider@example.test' },
   });
-  assert.ok(denied.status === 403 || denied.status === 404);
+  assert.equal(denied.status, 404);
+  assert.equal((await denied.json()).error.code, 'not_found');
 });
 
 test('invited members see public issues but cannot read private team issues', async () => {
+  const publicIssue = await request(`${fixture.base}/issues`, {
+    method: 'POST',
+    body: { teamId: fixture.team.id, title: 'Public issue' },
+  });
+  assert.equal(publicIssue.status, 201);
   const invited = await request(`${fixture.base}/members`, {
     method: 'POST',
     body: {
@@ -131,7 +142,7 @@ test('invited members see public issues but cannot read private team issues', as
       teamIds: [],
     },
   });
-  assert.ok(invited.status < 300, JSON.stringify(invited));
+  assert.equal(invited.status, 201, JSON.stringify(invited));
   const teammate = api(runtime.url, 'teammate@example.test');
   const me = await teammate('/me');
   assert.equal(me.body.workspaces.length, 1);
@@ -143,14 +154,18 @@ test('invited members see public issues but cannot read private team issues', as
     method: 'POST',
     body: { teamId: team.body.current.id, title: 'Private issue' },
   });
-  assert.equal(
-    (await teammate(`${fixture.base}/issues/${issue.body.current.id}`)).status,
-    404,
+  const privateIssue = await teammate(
+    `${fixture.base}/issues/${issue.body.current.id}`,
   );
+  assert.equal(privateIssue.status, 404);
+  assert.equal(privateIssue.body.error.code, 'not_found');
   const visible = await teammate(`${fixture.base}/issues`);
-  assert.ok(
-    visible.body.items.every((record) => record.title !== 'Private issue'),
+  assert.equal(visible.status, 200);
+  assert.deepEqual(
+    visible.body.items.map((record) => record.id),
+    [publicIssue.body.current.id],
   );
+  assert.equal(visible.body.items[0].title, 'Public issue');
   const members = await request(`${fixture.base}/members`);
   const member = members.body.find(
     (record) => record.email === 'teammate@example.test',
@@ -160,8 +175,10 @@ test('invited members see public issues but cannot read private team issues', as
     method: 'DELETE',
     body: { expectedVersion: member.version },
   });
-  assert.ok(removed.status < 300, JSON.stringify(removed));
-  assert.equal((await teammate(`${fixture.base}/issues`)).status, 404);
+  assert.equal(removed.status, 200, JSON.stringify(removed));
+  const removedAccess = await teammate(`${fixture.base}/issues`);
+  assert.equal(removedAccess.status, 404);
+  assert.equal(removedAccess.body.error.code, 'not_found');
 });
 
 test('cross-workspace references and removing the last owner are rejected', async () => {
@@ -177,7 +194,14 @@ test('cross-workspace references and removing the last owner are rejected', asyn
     method: 'POST',
     body: { teamId: team.body.current.id, title: 'Wrong workspace' },
   });
-  assert.ok(rejected.status >= 400, JSON.stringify(rejected));
+  assert.equal(rejected.status, 404, JSON.stringify(rejected));
+  assert.equal(rejected.body.error.code, 'not_found');
+  const created = await request(`${fixture.base}/issues`, {
+    method: 'POST',
+    body: { teamId: fixture.team.id, title: 'Valid issue' },
+  });
+  assert.equal(created.status, 201);
+  assert.equal(created.body.current.identifier, 'DEV-1');
   const members = await request(`${fixture.base}/members`);
   const owner = members.body.find(
     (record) => record.email === 'owner@example.test',
@@ -186,7 +210,13 @@ test('cross-workspace references and removing the last owner are rejected', asyn
     method: 'DELETE',
     body: { expectedVersion: owner.version },
   });
-  assert.ok(removed.status >= 400, JSON.stringify(removed));
+  assert.equal(removed.status, 403, JSON.stringify(removed));
+  assert.equal(removed.body.error.code, 'forbidden');
+  const unchangedOwner = (await request(`${fixture.base}/members`)).body.find(
+    (record) => record.id === owner.id,
+  );
+  assert.equal(unchangedOwner.active, true);
+  assert.equal(unchangedOwner.version, owner.version);
   assert.equal((await request(`${fixture.base}/issues`)).status, 200);
 });
 
@@ -221,10 +251,9 @@ test('issue pagination returns every visible row beyond two pages', async () => 
   assert.equal(pageCount, 3);
   assert.equal(ids.length, 405);
   assert.equal(new Set(ids).size, 405);
-  assert.equal(
-    (await request(`${fixture.base}/issues?cursor=invalid`)).status,
-    400,
-  );
+  const invalidCursor = await request(`${fixture.base}/issues?cursor=invalid`);
+  assert.equal(invalidCursor.status, 400);
+  assert.equal(invalidCursor.body.error.code, 'invalid_input');
 });
 
 test('completion dates follow state changes and survive unrelated edits', async () => {

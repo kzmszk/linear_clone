@@ -37,7 +37,7 @@ export function CreateIssueFields({
   onProject: (value: string) => void;
 }) {
   return (
-    <div className="form-grid create-issue-properties">
+    <div className="create-issue-properties">
       <TeamField
         metadata={metadata}
         teamId={teamId}

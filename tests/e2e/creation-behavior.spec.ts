@@ -107,6 +107,46 @@ test('explains the team prerequisite and exposes required issue fields', async (
   );
 });
 
+test('keeps creation compact and property menus visible at desktop and narrow widths', async ({
+  page,
+  request,
+}) => {
+  await ensureTeam(request);
+  await page.goto(`/?workspace=${emptyWorkspaceId}`);
+  await page
+    .getByRole('banner')
+    .getByRole('button', { name: /^New issue/ })
+    .click();
+  const dialog = page.getByRole('dialog', { name: 'Create issue' });
+  const propertyBounds = await Promise.all(
+    ['Team', 'Status', 'Priority', 'Assignee', 'Project'].map((name) =>
+      dialog.getByRole('button', { name, exact: true }).boundingBox(),
+    ),
+  );
+  const rows = propertyBounds.map((bounds) => Math.round(bounds?.y ?? -1));
+  expect(new Set(rows).size).toBe(1);
+  expect(rows[0]).toBeGreaterThan(0);
+  expect((await dialog.boundingBox())?.height).toBeLessThan(450);
+  await dialog.getByRole('button', { name: 'Status', exact: true }).click();
+  await expect(dialog.getByRole('option').last()).toBeInViewport({
+    ratio: 1,
+  });
+  await dialog.getByRole('combobox', { name: 'Search Status' }).press('Escape');
+  await page.screenshot({ path: 'reports/screenshots/issue-create.png' });
+  await page.setViewportSize({ width: 640, height: 740 });
+  for (const name of ['Team', 'Project']) {
+    await dialog.getByRole('button', { name, exact: true }).click();
+    await expect(dialog.getByRole('option').first()).toBeInViewport({
+      ratio: 1,
+    });
+    await dialog
+      .getByRole('combobox', { name: `Search ${name}` })
+      .press('Escape');
+  }
+  await dialog.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await expect(dialog).toHaveCount(0);
+});
+
 test('keeps project context and draft fields after a failed create retry', async ({
   page,
   request,

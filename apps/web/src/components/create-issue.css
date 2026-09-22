@@ -1,8 +1,9 @@
 .dialog:has(.create-issue-form) {
   width: min(750px, 100%);
+  overflow: visible;
 }
 
-.create-issue-form {
+.create-form.create-issue-form {
   gap: 11px;
 }
 
@@ -26,35 +27,36 @@
   color: var(--accent);
 }
 
-.create-issue-title {
-  height: 45px !important;
-  padding: 3px 0 !important;
-  border: 0 !important;
-  border-bottom: 1px solid var(--border) !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  font-size: 22px !important;
+.create-issue-form input.create-issue-title {
+  height: 45px;
+  padding: 3px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  font-size: 22px;
   font-weight: 650;
   letter-spacing: -0.025em;
 }
 
-.create-issue-title:focus {
-  border-bottom-color: var(--accent) !important;
+.create-issue-form input.create-issue-title:focus {
+  border-bottom-color: var(--accent);
 }
 
-.create-issue-description {
+.create-issue-form textarea.create-issue-description {
   min-height: 58px;
-  padding: 5px 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-  font-size: 13px !important;
+  padding: 5px 0;
+  border: 0;
+  background: transparent;
+  font-size: 13px;
 }
 
-.create-issue-description:focus {
-  background: transparent !important;
+.create-issue-form textarea.create-issue-description:focus {
+  background: transparent;
 }
 
 .create-issue-properties {
+  display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
   padding: 10px 0;
@@ -65,6 +67,16 @@
 .create-issue-property {
   min-width: 0;
   gap: 4px;
+}
+
+.create-issue-property .property-select-popup {
+  right: auto;
+  left: 0;
+}
+
+.create-issue-property:last-child .property-select-popup {
+  right: 0;
+  left: auto;
 }
 
 .create-issue-property .property-select {
@@ -104,12 +116,35 @@
   margin-top: 0;
 }
 
+@media (max-height: 740px) {
+  .create-issue-property .property-select-popup {
+    top: auto;
+    bottom: calc(100% + 4px);
+  }
+}
+
+@media (max-height: 600px) {
+  .dialog:has(.create-issue-form) {
+    overflow: auto;
+  }
+}
+
 @media (max-width: 680px) {
   .create-issue-properties {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .create-issue-title {
-    font-size: 19px !important;
+  .create-issue-property:nth-child(even) .property-select-popup {
+    right: 0;
+    left: auto;
+  }
+
+  .create-issue-property:last-child .property-select-popup {
+    right: auto;
+    left: 0;
+  }
+
+  .create-issue-form input.create-issue-title {
+    font-size: 19px;
   }
 }

@@ -6,7 +6,8 @@ await build({
   bundle: true,
   platform: 'node',
   format: 'esm',
-  packages: 'external',
-  banner: { js: '#!/usr/bin/env node' },
+  banner: {
+    js: "#!/usr/bin/env node\nimport { createRequire } from 'node:module'; const require = createRequire(import.meta.url);",
+  },
 });
 await chmod('dist/cli/linc.mjs', 0o755);

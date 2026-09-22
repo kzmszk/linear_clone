@@ -98,7 +98,7 @@ function registerApply(linear: Command): void {
       });
       const result = await applyImport({
         outputDir,
-        workspaceId: workspaceId,
+        workspaceId,
         destinationKey: `${api.url}|${workspaceId}`,
         transport: api.client,
         resolveDestinationIssueIds: (sourceIds) =>

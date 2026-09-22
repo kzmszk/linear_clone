@@ -163,6 +163,15 @@ export async function resolveState(
   return match;
 }
 
+export async function resolveIssueMutationStateId(
+  api: ApiContext,
+  workspaceId: string,
+  ref: string,
+): Promise<string> {
+  if (isUuid(ref)) return ref;
+  return (await resolveState(api, workspaceId, ref)).id;
+}
+
 export async function listLabels(
   api: ApiContext,
   workspaceId: string,

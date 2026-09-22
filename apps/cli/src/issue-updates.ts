@@ -12,12 +12,12 @@ import {
   getIssue,
   parseRepeated,
   resolveAssigneeId,
+  resolveIssueMutationStateId,
   resolveIssueId,
   resolveLabel,
   resolveProject,
-  resolveState,
 } from './resolve.ts';
-import { issueSchema, type Issue } from './types.ts';
+import { issueSchema } from './types.ts';
 
 const updateOptions = z.object({
   title: z.string().optional(),
@@ -71,11 +71,17 @@ function registerIssueUpdate(issue: Command): void {
   update.action(async (identifier, _options, command) => {
     const { api, options } = apiFor(command);
     const workspaceId = await workspaceIdFor(api, options);
-    const current = await getIssue(api, workspaceId, identifier);
     const input = updateOptions.parse(command.opts());
-    const patch = await issuePatch(api, workspaceId, current, input);
-    if (Object.keys(patch).length === 1)
+    const [current, fields] = await Promise.all([
+      getIssue(api, workspaceId, identifier),
+      issuePatch(api, workspaceId, input),
+    ]);
+    if (Object.keys(fields).length === 0)
       throw new Error('Provide an issue field to update.');
+    const patch = {
+      ...fields,
+      expectedVersion: input.expectedVersion ?? current.version,
+    };
     printResult(
       await requestRecord(
         api,
@@ -91,16 +97,13 @@ function registerIssueUpdate(issue: Command): void {
 async function issuePatch(
   api: ApiContext,
   workspaceId: string,
-  current: Issue,
   input: z.infer<typeof updateOptions>,
 ): Promise<Record<string, unknown>> {
   const description = await fileContents(
     input.descriptionFile,
     input.description,
   );
-  const patch: Record<string, unknown> = {
-    expectedVersion: input.expectedVersion ?? current.version,
-  };
+  const patch: Record<string, unknown> = {};
   addTextPatch(patch, input, description);
   await addStatePatch(api, workspaceId, patch, input);
   await addAssignmentPatch(api, workspaceId, patch, input);
@@ -127,7 +130,11 @@ async function addStatePatch(
   input: z.infer<typeof updateOptions>,
 ): Promise<void> {
   if (input.state !== undefined)
-    patch.stateId = (await resolveState(api, workspaceId, input.state)).id;
+    patch.stateId = await resolveIssueMutationStateId(
+      api,
+      workspaceId,
+      input.state,
+    );
   if (input.priority !== undefined) patch.priority = input.priority;
 }
 

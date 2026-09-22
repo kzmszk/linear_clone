@@ -13,6 +13,7 @@ import {
   listIssues,
   parseRepeated,
   resolveAssigneeId,
+  resolveIssueMutationStateId,
   resolveIssueId,
   resolveLabel,
   resolveProject,
@@ -79,7 +80,7 @@ function registerIssueCreate(issue: Command): void {
         (await fileContents(input.descriptionFile, input.description)) ?? null;
       const team = await resolveTeam(api, workspaceId, input.team);
       const stateId = input.state
-        ? (await resolveState(api, workspaceId, input.state)).id
+        ? await resolveIssueMutationStateId(api, workspaceId, input.state)
         : undefined;
       const assigneeId = input.assignee
         ? await resolveAssigneeId(api, workspaceId, input.assignee)

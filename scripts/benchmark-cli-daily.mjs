@@ -66,7 +66,7 @@ assert.ok(
   '--workspace-form must be id or slug',
 );
 
-function reportFor(reportOptions, workloads, fixtures, target) {
+function reportFor(reportOptions, workloads, fixtures, target, failures) {
   return Promise.all([
     sourceBaseline(),
     describeCli(reportOptions.paths.before, values.before),
@@ -91,6 +91,8 @@ function reportFor(reportOptions, workloads, fixtures, target) {
     sourceBaseline: source,
     artifacts: { before, after },
     trialsPerWorkload: options.trials,
+    status: failures.length ? 'failed' : 'complete',
+    failures,
     fixture: {
       counts: options.counts,
       teamKey: 'BENCH',
@@ -116,6 +118,36 @@ function reportFor(reportOptions, workloads, fixtures, target) {
   }));
 }
 
+async function runWorkloads(workloadOptions, reportOptions) {
+  const workloads = [];
+  const failures = [];
+  for (const workload of createDailyWorkloads(workloadOptions))
+    try {
+      workloads.push(await runWorkload(workload, reportOptions));
+    } catch (error) {
+      failures.push({
+        workload: workload.name,
+        message: error instanceof Error ? error.message : String(error),
+      });
+      break;
+    }
+  return { workloads, failures };
+}
+
+async function createBenchmarkFixtures(request, counts, suffix, workspaces) {
+  const fixtures = {};
+  for (const variant of ['before', 'after']) {
+    fixtures[variant] = await createWorkspaceFixture(
+      request,
+      suffix,
+      variant,
+      (workspace) => workspaces.push(workspace),
+    );
+    await seedIssues(request, fixtures[variant], counts);
+  }
+  return fixtures;
+}
+
 async function runBenchmark(runtime) {
   const target = new URL(values.url ?? runtime.url)
     .toString()
@@ -126,21 +158,16 @@ async function runBenchmark(runtime) {
   const traceDirectory = await mkdtemp(
     path.join(os.tmpdir(), 'linc-daily-trace-'),
   );
-  const fixtures = {};
   const createdWorkspaces = [];
   let report;
   try {
     if (runtime) await seed(request);
-    const suffix = randomUUID().slice(0, 8);
-    for (const variant of ['before', 'after']) {
-      fixtures[variant] = await createWorkspaceFixture(
-        request,
-        suffix,
-        variant,
-        (workspace) => createdWorkspaces.push(workspace),
-      );
-      await seedIssues(request, fixtures[variant], options.counts);
-    }
+    const fixtures = await createBenchmarkFixtures(
+      request,
+      options.counts,
+      randomUUID().slice(0, 8),
+      createdWorkspaces,
+    );
     const reportOptions = {
       paths: {
         before: await resolveCli(values.before),
@@ -166,10 +193,17 @@ async function runBenchmark(runtime) {
       workspaceForm: options.workspaceForm,
       counts: options.counts,
     };
-    const workloads = [];
-    for (const workload of createDailyWorkloads(workloadOptions))
-      workloads.push(await runWorkload(workload, reportOptions));
-    report = await reportFor(reportOptions, workloads, fixtures, target);
+    const { workloads, failures } = await runWorkloads(
+      workloadOptions,
+      reportOptions,
+    );
+    report = await reportFor(
+      reportOptions,
+      workloads,
+      fixtures,
+      target,
+      failures,
+    );
   } finally {
     const archivedWorkspaces = [];
     const cleanupErrors = [];
@@ -201,11 +235,16 @@ async function main() {
   const outputPath = path.resolve(repositoryRoot, values.output);
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(report, null, 2)}\n`);
-  if (report.cleanup.errors.length)
-    throw new Error(
-      `Fixture cleanup failed for ${report.cleanup.errors.length} workspace(s).`,
-    );
   process.stdout.write(`${outputPath}\n`);
+  if (report.failures.length || report.cleanup.errors.length) {
+    const failures = report.failures.length
+      ? ` ${report.failures.length} workload failure(s).`
+      : '';
+    const cleanup = report.cleanup.errors.length
+      ? ` ${report.cleanup.errors.length} workspace cleanup failure(s).`
+      : '';
+    throw new Error(`Benchmark failed.${failures}${cleanup}`);
+  }
 }
 
 await main();

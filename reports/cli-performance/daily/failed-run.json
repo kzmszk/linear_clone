@@ -1,0 +1,17 @@
+{
+  "stage": "production-after-slug",
+  "result": "failed",
+  "failure": "Preserved old CLI returned fetch failed during final comment workload trial10; exact timed versus trace sub-run is not recorded.",
+  "adoptedForTiming": false,
+  "log": "/tmp/linc-daily-production-after-slug.log",
+  "archivedWorkspaces": [
+    {
+      "id": "c0cabaed-d7f7-4458-b2e5-38714651e143",
+      "archivedAt": "2026-09-22T09:56:12.588Z"
+    },
+    {
+      "id": "5eb24f71-df34-4aba-b75a-9caa4aa5be96",
+      "archivedAt": "2026-09-22T09:56:12.688Z"
+    }
+  ]
+}

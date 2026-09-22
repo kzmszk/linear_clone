@@ -63,7 +63,7 @@ assert.ok(
   '--workspace-form must be id or slug',
 );
 
-function reportFor(context, workloads, fixtures, target) {
+function reportFor(context, workloads, fixtures, target, failures) {
   return Promise.all([
     sourceBaseline(),
     describeCli(context.paths.before, values.before),
@@ -87,6 +87,8 @@ function reportFor(context, workloads, fixtures, target) {
     sourceBaseline: source,
     artifacts: { before, after },
     trialsPerScenario: settings.trials,
+    status: failures.length ? 'failed' : 'complete',
+    failures,
     fixture: {
       counts: settings.counts,
       teamKey: 'BENCH',
@@ -108,6 +110,27 @@ function reportFor(context, workloads, fixtures, target) {
     },
     workloads,
   }));
+}
+
+async function runScenarios(context) {
+  const workloads = [];
+  const failures = [];
+  for (const scenario of [
+    'cold',
+    'warm-unchanged',
+    'warm-after-remote-update',
+  ]) {
+    try {
+      workloads.push(await runScenario(context, scenario));
+    } catch (error) {
+      failures.push({
+        workload: `list-cache-${scenario}`,
+        message: error instanceof Error ? error.message : String(error),
+      });
+      break;
+    }
+  }
+  return { workloads, failures };
 }
 
 async function runBenchmark(runtime) {
@@ -148,14 +171,8 @@ async function runBenchmark(runtime) {
       },
       environment: { cwd: repositoryRoot, env: { ...process.env } },
     };
-    const workloads = [];
-    for (const scenario of [
-      'cold',
-      'warm-unchanged',
-      'warm-after-remote-update',
-    ])
-      workloads.push(await runScenario(context, scenario));
-    report = await reportFor(context, workloads, fixtures, target);
+    const { workloads, failures } = await runScenarios(context);
+    report = await reportFor(context, workloads, fixtures, target, failures);
   } finally {
     const archivedWorkspaces = [];
     const cleanupErrors = [];
@@ -183,11 +200,16 @@ async function main() {
   const outputPath = path.resolve(repositoryRoot, values.output);
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(report, null, 2)}\n`);
-  if (report.cleanup.errors.length)
-    throw new Error(
-      `Fixture cleanup failed for ${report.cleanup.errors.length} workspace(s).`,
-    );
   process.stdout.write(`${outputPath}\n`);
+  if (report.failures.length || report.cleanup.errors.length) {
+    const failures = report.failures.length
+      ? ` ${report.failures.length} workload failure(s).`
+      : '';
+    const cleanup = report.cleanup.errors.length
+      ? ` ${report.cleanup.errors.length} workspace cleanup failure(s).`
+      : '';
+    throw new Error(`Benchmark failed.${failures}${cleanup}`);
+  }
 }
 
 await main();

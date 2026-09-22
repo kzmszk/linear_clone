@@ -1,6 +1,6 @@
 # データとモジュールの契約
 
-これは実装予定の参照仕様。以下のディレクトリ、型、API、CLIはまだ存在しない。
+初期設計を基にしたモジュールの責任分担です。ローカルCLIの追加仕様は [local-cli.md](local-cli.md) にあります。
 採用理由は [architecture.md](architecture.md)、完了条件は [verification.md](verification.md) にある。
 
 ## 所有する知識で分割する
@@ -23,8 +23,10 @@
 | `apps/web/src/editor/`            | Markdown表示・編集・ファイルURL解決                         | Linearの内部データモデル全体               |
 | `apps/web/src/sync/`              | Query cacheと画面内draft、イベント適用、再接続              | 永続command queue、汎用offline同期基盤     |
 | `apps/web/src/ui/`                | 色・密度・dialog・menu・フォーカス・キーボード操作          | チケットの保存規則                         |
-| `apps/cli/src/`                   | コマンド引数、設定、table/JSON出力、終了コード              | SQL、Webのstate                            |
+| `apps/cli/src/`                   | コマンド引数、設定、table/JSON出力、終了コード              | Webのstate                                 |
 | `tests/e2e/`、`tests/load/`       | ブラウザーと実CLIからの受入試験                             | モックDB、関数の呼び出し回数の検証         |
+
+`apps/cli/src/local/` はローカルSQLite、未送信操作、ローカル表示と同期を所有します。`apps/worker/src/sync/` は同期バッチの適用順と権限付きsnapshotを所有し、書き込み規則は既存のissue・commentモジュールを呼び出します。同期用の入力・応答は `packages/contracts/src/sync.ts` に置きます。
 
 依存方向はWeb/CLI → client → contracts、Worker → contracts。
 Linear importはcontractsとclientを使う。WorkerからLinear importへ依存しない。

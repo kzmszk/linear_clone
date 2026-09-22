@@ -18,6 +18,8 @@ pnpm dev
 
 ## CLI
 
+通信を待たずに日常操作を行う場合は、[ローカルDB版のCLI](docs/local-cli.md) を利用できます。`linc local` はローカル保存後にバッチ同期します。
+
 ```sh
 pnpm linc --workspace development team list
 pnpm linc --workspace development issue create --team DEV --title '最初のチケット'

@@ -14,6 +14,7 @@ export class ApiError extends Error {
 export type ClientOptions = {
   baseUrl?: string;
   headers?: () => Promise<Record<string, string>>;
+  signal?: AbortSignal;
 };
 
 export type ConditionalResponse<T> =
@@ -54,6 +55,7 @@ export function createClient(options: ClientOptions = {}) {
     const response = await fetch(`${options.baseUrl ?? ''}/api/v1${path}`, {
       headers,
       credentials: 'same-origin',
+      signal: options.signal,
     });
     if (response.status === 304) return { kind: 'not-modified' };
     return {
@@ -75,6 +77,7 @@ export function createClient(options: ClientOptions = {}) {
       method: init.method ?? 'GET',
       headers,
       credentials: 'same-origin',
+      signal: options.signal,
       ...(init.body === undefined ? {} : { body: JSON.stringify(init.body) }),
     });
     return parseResponse(response, schema);

@@ -24,6 +24,9 @@ CLIの性能改善では、以下の振る舞いも実Workerとコンパイル�
 - `cli-references.test.mjs`: 名前とUUIDを混ぜた参照、担当者のuser ID、非公開teamの拒否、アーカイブ済みprojectの除外。
 - `cli-batch.test.mjs`: 逐次実行、引数の分離、名前変更後の再解決、競合・不正入力後の停止、JSON形式のエラー。
 - `cli-update-concurrency.test.mjs`: 不正参照と古いversionで保存内容が変わらないこと、状態UUIDの所属検証と作成拒否。
+- `local-cli.test.mjs`: 通信なしの一覧・登録・更新・コメント保存、別プロセスからの再読込、100件同時登録、1回の同期送信、応答消失後の再送、競合と取り下げ、権限変更、定期同期と停止。
+- `local-cli-large.test.mjs`: 1回の送信上限を超える未送信データを複数回で同期し、全件の本文を保存。
+- `sync-api.test.mjs`、`sync-idle.test.mjs`: 同期バッチの順序・再送・部分成功・権限、非公開teamの参照情報の除外、変更なしの応答、本文サイズ超過の拒否。
 
 表のパスは `tests/` からの相対パスです。複数の操作をまとめたテストもあるため、1件のテストを1機能と数えません。
 

@@ -4,6 +4,7 @@ import { defaultUrl } from './config.ts';
 import { registerIssueCommands } from './issues.ts';
 import { registerImportCommands } from './import-commands.ts';
 import { registerManagementCommands } from './management.ts';
+import { registerLocalCommands } from './local/register.ts';
 import { optionsFor, printValue } from './output.ts';
 
 type ProgramOptions = {
@@ -66,6 +67,7 @@ export function createProgram(options: ProgramOptions = {}): Command {
   registerManagementCommands(program);
   registerIssueCommands(program);
   registerImportCommands(program);
+  registerLocalCommands(program);
   options.configure?.(program);
 
   program.action(async (_, command) => {

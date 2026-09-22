@@ -37,6 +37,7 @@ function table(rows: Record<string, unknown>[]): string {
     'status',
     'role',
     'version',
+    'syncState',
     'id',
   ];
   const columns = keys.filter((key) => rows.some((row) => key in row));

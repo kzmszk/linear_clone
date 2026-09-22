@@ -7,7 +7,6 @@ import {
   memberSchema,
   mutationSchema,
   projectSchema,
-  stateSchema,
   teamSchema,
   workspaceSchema,
 } from '../../../packages/contracts/src/index.ts';
@@ -18,7 +17,6 @@ export {
   labelSchema,
   memberSchema,
   projectSchema,
-  stateSchema,
   teamSchema,
   workspaceSchema,
   mutationSchema,

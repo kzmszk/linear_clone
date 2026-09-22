@@ -4,6 +4,8 @@ on:
   pull_request:
 permissions:
   contents: read
+env:
+  WRANGLER_SEND_METRICS: 'false'
 jobs:
   verify:
     runs-on: ubuntu-latest

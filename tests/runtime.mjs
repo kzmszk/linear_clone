@@ -37,6 +37,7 @@ async function launchRuntime(port, options, storage) {
       'exec',
       'wrangler',
       'dev',
+      '--local',
       '--config',
       options.config ?? 'wrangler.local.jsonc',
       '--inspector-port',

@@ -109,7 +109,10 @@ export async function openStore(path: string): Promise<LocalStore> {
 
 export async function openReadOnlyStore(path: string): Promise<LocalStore> {
   const { DatabaseSync } = await sqlite();
-  return { path, db: new DatabaseSync(path, { readOnly: true }) };
+  return {
+    path,
+    db: new DatabaseSync(path, { readOnly: true, timeout: 5000 }),
+  };
 }
 
 export function closeStore(store: LocalStore): void {

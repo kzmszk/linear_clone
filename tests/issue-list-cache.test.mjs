@@ -121,6 +121,9 @@ test('validators follow completion, reopening, deletion and restoration', async 
   const unchanged = await conditionalList(etag);
   assert.equal(unchanged.status, 304);
   assert.equal(await unchanged.text(), '');
+  const weakValidator = await conditionalList(`W/${etag}`);
+  assert.equal(weakValidator.status, 304);
+  assert.equal(await weakValidator.text(), '');
   const differentFilter = await conditionalList(
     etag,
     'owner@example.test',

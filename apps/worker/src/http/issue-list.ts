@@ -22,7 +22,8 @@ export async function issueListResponse(
   if (settings === null) throw new Error('Installation settings are missing');
   const etag = `"issues-v1-${member.user_id}-${workspaceId}-${queryHash}-${settings.sequence}"`;
   const headers = { ETag: etag, 'Cache-Control': 'private, no-cache' };
-  if (request.headers.get('If-None-Match') === etag)
+  const validator = request.headers.get('If-None-Match');
+  if (validator === etag || validator === `W/${etag}`)
     return new Response(null, { status: 304, headers });
   const page = listIssues(sql, actor, workspaceId, filter);
   return Response.json(page, { headers });

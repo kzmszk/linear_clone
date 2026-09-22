@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-09-22T06:35:39.314Z",
+  "status": "VERIFIED",
+  "archivedWorkspaces": [
+    {
+      "id": "86501da6-884a-4bcf-a0fb-0e4cd7d951d6",
+      "archivedAt": "2026-09-22T06:15:03.175Z"
+    },
+    {
+      "id": "2be62bd0-eab4-4db8-ad75-3449c00e0fc8",
+      "archivedAt": "2026-09-22T06:15:03.261Z"
+    },
+    {
+      "id": "0bef96d5-dd0b-4609-b0a8-85b562574570",
+      "archivedAt": "2026-09-22T06:22:25.139Z"
+    },
+    {
+      "id": "00b43740-def8-4aaa-ab5e-19ed10273679",
+      "archivedAt": "2026-09-22T06:22:25.217Z"
+    },
+    {
+      "id": "ea96045e-6f37-4ed4-813a-1b1a42620110",
+      "archivedAt": "2026-09-22T06:30:13.783Z"
+    },
+    {
+      "id": "5a858a5b-ecfd-4c6f-838a-7e534e5b13db",
+      "archivedAt": "2026-09-22T06:30:13.868Z"
+    },
+    {
+      "id": "8c854e6b-556e-48f1-ab36-3ead49202a50",
+      "archivedAt": "2026-09-22T06:31:55.565Z"
+    },
+    {
+      "id": "94905b84-cce0-4a05-8375-bebcb1b915d9",
+      "archivedAt": "2026-09-22T06:31:55.670Z"
+    }
+  ]
+}

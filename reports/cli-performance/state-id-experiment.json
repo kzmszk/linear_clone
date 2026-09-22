@@ -1,0 +1,118 @@
+{
+  "capturedAt": "2026-09-22T06:31:55.562Z",
+  "target": "https://linc.kazumasa.workers.dev",
+  "node": "v26.8.1",
+  "environment": {
+    "platform": "linux",
+    "release": "7.0.0-31-generic",
+    "architecture": "x64"
+  },
+  "workload": "62 ordered mutations: 2 projects, 20 issues, 10 started, 10 moved, 20 completed; team key, project name, issue identifier and state UUID references; fresh team per variant; same operations and payload shape",
+  "timingBoundary": "CLI process startup through final process close, including sequential orchestration; fixture creation and verification excluded",
+  "beforeMode": "one foreground batch process, 62 sequential commands",
+  "afterMode": "one foreground batch process, 62 sequential commands",
+  "caveat": "Measures full serial workflow throughput. Batch mode is not cold single-command latency. Separate workspaces start equal and receive the same fixture growth at each paired trial.",
+  "workspaceIds": {
+    "before": "8c854e6b-556e-48f1-ab36-3ead49202a50",
+    "after": "94905b84-cce0-4a05-8375-bebcb1b915d9"
+  },
+  "trialsPerVariant": 2,
+  "percentileMethod": "nearest rank; with fewer than 20 trials p95 is the maximum observed sample",
+  "samples": [
+    {
+      "trial": 1,
+      "order": ["before", "after"],
+      "variant": "before",
+      "teamId": "254266a3-61d0-4b57-9529-4b60cd26b59d",
+      "elapsedMs": 10242.795226,
+      "commandMs": [10242.675419000001],
+      "verification": {
+        "issues": 20,
+        "allInProjectA": true,
+        "projectBEmpty": true,
+        "allCompleted": true,
+        "allVersion3": true
+      }
+    },
+    {
+      "trial": 1,
+      "order": ["before", "after"],
+      "variant": "after",
+      "teamId": "dfa9a010-bfe0-4509-b387-7e8897d8bc49",
+      "elapsedMs": 10819.407842,
+      "commandMs": [10819.373085000001],
+      "verification": {
+        "issues": 20,
+        "allInProjectA": true,
+        "projectBEmpty": true,
+        "allCompleted": true,
+        "allVersion3": true
+      }
+    },
+    {
+      "trial": 2,
+      "order": ["after", "before"],
+      "variant": "after",
+      "teamId": "d6ff6de4-1d3c-4bb8-b439-788a56643b3a",
+      "elapsedMs": 9632.183711000001,
+      "commandMs": [9632.146591],
+      "verification": {
+        "issues": 20,
+        "allInProjectA": true,
+        "projectBEmpty": true,
+        "allCompleted": true,
+        "allVersion3": true
+      }
+    },
+    {
+      "trial": 2,
+      "order": ["after", "before"],
+      "variant": "before",
+      "teamId": "4f62156c-00c0-467d-9ca9-e36e1d13967a",
+      "elapsedMs": 10577.676478000001,
+      "commandMs": [10577.638465999997],
+      "verification": {
+        "issues": 20,
+        "allInProjectA": true,
+        "projectBEmpty": true,
+        "allCompleted": true,
+        "allVersion3": true
+      }
+    }
+  ],
+  "before": {
+    "medianMs": 10410.235852000002,
+    "p95Ms": 10577.676478000001
+  },
+  "after": {
+    "medianMs": 10225.795776500001,
+    "p95Ms": 10819.407842
+  },
+  "ratioOfMedians": 1.0180367454554358,
+  "artifacts": {
+    "before": {
+      "sourcePath": "dist/cli/linc-candidate2.mjs",
+      "resolvedPath": "/home/kazu/work/linear_clone/dist/cli/linc-candidate2.mjs",
+      "bytes": 1025695,
+      "sha256": "cb86114635c6b509d882071b141b4ecbf25c31eae4e50fce1d970e064f4eff65"
+    },
+    "after": {
+      "sourcePath": "dist/cli/linc-candidate3.mjs",
+      "resolvedPath": "/home/kazu/work/linear_clone/dist/cli/linc-candidate3.mjs",
+      "bytes": 1025897,
+      "sha256": "ed541cfbd1b22a793c44f7739579d5b10df6561e0135f27907f65bce021c93de"
+    }
+  },
+  "archivedWorkspaces": [
+    {
+      "id": "8c854e6b-556e-48f1-ab36-3ead49202a50",
+      "archivedAt": "2026-09-22T06:31:55.565Z"
+    },
+    {
+      "id": "94905b84-cce0-4a05-8375-bebcb1b915d9",
+      "archivedAt": "2026-09-22T06:31:55.670Z"
+    }
+  ],
+  "status": "EXPLORATORY_ONLY",
+  "limitation": "Two direct alternating pairs with temporary fetch instrumentation. Used to check time-window drift, not as the final acceptance benchmark."
+}

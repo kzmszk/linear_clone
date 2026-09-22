@@ -1,0 +1,308 @@
+{
+  "status": "EXPLORATORY_ONLY",
+  "limitation": "Early probes lack full artifact provenance. They guided implementation decisions and are not final acceptance measurements.",
+  "bundle": [
+    {
+      "name": "baseline",
+      "ms": 72.74623110424727
+    },
+    {
+      "name": "bundle-false",
+      "ms": 59.42440498620272
+    },
+    {
+      "name": "bundle-true",
+      "ms": 55.0291029503569
+    },
+    {
+      "name": "baseline",
+      "ms": 69.90092399064451
+    },
+    {
+      "name": "bundle-false",
+      "ms": 54.21869200654328
+    },
+    {
+      "name": "bundle-true",
+      "ms": 53.54385997634381
+    },
+    {
+      "name": "baseline",
+      "ms": 70.08445309475064
+    },
+    {
+      "name": "bundle-false",
+      "ms": 49.20246999245137
+    },
+    {
+      "name": "bundle-true",
+      "ms": 50.92585494276136
+    },
+    {
+      "name": "baseline",
+      "ms": 66.58335996326059
+    },
+    {
+      "name": "bundle-false",
+      "ms": 52.83643607981503
+    },
+    {
+      "name": "bundle-true",
+      "ms": 49.53508300241083
+    },
+    {
+      "name": "baseline",
+      "ms": 66.58146600238979
+    },
+    {
+      "name": "bundle-false",
+      "ms": 52.301589981652796
+    },
+    {
+      "name": "bundle-true",
+      "ms": 50.04876898601651
+    },
+    {
+      "name": "baseline",
+      "ms": 65.18736691214144
+    },
+    {
+      "name": "bundle-false",
+      "ms": 51.71002505812794
+    },
+    {
+      "name": "bundle-true",
+      "ms": 52.43281903676689
+    },
+    {
+      "name": "baseline",
+      "ms": 67.92533991392702
+    },
+    {
+      "name": "bundle-false",
+      "ms": 52.96220490708947
+    },
+    {
+      "name": "bundle-true",
+      "ms": 49.63182599749416
+    },
+    {
+      "name": "baseline",
+      "ms": 65.8089779317379
+    },
+    {
+      "name": "bundle-false",
+      "ms": 49.384245998226106
+    },
+    {
+      "name": "bundle-true",
+      "ms": 50.16588093712926
+    },
+    {
+      "name": "baseline",
+      "ms": 64.17229794897139
+    },
+    {
+      "name": "bundle-false",
+      "ms": 48.057905049063265
+    },
+    {
+      "name": "bundle-true",
+      "ms": 50.9377580601722
+    },
+    {
+      "name": "baseline",
+      "ms": 65.84622792433947
+    },
+    {
+      "name": "bundle-false",
+      "ms": 51.39879498165101
+    },
+    {
+      "name": "bundle-true",
+      "ms": 48.91332099214196
+    },
+    {
+      "name": "baseline",
+      "ms": 66.19851791765541
+    },
+    {
+      "name": "bundle-false",
+      "ms": 51.59250204451382
+    },
+    {
+      "name": "bundle-true",
+      "ms": 49.90378301590681
+    },
+    {
+      "name": "baseline",
+      "ms": 64.76968200877309
+    },
+    {
+      "name": "bundle-false",
+      "ms": 51.79701093584299
+    },
+    {
+      "name": "bundle-true",
+      "ms": 49.15526998229325
+    },
+    {
+      "name": "baseline",
+      "ms": 67.28099496103823
+    },
+    {
+      "name": "bundle-false",
+      "ms": 52.356433938257396
+    },
+    {
+      "name": "bundle-true",
+      "ms": 49.07608998473734
+    },
+    {
+      "name": "baseline",
+      "ms": 66.18223804980516
+    },
+    {
+      "name": "bundle-false",
+      "ms": 52.28518904186785
+    },
+    {
+      "name": "bundle-true",
+      "ms": 50.51899200771004
+    },
+    {
+      "name": "baseline",
+      "ms": 65.76895306352526
+    },
+    {
+      "name": "bundle-false",
+      "ms": 52.93240898754448
+    },
+    {
+      "name": "bundle-true",
+      "ms": 50.555430934764445
+    }
+  ],
+  "transport": [
+    {
+      "method": "fetch",
+      "requestMs": 137.031353,
+      "totalMs": 165.18693801481277
+    },
+    {
+      "method": "https",
+      "requestMs": 87.55919,
+      "totalMs": 115.52969401236624
+    },
+    {
+      "method": "fetch",
+      "requestMs": 100.05141,
+      "totalMs": 128.93414602149278
+    },
+    {
+      "method": "https",
+      "requestMs": 755.991895,
+      "totalMs": 786.983369034715
+    },
+    {
+      "method": "fetch",
+      "requestMs": 139.894815,
+      "totalMs": 168.5809069313109
+    },
+    {
+      "method": "https",
+      "requestMs": 134.190274,
+      "totalMs": 158.02122000604868
+    },
+    {
+      "method": "fetch",
+      "requestMs": 110.42525300000001,
+      "totalMs": 137.59675796609372
+    },
+    {
+      "method": "https",
+      "requestMs": 82.305287,
+      "totalMs": 110.09041604120284
+    },
+    {
+      "method": "fetch",
+      "requestMs": 104.170356,
+      "totalMs": 131.24941510614008
+    },
+    {
+      "method": "https",
+      "requestMs": 101.688761,
+      "totalMs": 131.4370030304417
+    },
+    {
+      "method": "fetch",
+      "requestMs": 106.74417799999999,
+      "totalMs": 134.40361991524696
+    },
+    {
+      "method": "https",
+      "requestMs": 109.74164400000001,
+      "totalMs": 134.75174095947295
+    },
+    {
+      "method": "fetch",
+      "requestMs": 105.859366,
+      "totalMs": 132.39429099485278
+    },
+    {
+      "method": "https",
+      "requestMs": 89.550715,
+      "totalMs": 116.44744803197682
+    },
+    {
+      "method": "fetch",
+      "requestMs": 113.06588099999999,
+      "totalMs": 140.96951705869287
+    },
+    {
+      "method": "https",
+      "requestMs": 90.871354,
+      "totalMs": 118.21420397609472
+    },
+    {
+      "method": "fetch",
+      "requestMs": 112.81799000000001,
+      "totalMs": 141.52990095317364
+    },
+    {
+      "method": "https",
+      "requestMs": 93.43483599999999,
+      "totalMs": 119.97628305107355
+    },
+    {
+      "method": "fetch",
+      "requestMs": 138.894504,
+      "totalMs": 164.21815694775432
+    },
+    {
+      "method": "https",
+      "requestMs": 89.313504,
+      "totalMs": 117.77230503503233
+    },
+    {
+      "method": "fetch",
+      "requestMs": 113.94239699999999,
+      "totalMs": 139.93338705040514
+    },
+    {
+      "method": "https",
+      "requestMs": 104.34413799999999,
+      "totalMs": 131.14873401354998
+    },
+    {
+      "method": "fetch",
+      "requestMs": 113.516256,
+      "totalMs": 139.33691405691206
+    },
+    {
+      "method": "https",
+      "requestMs": 80.090467,
+      "totalMs": 107.16886492446065
+    }
+  ]
+}

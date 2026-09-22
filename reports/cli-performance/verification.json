@@ -1,0 +1,71 @@
+{
+  "checkedAt": "2026-09-22T06:41:14.186642+00:00",
+  "sourceCommit": "7a84756",
+  "status": "VERIFIED_BEHAVIOR_AND_QUALITY; PERFORMANCE_TARGET_NOT_MET",
+  "checks": [
+    {
+      "command": "pnpm check",
+      "exitCode": 0,
+      "apiCliTests": 41,
+      "passed": 41,
+      "failed": 0,
+      "includes": [
+        "format",
+        "lint",
+        "typecheck",
+        "build",
+        "production test-auth exclusion",
+        "real Worker/API/CLI behavior"
+      ]
+    },
+    {
+      "command": "pnpm test:e2e",
+      "exitCode": 0,
+      "passed": 31,
+      "failed": 0
+    },
+    {
+      "command": "pnpm quality artifacts/private/cli-performance/quality",
+      "exitCode": 0,
+      "unusedFindings": 0,
+      "maxCyclomatic": 12,
+      "maxCognitive": 15,
+      "cognitiveOver15": 0,
+      "maxFunctionLines": 79,
+      "detectedDuplicateBlocks": 31
+    },
+    {
+      "command": "node scripts/benchmark-cli-workflow.mjs --before dist/cli/linc-baseline.mjs --after dist/cli/linc-candidate3.mjs --trials 1 --output /tmp/cli-workflow-refactor-smoke.json",
+      "exitCode": 0,
+      "purpose": "Verify refactored benchmark runner, all saved issue values and two successful workspace archives; local smoke only"
+    }
+  ],
+  "initialFailuresResolved": [
+    "First pnpm check stopped at benchmark script file/function line limits. Split fixture and measurement responsibilities, then full pnpm check passed.",
+    "First quality wrapper could not spawn its Knip child under sandbox EPERM. Retried with approved execution and passed."
+  ],
+  "installedCli": {
+    "symlink": "/home/kazu/.local/bin/linc",
+    "target": "/home/kazu/work/linear_clone/dist/cli/linc.mjs",
+    "sha256": "ed541cfbd1b22a793c44f7739579d5b10df6561e0135f27907f65bce021c93de",
+    "matchesMeasuredCandidate3": true
+  },
+  "pnpmLockSha256": "f75b6c1cc1f3db9792516ce957d479f009b23feedb41a5022444496b93337d7e",
+  "deployment": "CLI only; Worker unchanged and not redeployed",
+  "performanceTarget": {
+    "requiredSpeedup": 3,
+    "observedRatioOfMedians": 2.4674821249977508,
+    "achieved": false
+  },
+  "limits": [
+    "No line/branch coverage percentage measured",
+    "5 production batch samples per variant; p95 equals maximum",
+    "No claim of Linear parity or production 100-way concurrency performance from these CLI measurements"
+  ],
+  "review": {
+    "model": "gpt-5.6-terra",
+    "scope": "Decision trail against this task transcript, raw timing reports, artifact hashes, cleanup and final validation logs",
+    "unresolvedAuditFlags": [],
+    "knownUnmetRequirement": "3x CLI performance target"
+  }
+}

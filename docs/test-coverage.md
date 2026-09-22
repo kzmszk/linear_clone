@@ -19,6 +19,12 @@
 | 同期と再接続       | 2画面で更新を受信し、競合時にdraftを保持。接続中断時に受け取れなかった更新を再接続で取得し、その後の更新も表示                                          | `e2e/sync.spec.ts`、`e2e/reconnect.spec.ts`                     |
 | インポート         | 本文・階層・コメント作者と日時・関連issueを保持。再importで移行先の編集を上書きしない。不正な元データと添付メタデータを拒否                             | `import.test.mjs`、`import-contract.test.mjs`                   |
 
+CLIの性能改善では、以下の振る舞いも実Workerとコンパイル済みCLIで検証します。
+
+- `cli-references.test.mjs`: 名前とUUIDを混ぜた参照、担当者のuser ID、非公開teamの拒否、アーカイブ済みprojectの除外。
+- `cli-batch.test.mjs`: 逐次実行、引数の分離、名前変更後の再解決、競合・不正入力後の停止、JSON形式のエラー。
+- `cli-update-concurrency.test.mjs`: 不正参照と古いversionで保存内容が変わらないこと、状態UUIDの所属検証と作成拒否。
+
 表のパスは `tests/` からの相対パスです。複数の操作をまとめたテストもあるため、1件のテストを1機能と数えません。
 
 ## テストの境界

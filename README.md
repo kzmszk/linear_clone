@@ -34,6 +34,8 @@ ln -s "$PWD/dist/cli/linc.mjs" ~/.local/bin/linc
 linc --help
 ```
 
+連続操作には `linc --workspace <slug-or-id> batch < commands.jsonl` を使えます。1行につきコマンド引数のJSON配列を渡し、順番に実行します。[batchの使用例と性能の比較方法](docs/cli-performance.md)を参照してください。
+
 ## CloudflareとLinearからの移行
 
 本番の配置先は `https://linc.kazumasa.workers.dev`。利用する本人をCloudflare Accessで確認し、Linc内の所属でデータへのアクセスを制限します。

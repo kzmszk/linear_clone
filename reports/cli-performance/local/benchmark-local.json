@@ -1,0 +1,459 @@
+{
+  "capturedAt": "2026-09-22T11:26:45.714Z",
+  "status": "complete",
+  "environment": {
+    "node": "v26.8.1",
+    "platform": "linux"
+  },
+  "timingBoundary": "Child process spawn through exit. Remote means server commit; local means durable local commit, not server commit. Setup, synchronization and verification excluded from daily operation times.",
+  "fixture": {
+    "open": 20,
+    "closed": 200,
+    "workspaceIds": {
+      "before": "eb4d065e-7020-46f2-a29a-f0e3fef9145f",
+      "after": "aecacffc-7fc2-45bb-a74c-56d25b76b809"
+    }
+  },
+  "trials": 10,
+  "artifacts": {
+    "before": {
+      "sourcePath": "dist/cli/linc-local-before.mjs",
+      "resolvedPath": "/home/kazu/work/linear_clone/dist/cli/linc-local-before.mjs",
+      "bytes": 465590,
+      "sha256": "f1e2b3b23d8b1f613832efd5333682d1df76e68011e7d6e03ac9c56efa6648c8"
+    },
+    "after": {
+      "sourcePath": "dist/cli/linc.mjs",
+      "resolvedPath": "/home/kazu/work/linear_clone/dist/cli/linc.mjs",
+      "bytes": 553801,
+      "sha256": "5f11b1cc3c65739c5b0362c3ae896db43f0cd4a6985e253798908db379c60fd2"
+    }
+  },
+  "workloads": [
+    {
+      "name": "issue-list",
+      "command": "issue list --state Backlog",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "beforeMs": 73.14,
+          "afterMs": 59.383
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "beforeMs": 72.429,
+          "afterMs": 61.229
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "beforeMs": 66.432,
+          "afterMs": 61.533
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "beforeMs": 68.682,
+          "afterMs": 61.365
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "beforeMs": 70.235,
+          "afterMs": 59.552
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "beforeMs": 69.438,
+          "afterMs": 57.283
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "beforeMs": 67.709,
+          "afterMs": 59.768
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "beforeMs": 71.175,
+          "afterMs": 59.437
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "beforeMs": 68.935,
+          "afterMs": 60.545
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "beforeMs": 68.275,
+          "afterMs": 60.043
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 69.187,
+          "p95Ms": 73.14
+        },
+        "after": {
+          "medianMs": 59.906,
+          "p95Ms": 61.533
+        },
+        "ratioOfMedians": 1.155,
+        "ratioOfP95": 1.189
+      }
+    },
+    {
+      "name": "issue-create",
+      "command": "issue create --team BENCH --title TITLE",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "beforeMs": 73.495,
+          "afterMs": 67.586
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "beforeMs": 73.455,
+          "afterMs": 63.764
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "beforeMs": 74.001,
+          "afterMs": 70.468
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "beforeMs": 73.207,
+          "afterMs": 64.204
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "beforeMs": 73.166,
+          "afterMs": 69.905
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "beforeMs": 74.948,
+          "afterMs": 66.493
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "beforeMs": 75.045,
+          "afterMs": 72.353
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "beforeMs": 72.4,
+          "afterMs": 62.458
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "beforeMs": 73.401,
+          "afterMs": 68.867
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "beforeMs": 73.064,
+          "afterMs": 62.354
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 73.428,
+          "p95Ms": 75.045
+        },
+        "after": {
+          "medianMs": 67.04,
+          "p95Ms": 72.353
+        },
+        "ratioOfMedians": 1.095,
+        "ratioOfP95": 1.037
+      }
+    },
+    {
+      "name": "issue-update",
+      "command": "issue update ID --state STATE",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "beforeMs": 75.385,
+          "afterMs": 70.193
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "beforeMs": 79.247,
+          "afterMs": 64.043
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "beforeMs": 80.944,
+          "afterMs": 71.535
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "beforeMs": 81.831,
+          "afterMs": 64.396
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "beforeMs": 74.955,
+          "afterMs": 69.544
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "beforeMs": 77.778,
+          "afterMs": 63.211
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "beforeMs": 76.142,
+          "afterMs": 69.857
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "beforeMs": 78.242,
+          "afterMs": 65.772
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "beforeMs": 79.118,
+          "afterMs": 71.504
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "beforeMs": 76.925,
+          "afterMs": 64.384
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 78.01,
+          "p95Ms": 81.831
+        },
+        "after": {
+          "medianMs": 67.658,
+          "p95Ms": 71.535
+        },
+        "ratioOfMedians": 1.153,
+        "ratioOfP95": 1.144
+      }
+    },
+    {
+      "name": "comment-create",
+      "command": "issue comment create ID --body BODY",
+      "samples": [
+        {
+          "trial": 1,
+          "order": ["before", "after"],
+          "beforeMs": 72.417,
+          "afterMs": 69.874
+        },
+        {
+          "trial": 2,
+          "order": ["after", "before"],
+          "beforeMs": 72.223,
+          "afterMs": 65.685
+        },
+        {
+          "trial": 3,
+          "order": ["before", "after"],
+          "beforeMs": 73.077,
+          "afterMs": 64.303
+        },
+        {
+          "trial": 4,
+          "order": ["after", "before"],
+          "beforeMs": 73.342,
+          "afterMs": 64.917
+        },
+        {
+          "trial": 5,
+          "order": ["before", "after"],
+          "beforeMs": 72.534,
+          "afterMs": 69.946
+        },
+        {
+          "trial": 6,
+          "order": ["after", "before"],
+          "beforeMs": 73.322,
+          "afterMs": 64.023
+        },
+        {
+          "trial": 7,
+          "order": ["before", "after"],
+          "beforeMs": 72.26,
+          "afterMs": 67.926
+        },
+        {
+          "trial": 8,
+          "order": ["after", "before"],
+          "beforeMs": 72.469,
+          "afterMs": 63.465
+        },
+        {
+          "trial": 9,
+          "order": ["before", "after"],
+          "beforeMs": 73.555,
+          "afterMs": 68.92
+        },
+        {
+          "trial": 10,
+          "order": ["after", "before"],
+          "beforeMs": 72.872,
+          "afterMs": 65.759
+        }
+      ],
+      "summary": {
+        "before": {
+          "medianMs": 72.703,
+          "p95Ms": 73.555
+        },
+        "after": {
+          "medianMs": 65.722,
+          "p95Ms": 69.946
+        },
+        "ratioOfMedians": 1.106,
+        "ratioOfP95": 1.052
+      }
+    }
+  ],
+  "failures": [],
+  "cleanup": {
+    "archivedWorkspaces": [
+      {
+        "id": "eb4d065e-7020-46f2-a29a-f0e3fef9145f",
+        "archivedAt": "2026-09-22T11:27:01.895Z"
+      },
+      {
+        "id": "aecacffc-7fc2-45bb-a74c-56d25b76b809",
+        "archivedAt": "2026-09-22T11:27:01.899Z"
+      }
+    ],
+    "errors": []
+  },
+  "target": "http://127.0.0.1:8939",
+  "initialSync": {
+    "value": {
+      "workspace": {
+        "id": "aecacffc-7fc2-45bb-a74c-56d25b76b809",
+        "version": 1,
+        "createdAt": "2026-09-22T11:26:47.829Z",
+        "updatedAt": "2026-09-22T11:26:47.829Z",
+        "slug": "cli-daily-1ab0aea6-after",
+        "name": "CLI daily 1ab0aea6 after",
+        "archivedAt": null
+      },
+      "sequence": 448,
+      "pending": 0
+    },
+    "elapsedMs": 109.60371400000031,
+    "http": {
+      "requestCount": 1,
+      "failedRequests": 0,
+      "requestBodyBytes": 17,
+      "responseBodyBytes": 143257,
+      "totalBodyBytes": 143274,
+      "requestsByMethod": {
+        "POST": 1
+      },
+      "responsesByStatus": {
+        "200": 1
+      }
+    }
+  },
+  "localReadTrace": {
+    "requestCount": 0,
+    "failedRequests": 0,
+    "requestBodyBytes": 0,
+    "responseBodyBytes": 0,
+    "totalBodyBytes": 0,
+    "requestsByMethod": {},
+    "responsesByStatus": {}
+  },
+  "dailySync": {
+    "value": {
+      "accepted": 30,
+      "pending": 0,
+      "failure": null,
+      "sequence": 508
+    },
+    "elapsedMs": 134.75899299999946,
+    "http": {
+      "requestCount": 1,
+      "failedRequests": 0,
+      "requestBodyBytes": 7347,
+      "responseBodyBytes": 156018,
+      "totalBodyBytes": 163365,
+      "requestsByMethod": {
+        "POST": 1
+      },
+      "responsesByStatus": {
+        "200": 1
+      }
+    }
+  },
+  "bulk": {
+    "count": 100,
+    "localElapsedMs": 6641.954743999999,
+    "localMode": "100 sequential independent CLI processes",
+    "sync": {
+      "value": {
+        "accepted": 100,
+        "pending": 0,
+        "failure": null,
+        "sequence": 608
+      },
+      "elapsedMs": 189.40736300000026,
+      "http": {
+        "requestCount": 1,
+        "failedRequests": 0,
+        "requestBodyBytes": 33626,
+        "responseBodyBytes": 222596,
+        "totalBodyBytes": 256222,
+        "requestsByMethod": {
+          "POST": 1
+        },
+        "responsesByStatus": {
+          "200": 1
+        }
+      }
+    },
+    "verifiedCount": 100
+  },
+  "sourceFinal": {
+    "commit": "4053d964595df4aa4c7b76a1beedb123ded89fda",
+    "worker": "Current source, local workerd",
+    "cleanBuild": "clean-build.json"
+  },
+  "sourceBaseline": {
+    "cliCommit": "a6c11cdd4cca7bc79698f9ba87992147f7b8bbce",
+    "worker": "Same current local workerd as the local CLI",
+    "cleanBuild": "../daily/clean-build.json"
+  }
+}

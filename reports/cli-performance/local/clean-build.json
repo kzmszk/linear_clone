@@ -1,0 +1,21 @@
+{
+  "sourceCommit": "4053d964595df4aa4c7b76a1beedb123ded89fda",
+  "sourceMaterialization": "git archive of committed source in a temporary directory",
+  "buildCommand": "node scripts/build-cli.mjs",
+  "node": "v26.8.1",
+  "dependencies": "Copied installed CLI/build packages with relative paths preserved",
+  "copiedPackages": [
+    "@esbuild+linux-x64@0.25.12",
+    "@esbuild+linux-x64@0.28.1",
+    "@esbuild+linux-x64@0.28.2",
+    "commander@14.0.3",
+    "esbuild@0.25.12",
+    "esbuild@0.28.1",
+    "esbuild@0.28.2",
+    "zod@4.6.5"
+  ],
+  "dependencyLockSha256": "f75b6c1cc1f3db9792516ce957d479f009b23feedb41a5022444496b93337d7e",
+  "sha256": "5f11b1cc3c65739c5b0362c3ae896db43f0cd4a6985e253798908db379c60fd2",
+  "bytes": 553801,
+  "matchesMeasuredArtifact": true
+}

@@ -34,6 +34,16 @@ Workerの型をCLIやWebへimportしない。
 業務モジュールのSQLを汎用repository層で包まない。SQLとその制約を同じ機能の近くに置く。
 package exportsとlintのimport制限で依存方向を検査する。
 
+## ローカルCLIの保存と同期
+
+`local/store.ts` は最後に受け取ったsnapshot、未送信操作のoutbox、表示用レコードをSQLiteへ保存します。`local/domain.ts` がCLIの参照をUUIDに解決し、`local/projection.ts` がsnapshotへ未送信操作を重ねます。1回のローカル変更は、outbox追加と表示の更新を同じtransactionで確定します。
+
+`local/sync.ts` はoutboxの先頭から上限内の操作を送り、成功した操作だけを取り除きます。通信中は主DBのtransactionを保持しません。応答後にDBを開き直し、新しいsnapshotへ残りの操作を重ねるため、通信中に別プロセスが追加した変更も残ります。`local/workspace-store.ts` の別SQLiteファイルで同期同士を排他し、通常のローカル保存を止めません。
+
+作成するissueとcommentのUUIDにはoperationIdを使います。Workerは既存のmutation receiptで再送を判定し、正式なチケット番号を採番します。同期前後で参照するUUIDは変わりません。競合した操作は不変のまま保持します。取り下げは新しい書き込みを送信せず、`local/journal.ts` に操作を残してリモートの内容を採用します。
+
+表示用レコードはsnapshotとoutboxから再構築する単純な方式です。少人数の利用を前提とし、レコード単位の差分同期や自動マージは実装していません。HTTP本文の上限は転送前の `app.ts`、入力schemaはcontracts、保存規則はWorkerのissue・commentモジュールが所有します。
+
 ## データモデル
 
 ```mermaid
@@ -258,6 +268,7 @@ prefixは `/api/v1`。workspace内のリソースは `/workspaces/:workspaceId/`
 | `/workspaces/:w/states`、`labels`    | 一覧と管理                                             |
 | `/workspaces/:w/files`               | upload開始・完了・認可付きdownload                     |
 | `/workspaces/:w/changes`             | cursor以降の変更取得                                   |
+| `/workspaces/:w/sync`                | 操作batchの適用と権限付きsnapshot取得                  |
 | `/workspaces/:w/events`              | 認証済みWebSocket upgrade                              |
 | `/workspaces/:w/imports`             | plan・run作成・batch適用・status・verify               |
 | `/workspaces/:w/operations/:id`      | 自分が送った操作のreceiptを取得                        |

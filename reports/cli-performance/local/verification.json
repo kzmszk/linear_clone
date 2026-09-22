@@ -1,0 +1,115 @@
+{
+  "capturedAt": "2026-09-22T11:29:08.864Z",
+  "sourceCommit": "4053d964595df4aa4c7b76a1beedb123ded89fda",
+  "workerApiCommit": "c4162be",
+  "checks": [
+    {
+      "command": "pnpm check",
+      "passed": 80,
+      "failed": 0,
+      "note": "Before final shared URL-normalization amendment; includes formatting, lint, typecheck and production build."
+    },
+    {
+      "command": "pnpm typecheck && pnpm build",
+      "result": "passed",
+      "note": "Final source after URL-normalization amendment."
+    },
+    {
+      "command": "node --test --test-concurrency=1 tests/sync-api.test.mjs tests/sync-idle.test.mjs tests/local-cli-large.test.mjs",
+      "passed": 9,
+      "failed": 0,
+      "note": "Final source. Size limit covers exact, trailing-slash and repeated-slash paths, including streamed bodies."
+    },
+    {
+      "command": "pnpm test:e2e",
+      "passed": 31,
+      "failed": 0,
+      "note": "Final source with real browser and local Worker."
+    },
+    {
+      "command": "pnpm format:check && pnpm lint && pnpm quality",
+      "result": "passed",
+      "unusedFindings": 0
+    }
+  ],
+  "initialFailure": {
+    "test": "oversized sync request",
+    "fullRun": {
+      "passed": 79,
+      "failed": 1
+    },
+    "cause": "Durable Object rejected while outer Worker still forwarded the body; workerd reported a request-stream read after response.",
+    "fix": "Use Hono bodyLimit before forwarding, with shared path normalization."
+  },
+  "independentReview": {
+    "model": "gpt-5.6-terra",
+    "resolved": [
+      "Private-team relationship IDs filtered from metadata",
+      "Sync request byte limit and local ordered splitting",
+      "Corrupted local binding no longer silently skipped",
+      "Size guard and router share path normalization"
+    ],
+    "commentReview": {
+      "removed": 1,
+      "restored": 0,
+      "open": 0
+    },
+    "trailAudit": {
+      "result": "Source, measurements and checks consistent; documentation precision fixes applied",
+      "corrected": [
+        "Post-deploy HTTP status left unconfirmed rather than inferred from CLI parse error",
+        "Both unposted later comment drafts named",
+        "Direct idle-snapshot implementation sources added in audit trail"
+      ],
+      "remaining": "Production initialization, synchronization, paired benchmark and later ticket comments await service recovery."
+    }
+  },
+  "deployment": {
+    "url": "https://linc.kazumasa.workers.dev",
+    "version": "3e7a41d2-201d-4913-a40c-e0624764f3ad",
+    "status": "deployed",
+    "postDeployInitialSync": "failed: CLI could not parse the response beginning with Internal S; HTTP status was not captured for this attempt"
+  },
+  "productionVerification": {
+    "status": "BLOCKED",
+    "initialLocalSnapshot": false,
+    "pairedBenchmark": false,
+    "localWritesThroughProductionSync": false,
+    "ticketProgressComment": false
+  },
+  "ticketComments": {
+    "postedBeforeQuota": [
+      {
+        "file": "start-comment.md",
+        "id": "fee5f796-95e3-4ac2-a9b7-53d1327f6c80"
+      },
+      {
+        "file": "design-comment.md",
+        "id": "992438c6-4bee-4479-a599-df2b033c587a"
+      }
+    ],
+    "unpostedDrafts": [
+      {
+        "file": "artifacts/private/local-first/progress-comment.md",
+        "postingAttempted": true,
+        "result": "CLI JSON parse failure; pre-deploy HTTP500 confirmed separately. Empty progress-comment-result.json is not a saved comment."
+      },
+      {
+        "file": "artifacts/private/local-first/result-comment.md",
+        "postingAttempted": false,
+        "result": "Draft only; production init still fails."
+      }
+    ]
+  },
+  "benchmark": {
+    "status": "complete",
+    "trials": 10,
+    "failures": [],
+    "localReadsHttpRequests": 0,
+    "bulkAccepted": 100,
+    "bulkVerified": 100,
+    "bulkHttpRequests": 1,
+    "archivedWorkspaces": 2,
+    "cleanupErrors": []
+  }
+}

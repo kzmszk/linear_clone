@@ -1,0 +1,13 @@
+{
+  "observedAt": "2026-09-22T11:04:13Z",
+  "workerVersion": "dee28639-bda8-40fe-b0b7-79cd00e344e3",
+  "target": "https://linc.kazumasa.workers.dev",
+  "status": 500,
+  "workerError": "Exceeded allowed rows written in Durable Objects free tier.",
+  "tokenExpired": false,
+  "effect": "Production API reads and comment writes unavailable before deploying local-first changes; paired production benchmark cannot run.",
+  "quotaSource": "https://developers.cloudflare.com/durable-objects/platform/pricing/",
+  "dailyResetUtc": "00:00",
+  "nextResetJst": "2026-09-23T09:00:00+09:00",
+  "causeOfConsumption": "Not determined from the error log. Earlier production benchmarks performed writes; account-wide consumption was not measured."
+}

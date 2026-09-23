@@ -71,3 +71,69 @@ test('label deletion replays the same request without another write', async () =
     await runtime.stop();
   }
 });
+
+test('archived labels remain on existing issues but cannot be newly assigned', async () => {
+  const runtime = await startRuntime(8935);
+  try {
+    const owner = api(runtime.url);
+    const { base, team } = await seed(owner);
+    const label = (
+      await owner(`${base}/labels`, {
+        method: 'POST',
+        body: { name: 'Review' },
+      })
+    ).body.current;
+    const first = (
+      await owner(`${base}/issues`, {
+        method: 'POST',
+        body: { teamId: team.id, title: 'Tagged', labelIds: [label.id] },
+      })
+    ).body.current;
+    const second = (
+      await owner(`${base}/issues`, {
+        method: 'POST',
+        body: { teamId: team.id, title: 'Untagged' },
+      })
+    ).body.current;
+    assert.equal(
+      (
+        await owner(`${base}/labels/${label.id}`, {
+          method: 'DELETE',
+          body: { expectedVersion: label.version },
+        })
+      ).status,
+      200,
+    );
+    const renamed = await owner(`${base}/issues/${first.id}`, {
+      method: 'PATCH',
+      body: { expectedVersion: first.version, title: 'Still tagged' },
+    });
+    assert.equal(renamed.status, 200);
+    assert.deepEqual(renamed.body.current.labelIds, [label.id]);
+    const rejected = await owner(`${base}/issues/${second.id}`, {
+      method: 'PATCH',
+      body: { expectedVersion: second.version, labelIds: [label.id] },
+    });
+    assert.equal(rejected.status, 404);
+    assert.deepEqual(
+      (await owner(`${base}/issues/${second.id}`)).body.labelIds,
+      [],
+    );
+    const restored = await owner(`${base}/labels`, {
+      method: 'POST',
+      body: { name: 'Review', color: '#aabbcc' },
+    });
+    assert.equal(restored.status, 201);
+    assert.equal(restored.body.current.id, label.id);
+    assert.equal(
+      (await owner(`${base}/labels`)).body.some((item) => item.id === label.id),
+      true,
+    );
+    assert.deepEqual(
+      (await owner(`${base}/issues/${first.id}`)).body.labelIds,
+      [label.id],
+    );
+  } finally {
+    await runtime.stop();
+  }
+});

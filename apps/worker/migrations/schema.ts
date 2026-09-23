@@ -13,5 +13,14 @@ export function initializeSchema(
       const trimmed = statement.trim();
       if (trimmed.length > 0) sql.exec(trimmed);
     }
+    migrateWorkflowStates(sql);
   });
+}
+
+function migrateWorkflowStates(sql: SqlStorage): void {
+  const columns = sql
+    .exec<{ name: string }>('PRAGMA table_info(workflow_states)')
+    .toArray();
+  if (columns.some((column) => column.name === 'archived_at')) return;
+  sql.exec('ALTER TABLE workflow_states ADD COLUMN archived_at TEXT');
 }

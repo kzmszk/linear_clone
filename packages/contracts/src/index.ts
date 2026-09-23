@@ -73,6 +73,7 @@ export const stateSchema = z.object({
   type: z.string(),
   color: z.string(),
   position: z.number(),
+  archivedAt: z.string().nullable().default(null),
 });
 export const labelSchema = z.object({
   ...base,
@@ -102,6 +103,20 @@ export const issueSchema = z.object({
   completedAt: z.string().nullable(),
   canceledAt: z.string().nullable(),
   sourceId: z.string().nullable(),
+});
+export const issueLinkSchema = issueSchema.pick({
+  id: true,
+  identifier: true,
+  title: true,
+  teamId: true,
+  stateId: true,
+  version: true,
+  archivedAt: true,
+  deletedAt: true,
+});
+export const issueHierarchySchema = z.object({
+  parent: issueLinkSchema.nullable(),
+  children: z.array(issueLinkSchema),
 });
 export const commentSchema = z.object({
   ...base,

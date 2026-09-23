@@ -84,6 +84,7 @@ export type StateRow = SqlRow & {
   version: number;
   created_at: string;
   updated_at: string;
+  archived_at: string | null;
 };
 
 export type LabelRow = SqlRow & {

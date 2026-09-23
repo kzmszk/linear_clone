@@ -12,17 +12,16 @@ import {
 import { listStates, listLabels } from '../organization/queries.ts';
 import {
   createState,
+  deleteState,
   patchState,
-  createLabel,
-  patchLabel,
-} from '../organization/states-labels.ts';
+} from '../organization/states.ts';
+import { createLabel, patchLabel } from '../organization/labels.ts';
 const labelPatchSchema = z.object({
   name: z.string().min(1).optional(),
   color: z.string().optional(),
   archivedAt: z.string().nullable().optional(),
   expectedVersion: z.number().int().positive(),
 });
-
 export async function states(
   request: Request,
   sql: SqlDb,
@@ -51,12 +50,36 @@ export async function states(
       201,
     );
   }
-  if (rest.length !== 1 || request.method !== 'PATCH')
+  if (
+    rest.length !== 1 ||
+    (request.method !== 'PATCH' && request.method !== 'DELETE')
+  )
     return new Response(null, { status: 404 });
-  const body = await parseBody(request, statePatchSchema);
+  const isDelete = request.method === 'DELETE';
+  const input = isDelete
+    ? await parseBody(request, versionInputSchema)
+    : await parseBody(request, statePatchSchema);
   const operationId = requireOperationId(
     request.headers.get('Idempotency-Key'),
   );
+  const requestHash = await hashPayload({
+    path: request.url,
+    body: input,
+    ...(isDelete ? { method: 'DELETE' } : {}),
+  });
+  if (isDelete)
+    return response(
+      deleteState(
+        sql,
+        storage,
+        actor,
+        workspaceId,
+        rest[0],
+        operationId,
+        requestHash,
+        input.expectedVersion,
+      ),
+    );
   return response(
     patchState(
       sql,
@@ -65,8 +88,8 @@ export async function states(
       workspaceId,
       rest[0],
       operationId,
-      await hashPayload({ path: request.url, body }),
-      body,
+      requestHash,
+      input,
     ),
   );
 }

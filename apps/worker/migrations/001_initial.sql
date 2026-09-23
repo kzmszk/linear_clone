@@ -112,6 +112,7 @@ CREATE TABLE IF NOT EXISTS workflow_states (
   version INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
+  archived_at TEXT,
   UNIQUE (team_id, name)
 );
 
@@ -301,6 +302,8 @@ CREATE INDEX IF NOT EXISTS idx_issues_workspace
   ON issues(workspace_id, deleted_at, archived_at, updated_at, id);
 CREATE INDEX IF NOT EXISTS idx_issues_team
   ON issues(team_id, deleted_at, archived_at, updated_at, id);
+CREATE INDEX IF NOT EXISTS idx_issues_parent
+  ON issues(parent_id, created_at, id);
 CREATE INDEX IF NOT EXISTS idx_issues_filters
   ON issues(project_id, assignee_id, state_id);
 CREATE INDEX IF NOT EXISTS idx_issue_labels_label

@@ -80,6 +80,7 @@ function normalizeState(
   const stateId = insertStatePayload(
     sql,
     workspaceId,
+    item,
     item.payload,
     teamId,
     timestamp,
@@ -111,13 +112,25 @@ export function ensureIssueState(
     'state',
     stateSourceId,
   );
-  if (stateId !== null) return stateId;
+  if (stateId !== null) {
+    const mapped = one<
+      { team_id: string; archived_at: string | null } & SqlRow
+    >(
+      sql,
+      'SELECT team_id, archived_at FROM workflow_states WHERE id = ?',
+      stateId,
+    );
+    if (mapped?.team_id !== teamId || mapped.archived_at !== null)
+      invalidItem(item, 'issue state is archived or belongs to another team');
+    return stateId;
+  }
   const state = record(item.payload)?.state;
   if (stateSourceId === null || state === undefined)
     return firstState(sql, teamId, item);
   const created = insertStatePayload(
     sql,
     workspaceId,
+    item,
     state,
     teamId,
     timestamp,
@@ -136,19 +149,24 @@ export function ensureIssueState(
 function insertStatePayload(
   sql: SqlDb,
   workspaceId: string,
+  item: ImportItem,
   payload: unknown,
   teamId: string,
   timestamp: string,
 ): string {
   const name = text(payload, 'name');
   if (name === null) throw new Error('Imported state is missing a name');
-  const existing = one<{ id: string } & SqlRow>(
+  const existing = one<{ id: string; archived_at: string | null } & SqlRow>(
     sql,
-    'SELECT id FROM workflow_states WHERE team_id = ? AND name = ?',
+    'SELECT id, archived_at FROM workflow_states WHERE team_id = ? AND name = ?',
     teamId,
     name,
   );
-  if (existing !== null) return existing.id;
+  if (existing !== null) {
+    if (existing.archived_at !== null)
+      invalidItem(item, 'imported state matches an archived status');
+    return existing.id;
+  }
   const stateId = newId();
   sql.exec(
     'INSERT INTO workflow_states (id, workspace_id, team_id, name, type, color, position, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?)',
@@ -168,7 +186,7 @@ function insertStatePayload(
 function firstState(sql: SqlDb, teamId: string, item: ImportItem): string {
   const state = one<{ id: string } & SqlRow>(
     sql,
-    'SELECT id FROM workflow_states WHERE team_id = ? ORDER BY position, id LIMIT 1',
+    'SELECT id FROM workflow_states WHERE team_id = ? AND archived_at IS NULL ORDER BY position, id LIMIT 1',
     teamId,
   );
   if (state === null) invalidItem(item, 'issue team has no workflow state');

@@ -91,6 +91,7 @@ export function stateRecord(row: StateRow): WorkflowState {
     type: row.type,
     color: row.color,
     position: row.position,
+    archivedAt: row.archived_at,
   };
 }
 

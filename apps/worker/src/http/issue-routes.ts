@@ -1,4 +1,5 @@
 import { listRelations } from '../issues/relations.ts';
+import { getIssueHierarchy } from '../issues/hierarchy.ts';
 import { listAttachments } from '../issues/attachments.ts';
 import type { DurableObjectStorage } from '@cloudflare/workers-types';
 import {
@@ -127,6 +128,8 @@ async function issueResource(
         );
       case 'relations':
         return response(listRelations(sql, actor, workspaceId, issueId));
+      case 'hierarchy':
+        return response(getIssueHierarchy(sql, actor, workspaceId, issueId));
       case 'activity':
         return response(listActivity(sql, actor, workspaceId, issueId));
     }

@@ -150,9 +150,10 @@ function applyIssuePatch(
       'Issue was changed',
       issueRecord(row, issueLabelIds(sql, issueId)),
     );
-  const input = editToIssue(row, patch, issueLabelIds(sql, issueId));
+  const existingLabelIds = issueLabelIds(sql, issueId);
+  const input = editToIssue(row, patch, existingLabelIds);
   const stateId = chooseState(sql, workspaceId, row.team_id, input.stateId);
-  validateReferences(sql, workspaceId, input);
+  validateReferences(sql, workspaceId, input, existingLabelIds);
   if (patch.parentId !== undefined && patch.parentId !== null)
     validateParentReference(sql, actor, workspaceId, patch.parentId, issueId);
   const timestamp = now();

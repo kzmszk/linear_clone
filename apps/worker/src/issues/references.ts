@@ -227,7 +227,7 @@ export function chooseState(
       { id: string; workspace_id: string; team_id: string } & SqlRow
     >(
       sql,
-      'SELECT id, workspace_id, team_id FROM workflow_states WHERE id = ?',
+      'SELECT id, workspace_id, team_id FROM workflow_states WHERE id = ? AND archived_at IS NULL',
       requested,
     );
     if (
@@ -240,7 +240,7 @@ export function chooseState(
   }
   const first = one<{ id: string } & SqlRow>(
     sql,
-    'SELECT id FROM workflow_states WHERE workspace_id = ? AND team_id = ? ORDER BY position, id LIMIT 1',
+    'SELECT id FROM workflow_states WHERE workspace_id = ? AND team_id = ? AND archived_at IS NULL ORDER BY position, id LIMIT 1',
     workspaceId,
     teamId,
   );
@@ -252,6 +252,7 @@ export function validateReferences(
   sql: SqlDb,
   workspaceId: string,
   input: NewIssueInput,
+  existingLabelIds: string[] = [],
 ): void {
   if (input.projectId !== null) {
     const project = one<{ project_id: string } & SqlRow>(
@@ -273,14 +274,21 @@ export function validateReferences(
     if (assignee === null) throw notFound('Assignee is not a workspace member');
   }
   if (input.labelIds.length > 0) {
-    const labels = rows<{ id: string } & SqlRow>(
+    const labels = rows<{ id: string; archived_at: string | null } & SqlRow>(
       sql,
-      `SELECT id FROM labels WHERE workspace_id = ? AND id IN (${input.labelIds.map(() => '?').join(',')})`,
+      `SELECT id, archived_at FROM labels WHERE workspace_id = ? AND id IN (${input.labelIds.map(() => '?').join(',')})`,
       workspaceId,
       ...input.labelIds,
     );
     if (labels.length !== new Set(input.labelIds).size)
       throw notFound('One or more labels were not found');
+    if (
+      labels.some(
+        (label) =>
+          label.archived_at !== null && !existingLabelIds.includes(label.id),
+      )
+    )
+      throw notFound('Archived labels cannot be assigned to issues');
   }
 }
 

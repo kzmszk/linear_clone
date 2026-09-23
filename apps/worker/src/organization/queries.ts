@@ -221,7 +221,7 @@ export function listStates(
   requireMembership(sql, actor, workspaceId);
   return rows<StateRow>(
     sql,
-    'SELECT * FROM workflow_states WHERE workspace_id = ? ORDER BY team_id, position, id',
+    'SELECT * FROM workflow_states WHERE workspace_id = ? AND archived_at IS NULL ORDER BY team_id, position, id',
     workspaceId,
   )
     .filter((state) => canAccessTeam(sql, user.id, state.team_id))

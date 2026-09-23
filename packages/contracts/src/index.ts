@@ -18,6 +18,14 @@ export type {
 const id = z.string().uuid();
 const version = z.number().int().positive();
 const role = z.enum(['owner', 'admin', 'member']);
+export const editableStateTypeSchema = z.enum([
+  'triage',
+  'backlog',
+  'unstarted',
+  'started',
+  'completed',
+  'canceled',
+]);
 export const principalSchema = z.object({
   subject: z.string(),
   email: z.email(),
@@ -179,9 +187,16 @@ export const newMemberSchema = z.object({
 export const newStateSchema = z.object({
   teamId: id,
   name: z.string().min(1),
-  type: z.string().default('unstarted'),
+  type: editableStateTypeSchema.default('unstarted'),
   color: z.string().default('#9095a2'),
   position: z.number().default(0),
+});
+export const statePatchSchema = z.object({
+  name: z.string().min(1).optional(),
+  type: editableStateTypeSchema.optional(),
+  color: z.string().optional(),
+  position: z.number().optional(),
+  expectedVersion: version,
 });
 export const newLabelSchema = z.object({
   name: z.string().min(1),

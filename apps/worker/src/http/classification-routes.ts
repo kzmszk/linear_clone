@@ -6,6 +6,7 @@ import type { AuthActor, SqlDb } from '../types.ts';
 import {
   newStateSchema,
   newLabelSchema,
+  statePatchSchema,
   versionInputSchema,
 } from '../../../../packages/contracts/src/index.ts';
 import { listStates, listLabels } from '../organization/queries.ts';
@@ -15,13 +16,6 @@ import {
   createLabel,
   patchLabel,
 } from '../organization/states-labels.ts';
-const statePatchSchema = z.object({
-  name: z.string().min(1).optional(),
-  type: z.string().optional(),
-  color: z.string().optional(),
-  position: z.number().optional(),
-  expectedVersion: z.number().int().positive(),
-});
 const labelPatchSchema = z.object({
   name: z.string().min(1).optional(),
   color: z.string().optional(),

@@ -27,14 +27,6 @@ async function titles(query = '', actor = request) {
   return result.body.items.map((issue) => issue.title).sort();
 }
 
-async function setStateType(stateId, expectedVersion, type) {
-  const result = await request(`${fixture.base}/states/${stateId}`, {
-    method: 'PATCH',
-    body: { expectedVersion, type },
-  });
-  assert.equal(result.status, 200);
-}
-
 test('combined list filters track project, state and assignee changes', async () => {
   const project = await request(`${fixture.base}/projects`, {
     method: 'POST',
@@ -79,7 +71,7 @@ test('combined list filters track project, state and assignee changes', async ()
   assert.equal(listed.body.items[0].version, 3);
 });
 
-test('lifecycle filters use the current workflow state type', async () => {
+test('lifecycle filters and timestamps follow issue state changes', async () => {
   const metadata = (await request(`${fixture.base}/metadata`)).body;
   const backlog = metadata.states.find((state) => state.type === 'backlog');
   const done = metadata.states.find((state) => state.type === 'completed');
@@ -116,24 +108,6 @@ test('lifecycle filters use the current workflow state type', async () => {
 
   const completedAt = completedIssue.completedAt;
   assert.notEqual(completedAt, null);
-  await setStateType(done.id, done.version, 'unstarted');
-  assert.deepEqual(await titles('lifecycle=open'), [
-    'Completed issue',
-    'Open issue',
-  ]);
-  assert.deepEqual(await titles('lifecycle=closed'), ['Canceled issue']);
-  const sameStateIssue = (
-    await request(`${fixture.base}/issues/${completedIssue.id}`)
-  ).body;
-  assert.equal(sameStateIssue.stateId, done.id);
-  assert.equal(sameStateIssue.completedAt, completedAt);
-  await setStateType(done.id, done.version + 1, 'completed');
-  assert.deepEqual(await titles('lifecycle=open'), ['Open issue']);
-  assert.deepEqual(await titles('lifecycle=closed'), [
-    'Canceled issue',
-    'Completed issue',
-  ]);
-
   const reopened = await request(
     `${fixture.base}/issues/${completedIssue.id}`,
     {
@@ -142,9 +116,28 @@ test('lifecycle filters use the current workflow state type', async () => {
     },
   );
   assert.equal(reopened.status, 200);
+  assert.equal(reopened.body.current.completedAt, null);
+  assert.equal(reopened.body.current.canceledAt, null);
   assert.deepEqual(await titles('lifecycle=open'), [
     'Completed issue',
     'Open issue',
+  ]);
+  const canceledAfterReopen = await request(
+    `${fixture.base}/issues/${completedIssue.id}`,
+    {
+      method: 'PATCH',
+      body: {
+        expectedVersion: reopened.body.current.version,
+        stateId: canceled.body.current.id,
+      },
+    },
+  );
+  assert.equal(canceledAfterReopen.status, 200);
+  assert.equal(canceledAfterReopen.body.current.completedAt, null);
+  assert.notEqual(canceledAfterReopen.body.current.canceledAt, null);
+  assert.deepEqual(await titles('lifecycle=closed'), [
+    'Canceled issue',
+    'Completed issue',
   ]);
   assert.equal(
     (

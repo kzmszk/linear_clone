@@ -1,6 +1,10 @@
 import type { DurableObjectStorage } from '@cloudflare/workers-types';
 import { z } from 'zod';
-import { labelSchema } from '../../../../packages/contracts/src/index.ts';
+import {
+  labelSchema,
+  newStateSchema,
+  statePatchSchema,
+} from '../../../../packages/contracts/src/index.ts';
 import { newId, now, one } from '../db.ts';
 import { conflict, notFound } from '../errors.ts';
 import { runMutation } from '../mutations.ts';
@@ -16,20 +20,8 @@ import type {
 import type { WorkflowState } from '../../../../packages/contracts/src/index.ts';
 
 type Label = z.infer<typeof labelSchema>;
-export type StateInput = {
-  teamId: string;
-  name: string;
-  type: string;
-  color: string;
-  position: number;
-};
-export type StatePatch = {
-  name?: string;
-  type?: string;
-  color?: string;
-  position?: number;
-  expectedVersion: number;
-};
+export type StateInput = z.infer<typeof newStateSchema>;
+export type StatePatch = z.infer<typeof statePatchSchema>;
 export type LabelInput = { name: string; color: string };
 export type LabelPatch = {
   name?: string;
@@ -115,6 +107,20 @@ export function patchState(
           'version_conflict',
           'State was changed',
           stateRecord(row),
+        );
+      if (
+        patch.type !== undefined &&
+        patch.type !== row.type &&
+        one<{ id: string }>(
+          sql,
+          'SELECT id FROM issues WHERE workspace_id = ? AND state_id = ? LIMIT 1',
+          workspaceId,
+          stateId,
+        ) !== null
+      )
+        throw conflict(
+          'state_in_use',
+          'Move issues to another state before changing its type',
         );
       const timestamp = now();
       sql.exec(

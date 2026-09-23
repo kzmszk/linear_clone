@@ -112,15 +112,16 @@ export async function labels(
     return new Response(null, { status: 404 });
   const body =
     request.method === 'DELETE'
-      ? {
-          expectedVersion: (await parseBody(request, versionInputSchema))
-            .expectedVersion,
-          archivedAt: new Date().toISOString(),
-        }
+      ? await parseBody(request, versionInputSchema)
       : await parseBody(request, labelPatchSchema);
   const operationId = requireOperationId(
     request.headers.get('Idempotency-Key'),
   );
+  const requestHash = await hashPayload({
+    path: request.url,
+    body,
+    ...(request.method === 'DELETE' ? { method: 'DELETE' } : {}),
+  });
   return response(
     patchLabel(
       sql,
@@ -129,8 +130,10 @@ export async function labels(
       workspaceId,
       rest[0],
       operationId,
-      await hashPayload({ path: request.url, body }),
-      body,
+      requestHash,
+      request.method === 'DELETE'
+        ? { ...body, archivedAt: new Date().toISOString() }
+        : body,
     ),
   );
 }

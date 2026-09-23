@@ -1,0 +1,469 @@
+$ node scripts/check-code-quality.mjs
+{
+  "files": 171,
+  "lines": 22997,
+  "cyclomatic": {
+    "measuredFunctions": 1479,
+    "maximum": 12,
+    "threshold": 12,
+    "overThreshold": [],
+    "highest": [
+      {
+        "file": "apps/web/src/App.tsx",
+        "ruleId": "complexity",
+        "message": "Function 'App' has a complexity of 12. Maximum allowed is 0.",
+        "line": 9,
+        "column": 8,
+        "score": 12
+      },
+      {
+        "file": "apps/web/src/app/SelectedIssueView.tsx",
+        "ruleId": "complexity",
+        "message": "Function 'SelectedIssueView' has a complexity of 12. Maximum allowed is 0.",
+        "line": 8,
+        "column": 8,
+        "score": 12
+      },
+      {
+        "file": "apps/web/src/app/useWorkspaceEvents.ts",
+        "ruleId": "complexity",
+        "message": "Function 'parseChangeNotice' has a complexity of 12. Maximum allowed is 0.",
+        "line": 77,
+        "column": 1,
+        "score": 12
+      },
+      {
+        "file": "apps/web/src/app/WorkspaceLayout.tsx",
+        "ruleId": "complexity",
+        "message": "Function 'WorkspaceLayout' has a complexity of 12. Maximum allowed is 0.",
+        "line": 22,
+        "column": 8,
+        "score": 12
+      },
+      {
+        "file": "apps/web/src/components/IssueList.tsx",
+        "ruleId": "complexity",
+        "message": "Function 'IssueRow' has a complexity of 12. Maximum allowed is 0.",
+        "line": 161,
+        "column": 1,
+        "score": 12
+      },
+      {
+        "file": "apps/web/src/components/useCreateIssueDraft.ts",
+        "ruleId": "complexity",
+        "message": "Function 'initialIssueContext' has a complexity of 12. Maximum allowed is 0.",
+        "line": 65,
+        "column": 1,
+        "score": 12
+      },
+      {
+        "file": "apps/web/src/components/useDialogBehavior.ts",
+        "ruleId": "complexity",
+        "message": "Arrow function has a complexity of 12. Maximum allowed is 0.",
+        "line": 16,
+        "column": 46,
+        "score": 12
+      },
+      {
+        "file": "apps/worker/src/organization/states-labels.ts",
+        "ruleId": "complexity",
+        "message": "Method 'apply' has a complexity of 12. Maximum allowed is 0.",
+        "line": 102,
+        "column": 5,
+        "score": 12
+      },
+      {
+        "file": "packages/linear-import/src/destination-attachments.ts",
+        "ruleId": "complexity",
+        "message": "Function 'expectedAttachment' has a complexity of 12. Maximum allowed is 0.",
+        "line": 142,
+        "column": 1,
+        "score": 12
+      },
+      {
+        "file": "packages/linear-import/src/model.ts",
+        "ruleId": "complexity",
+        "message": "Function 'sourceIdentity' has a complexity of 12. Maximum allowed is 0.",
+        "line": 137,
+        "column": 8,
+        "score": 12
+      }
+    ]
+  },
+  "functionLines": {
+    "measuredFunctions": 1478,
+    "maximum": 79,
+    "threshold": 80,
+    "overThreshold": [],
+    "highest": [
+      {
+        "file": "apps/worker/src/imports/issues.ts",
+        "ruleId": "max-lines-per-function",
+        "message": "Function 'normalizeIssue' has too many lines (79). Maximum allowed is 0.",
+        "line": 18,
+        "column": 1,
+        "score": 79
+      },
+      {
+        "file": "apps/web/src/components/usePropertySelect.ts",
+        "ruleId": "max-lines-per-function",
+        "message": "Function 'usePropertySelect' has too many lines (78). Maximum allowed is 0.",
+        "line": 19,
+        "column": 8,
+        "score": 78
+      },
+      {
+        "file": "apps/web/src/components/WorkspaceDialog.tsx",
+        "ruleId": "max-lines-per-function",
+        "message": "Function 'WorkspaceDialog' has too many lines (78). Maximum allowed is 0.",
+        "line": 4,
+        "column": 8,
+        "score": 78
+      },
+      {
+        "file": "apps/worker/src/issues/mutations.ts",
+        "ruleId": "max-lines-per-function",
+        "message": "Function 'createIssue' has too many lines (77). Maximum allowed is 0.",
+        "line": 25,
+        "column": 8,
+        "score": 77
+      },
+      {
+        "file": "apps/web/src/components/IssueDescriptionEditor.tsx",
+        "ruleId": "max-lines-per-function",
+        "message": "Function 'useBodyDraft' has too many lines (76). Maximum allowed is 0.",
+        "line": 123,
+        "column": 1,
+        "score": 76
+      },
+      {
+        "file": "apps/worker/src/issues/comments.ts",
+        "ruleId": "max-lines-per-function",
+        "message": "Function 'createComment' has too many lines (76). Maximum allowed is 0.",
+        "line": 24,
+        "column": 8,
+        "score": 76
+      },
+      {
+        "file": "apps/worker/src/mutations.ts",
+        "ruleId": "max-lines-per-function",
+        "message": "Function 'runMutation' has too many lines (76). Maximum allowed is 0.",
+        "line": 36,
+        "column": 8,
+        "score": 76
+      },
+      {
+        "file": "apps/web/src/components/IssueActivity.tsx",
+        "ruleId": "max-lines-per-function",
+        "message": "Function 'CommentComposer' has too many lines (75). Maximum allowed is 0.",
+        "line": 140,
+        "column": 1,
+        "score": 75
+      },
+      {
+        "file": "apps/web/src/components/settings/MemberPanel.tsx",
+        "ruleId": "max-lines-per-function",
+        "message": "Function 'MemberPanel' has too many lines (75). Maximum allowed is 0.",
+        "line": 10,
+        "column": 8,
+        "score": 75
+      },
+      {
+        "file": "apps/web/src/components/settings/ProjectPanel.tsx",
+        "ruleId": "max-lines-per-function",
+        "message": "Function 'ProjectPanel' has too many lines (75). Maximum allowed is 0.",
+        "line": 9,
+        "column": 8,
+        "score": 75
+      }
+    ]
+  },
+  "cognitiveOver15": [],
+  "largestFiles": [
+    {
+      "file": "apps/web/src/api.ts",
+      "lines": 356
+    },
+    {
+      "file": "apps/cli/src/local/projection.ts",
+      "lines": 348
+    },
+    {
+      "file": "apps/cli/src/local/store.ts",
+      "lines": 343
+    },
+    {
+      "file": "apps/worker/src/issues/mutations.ts",
+      "lines": 323
+    },
+    {
+      "file": "apps/worker/src/issues/references.ts",
+      "lines": 320
+    },
+    {
+      "file": "apps/cli/src/local/domain.ts",
+      "lines": 319
+    },
+    {
+      "file": "apps/web/src/app/useWorkspaceMutations.ts",
+      "lines": 309
+    },
+    {
+      "file": "packages/linear-import/src/destination-children.ts",
+      "lines": 303
+    },
+    {
+      "file": "packages/contracts/src/index.ts",
+      "lines": 299
+    },
+    {
+      "file": "apps/worker/src/imports/organization.ts",
+      "lines": 298
+    }
+  ],
+  "highestCognitive": [
+    {
+      "file": "packages/linear-import/src/destination-metadata.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 15 to the 0 allowed.",
+      "line": 49,
+      "column": 10,
+      "score": 15
+    },
+    {
+      "file": "apps/web/src/App.tsx",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 14 to the 0 allowed.",
+      "line": 9,
+      "column": 17,
+      "score": 14
+    },
+    {
+      "file": "packages/linear-import/src/apply.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 13 to the 0 allowed.",
+      "line": 47,
+      "column": 23,
+      "score": 13
+    },
+    {
+      "file": "packages/linear-import/src/destination-children.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 13 to the 0 allowed.",
+      "line": 66,
+      "column": 16,
+      "score": 13
+    },
+    {
+      "file": "apps/worker/src/http/router.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 12 to the 0 allowed.",
+      "line": 65,
+      "column": 16,
+      "score": 12
+    },
+    {
+      "file": "packages/linear-import/src/nested-export.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 12 to the 0 allowed.",
+      "line": 28,
+      "column": 17,
+      "score": 12
+    },
+    {
+      "file": "packages/linear-import/src/verify.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 12 to the 0 allowed.",
+      "line": 70,
+      "column": 16,
+      "score": 12
+    },
+    {
+      "file": "apps/cli/src/local/domain.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 10 to the 0 allowed.",
+      "line": 152,
+      "column": 10,
+      "score": 10
+    },
+    {
+      "file": "apps/cli/src/output.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 10 to the 0 allowed.",
+      "line": 57,
+      "column": 17,
+      "score": 10
+    },
+    {
+      "file": "apps/worker/src/http/issue-routes.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 10 to the 0 allowed.",
+      "line": 219,
+      "column": 16,
+      "score": 10
+    },
+    {
+      "file": "apps/worker/src/organization/members.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 10 to the 0 allowed.",
+      "line": 131,
+      "column": 10,
+      "score": 10
+    },
+    {
+      "file": "packages/linear-import/src/destination-attachments.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 10 to the 0 allowed.",
+      "line": 20,
+      "column": 23,
+      "score": 10
+    },
+    {
+      "file": "packages/linear-import/src/destination-files.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 10 to the 0 allowed.",
+      "line": 26,
+      "column": 23,
+      "score": 10
+    },
+    {
+      "file": "packages/linear-import/src/destination-relations.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 10 to the 0 allowed.",
+      "line": 20,
+      "column": 23,
+      "score": 10
+    },
+    {
+      "file": "apps/cli/src/auth.ts",
+      "ruleId": "sonarjs/cognitive-complexity",
+      "message": "Refactor this function to reduce its Cognitive Complexity from 9 to the 0 allowed.",
+      "line": 15,
+      "column": 23,
+      "score": 9
+    }
+  ]
+}
+Using config from .jscpd.json
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/issue-comments.ts [129:70 - 136:31] (8 lines, 50 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/issue-updates.ts [195:66 - 203:13]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/issue-updates.ts [20:21 - 41:7] (22 lines, 265 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/local/issue-commands.ts [44:27 - 65:7]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/issue-updates.ts [48:18 - 68:43] (21 lines, 101 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/local/register.ts [83:3 - 103:43]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/issue-updates.ts [192:9 - 204:77] (13 lines, 107 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/issue-updates.ts [222:10 - 234:77]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/issue-updates.ts [195:65 - 204:24] (10 lines, 52 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/management-members.ts [125:62 - 134:24]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/issue-updates.ts [195:65 - 204:24] (10 lines, 52 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/management.ts [106:75 - 113:47]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/issues.ts [23:21 - 37:6] (15 lines, 182 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/local/issue-commands.ts [19:27 - 33:6]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/issues.ts [37:19 - 42:33] (6 lines, 66 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/local/issue-commands.ts [33:25 - 38:33]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/issues.ts [43:9 - 48:4] (6 lines, 66 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/local/issue-commands.ts [38:9 - 43:4]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/issues.ts [59:3 - 74:14] (16 lines, 81 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/local/register.ts [38:3 - 53:14]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/management-labels.ts [19:19 - 30:16] (12 lines, 62 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/management-members.ts [26:27 - 37:16]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/management-members.ts [81:28 - 87:26] (7 lines, 53 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/management-projects.ts [94:32 - 100:26]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/cli/src/management-members.ts [88:32 - 98:19] (11 lines, 62 tokens)
+   /home/kazu/work/linear_clone/apps/cli/src/management-projects.ts [101:39 - 111:19]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/web/src/app/useWorkspaceMutations.ts [20:36 - 33:41] (14 lines, 80 tokens)
+   /home/kazu/work/linear_clone/apps/web/src/app/useWorkspaceMutations.ts [38:30 - 51:41]
+Clone found (tsx)
+ - /home/kazu/work/linear_clone/apps/web/src/components/CreateIssueFields.tsx [32:18 - 37:38] (6 lines, 54 tokens)
+   /home/kazu/work/linear_clone/apps/web/src/components/CreateIssueForm.tsx [21:32 - 26:38]
+Clone found (tsx)
+ - /home/kazu/work/linear_clone/apps/web/src/components/CreateIssueFields.tsx [184:5 - 194:6] (11 lines, 93 tokens)
+   /home/kazu/work/linear_clone/apps/web/src/components/IssueProperties.tsx [155:5 - 165:6]
+Clone found (tsx)
+ - /home/kazu/work/linear_clone/apps/web/src/components/IssueEditorFields.tsx [24:19 - 33:5] (10 lines, 69 tokens)
+   /home/kazu/work/linear_clone/apps/web/src/components/IssueEditorFields.tsx [81:15 - 90:5]
+Clone found (tsx)
+ - /home/kazu/work/linear_clone/apps/web/src/components/settings/EditResourceDialog.tsx [244:20 - 252:15] (9 lines, 51 tokens)
+   /home/kazu/work/linear_clone/apps/web/src/components/settings/ProjectPanel.tsx [101:34 - 109:15]
+Clone found (tsx)
+ - /home/kazu/work/linear_clone/apps/web/src/components/settings/EditResourceDialog.tsx [262:11 - 269:15] (8 lines, 68 tokens)
+   /home/kazu/work/linear_clone/apps/web/src/components/settings/ProjectPanel.tsx [140:11 - 147:15]
+Clone found (tsx)
+ - /home/kazu/work/linear_clone/apps/web/src/components/settings/MemberPanel.tsx [36:47 - 57:8] (22 lines, 121 tokens)
+   /home/kazu/work/linear_clone/apps/web/src/components/settings/ProjectPanel.tsx [35:27 - 56:8]
+Clone found (tsx)
+ - /home/kazu/work/linear_clone/apps/web/src/components/settings/MemberPanel.tsx [37:30 - 57:8] (21 lines, 109 tokens)
+   /home/kazu/work/linear_clone/apps/web/src/components/settings/TeamPanel.tsx [29:29 - 49:8]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/worker/src/http/classification-routes.ts [26:29 - 35:21] (10 lines, 51 tokens)
+   /home/kazu/work/linear_clone/apps/worker/src/http/classification-routes.ts [74:29 - 83:21]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/worker/src/http/classification-routes.ts [26:29 - 35:21] (10 lines, 51 tokens)
+   /home/kazu/work/linear_clone/apps/worker/src/http/resource-routes.ts [48:28 - 57:21]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/worker/src/http/classification-routes.ts [26:29 - 35:21] (10 lines, 51 tokens)
+   /home/kazu/work/linear_clone/apps/worker/src/http/resource-routes.ts [106:31 - 115:21]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/worker/src/http/classification-routes.ts [26:29 - 35:21] (10 lines, 51 tokens)
+   /home/kazu/work/linear_clone/apps/worker/src/http/resource-routes.ts [171:30 - 180:21]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/worker/src/http/classification-routes.ts [90:18 - 109:8] (20 lines, 78 tokens)
+   /home/kazu/work/linear_clone/apps/worker/src/http/resource-routes.ts [64:17 - 83:8]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/worker/src/http/classification-routes.ts [90:18 - 114:8] (25 lines, 111 tokens)
+   /home/kazu/work/linear_clone/apps/worker/src/http/resource-routes.ts [129:20 - 153:33]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/worker/src/http/organization-routes.ts [171:64 - 180:33] (10 lines, 56 tokens)
+   /home/kazu/work/linear_clone/apps/worker/src/http/resource-routes.ts [79:3 - 88:33]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/worker/src/imports/secondary.ts [83:26 - 96:19] (14 lines, 57 tokens)
+   /home/kazu/work/linear_clone/apps/worker/src/imports/secondary.ts [137:29 - 150:19]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/worker/src/issues/comments.ts [110:22 - 128:26] (19 lines, 85 tokens)
+   /home/kazu/work/linear_clone/apps/worker/src/issues/comments.ts [173:26 - 191:26]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/worker/src/issues/comments.ts [215:42 - 228:2] (14 lines, 76 tokens)
+   /home/kazu/work/linear_clone/apps/worker/src/issues/mutations.ts [310:36 - 323:2]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/worker/src/issues/mutations.ts [217:28 - 235:21] (19 lines, 59 tokens)
+   /home/kazu/work/linear_clone/apps/worker/src/issues/mutations.ts [240:29 - 258:21]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/apps/worker/src/organization/workspaces.ts [82:80 - 93:6] (12 lines, 62 tokens)
+   /home/kazu/work/linear_clone/apps/worker/src/organization/workspaces.ts [204:14 - 215:2]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/packages/contracts/src/index.ts [94:51 - 99:25] (6 lines, 51 tokens)
+   /home/kazu/work/linear_clone/packages/contracts/src/index.ts [210:35 - 215:25]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/packages/linear-import/src/destination-children.ts [24:38 - 40:16] (17 lines, 72 tokens)
+   /home/kazu/work/linear_clone/packages/linear-import/src/destination-children.ts [45:39 - 61:16]
+Clone found (typescript)
+ - /home/kazu/work/linear_clone/packages/linear-import/src/destination-values.ts [41:26 - 47:41] (7 lines, 52 tokens)
+   /home/kazu/work/linear_clone/packages/linear-import/src/destination-values.ts [76:27 - 82:41]
+┌────────────┬────────────────┬─────────────┬──────────────┬──────────────┬──────────────────┬───────────────────┐
+│ Format     │ Files analyzed │ Total lines │ Total tokens │ Clones found │ Duplicated lines │ Duplicated tokens │
+├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
+│ tsx        │ 41             │ 5354        │ 28397        │ 7            │ 80 (1.49%)       │ 565 (1.99%)       │
+├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
+│ typescript │ 126            │ 17620       │ 96661        │ 29           │ 345 (1.96%)      │ 2242 (2.32%)      │
+├────────────┼────────────────┼─────────────┼──────────────┼──────────────┼──────────────────┼───────────────────┤
+│ Total:     │ 167            │ 22974       │ 125058       │ 36           │ 425 (1.85%)      │ 2807 (2.24%)      │
+└────────────┴────────────────┴─────────────┴──────────────┴──────────────┴──────────────────┴───────────────────┘
+Found 36 clones.
+JSON report saved to /home/kazu/work/linear_clone/artifacts/private/quality/current/jscpd-report.json
+time: 13.860ms
+Knip findings: {"issues":[]}
+Quality reports: artifacts/private/quality/current

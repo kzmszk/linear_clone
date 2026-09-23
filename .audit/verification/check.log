@@ -1,0 +1,148 @@
+$ pnpm format:check && pnpm lint && pnpm typecheck && pnpm build && pnpm test
+$ oxfmt --check .
+Checking formatting...
+
+All matched files use the correct format.
+Finished in 290ms on 333 files using 24 threads.
+$ oxlint . --deny-warnings
+$ tsc -p apps/worker/tsconfig.json && tsc -p apps/web/tsconfig.json && tsc -p apps/cli/tsconfig.json && tsc -p tests/tsconfig.json
+$ pnpm build:web && pnpm build:cli && wrangler deploy --dry-run --outdir dist/worker && node scripts/check-production-bundle.mjs
+$ vite build --config apps/web/vite.config.ts
+vite v7.3.6 building client environment for production...
+transforming...
+node_modules/.pnpm/zod@4.6.5/node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/.pnpm/zod@4.6.5/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+node_modules/.pnpm/zod@4.6.5/node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/.pnpm/zod@4.6.5/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 2036 modules transformed.
+rendering chunks...
+computing gzip size...
+../../dist/web/index.html                              0.45 kB │ gzip:   0.29 kB
+../../dist/web/assets/index-BQJKu15X.css              31.09 kB │ gzip:   6.37 kB
+../../dist/web/assets/SettingsRoute-gDUxXYWg.js       23.86 kB │ gzip:   6.10 kB
+../../dist/web/assets/SelectedIssueView-DilgiSiE.js  176.07 kB │ gzip:  53.59 kB
+../../dist/web/assets/index-BGhQh5m9.js              407.38 kB │ gzip: 122.98 kB
+✓ built in 1.47s
+$ node scripts/build-cli.mjs
+
+ ⛅️ wrangler 4.136.1 (update available 4.136.3)
+───────────────────────────────────────────────
+✨ Read 6 files from the assets directory /home/kazu/work/linear_clone/dist/web
+Total Upload: 1053.61 KiB / gzip: 176.51 KiB
+Your Worker has access to the following bindings:
+Binding                                                                     Resource
+env.TRACKER (Tracker)                                                       Durable Object
+env.FILES (linc-files)                                                      R2 Bucket
+env.ASSETS                                                                  Assets
+env.ACCESS_TEAM_DOMAIN ("kazumasa.cloudflareaccess.com")                    Environment Variable
+env.ACCESS_AUD ("d08672bb6f754c9f732e0da80a5acb412e98d...")                 Environment Variable
+env.BOOTSTRAP_OWNER_EMAIL ("kazumasa@gmail.com")                            Environment Variable
+
+--dry-run: exiting now.
+Production bundle excludes local authentication.
+$ node --test --test-concurrency=1 tests/*.test.mjs
+✔ issue lifecycle preserves Markdown, versions, replay and restore (1164.579704ms)
+✔ uninvited principals cannot access workspace data or bootstrap (1141.953165ms)
+✔ invalid input is rejected without consuming issue numbers (1134.009941ms)
+✔ private R2 files require issue access and preserve uploaded bytes (1154.474041ms)
+✔ invited members see public issues but cannot read private team issues (1158.674713ms)
+✔ cross-workspace references and removing the last owner are rejected (1161.109791ms)
+✔ issue pagination returns every visible row beyond two pages (2325.955491ms)
+✔ completion dates follow state changes and survive unrelated edits (1151.758901ms)
+✔ pending invitations can be edited and revoked before the first login (1153.2108ms)
+✔ production entry verifies real JWTs and rejects local identity headers (1182.308386ms)
+✔ batch runs commands in order with fresh option state (1258.653931ms)
+✔ batch stops on conflict and does not run later writes (1217.861379ms)
+✔ batch rejects invalid input before later commands (1216.010252ms)
+✔ batch reports workspace preflight errors as JSON (1216.554196ms)
+✔ batch rejects nested batch, auth, import, and help (1499.642418ms)
+✔ batch resolves references from fresh metadata for each line (1233.257799ms)
+✔ compiled CLI creates, lists, updates and deletes issue comments (1636.776505ms)
+✔ stale comment updates exit 2 and preserve the stored comment (1645.528596ms)
+✔ comment commands reject cross-issue IDs and unauthorized principals (1695.606904ms)
+✔ project status and issue project moves round-trip through the CLI (1729.26655ms)
+✔ CLI resolves mixed names and IDs and saves an assignee user rather than membership ID (1940.858433ms)
+✔ CLI rejects conflicting lifecycle switches (1176.807472ms)
+✔ CLI does not treat an unknown workspace UUID as a slug (1222.721264ms)
+✔ CLI metadata respects private teams and excludes archived projects (1598.664648ms)
+✔ built CLI prints root and subcommand help (98.189927ms)
+✔ built CLI reports config validation errors in English (47.051545ms)
+✔ failed references and stale versions do not update the issue (1462.031944ms)
+✔ state UUID mutations rely on Worker team validation (1548.524642ms)
+✔ login selects the destination for later issue commands without --url (1585.933413ms)
+✔ built CLI creates, reads, edits and deletes real Worker issues (383.029659ms)
+✔ built CLI management commands persist and conflict exits nonzero (258.659539ms)
+✔ comment reads need no mutation key and remain scoped to their issue and team (1265.186886ms)
+✔ events deliver visible changes and close a removed member connection (3397.759817ms)
+✔ a public-to-private team change closes only a viewer who loses access (3412.052399ms)
+✔ import endpoint rejects malformed file metadata before creating a run (1206.540395ms)
+✔ CLI verification rejects an export with changed source bytes (110.537383ms)
+✔ CLI import preserves source issue content, hierarchy, authors and dates without granting login membership (1505.214548ms)
+✔ CLI validates cached lists and refreshes remote updates and malformed files (1592.489863ms)
+✔ validators follow completion, reopening, deletion and restoration (1287.794419ms)
+✔ cache validation isolates accounts and denies removed members (1556.490561ms)
+✔ lists larger than one page stay complete without caching partial results (1930.316139ms)
+✔ parent edits reject direct and indirect cycles without changing saved issues (1209.358051ms)
+✔ a parent must belong to this workspace and be visible to the actor (1198.289205ms)
+✔ combined list filters track project, state and assignee changes (1217.896096ms)
+✔ lifecycle filters and timestamps follow issue state changes (1199.297161ms)
+✔ open lifecycle filtering happens before the issue page limit (1802.328585ms)
+✔ active, archived and trash lists stay separate after deletion and restoration (1210.074091ms)
+✔ search and direct reads hide private team issues until membership is granted (1196.328159ms)
+✔ issue writes resolve team, state, project and identifier references (1176.971333ms)
+✔ canonical issue writes still strip unknown fields (1138.355519ms)
+✔ issue writes reject mixed reference families and strict reference extras (1141.45568ms)
+✔ reference replays authorize the original issue and comment after alias reuse (1214.319499ms)
+✔ state names resolve within the referenced or current issue team (1150.352418ms)
+✔ ambiguous project names fail before creating or updating an issue (1148.350072ms)
+✔ label deletion replays the same request without another write (1197.658146ms)
+{"creates":100,"updates":100,"replays":100,"contentionConflicts":99,"elapsedMs":1450}
+✔ 100 concurrent creates, retries and updates preserve all results (2639.365657ms)
+✔ a backlog larger than one request synchronizes in ordered batches (2742.975443ms)
+✔ local commands wait for a brief database lock during workspace discovery (2514.391389ms)
+✔ a parent cycle rejected by sync keeps the local pending edit (1939.269753ms)
+✔ offline issue, status and comment writes survive restart and synchronize in one request (1739.61178ms)
+✔ a lost sync response can be retried without duplicating issues or comments (1606.041316ms)
+✔ a remote conflict preserves both remote values and the local pending intent (1807.886227ms)
+✔ local commands can save while sync waits for the network response (1660.15401ms)
+✔ 100 concurrent local creates persist and are pushed together (3377.457306ms)
+✔ pulling remote state refreshes closed and deleted issues without losing lifecycle filters (1989.482868ms)
+✔ a different local identity cannot read another account local database (1413.568977ms)
+✔ watch periodically sends later local writes and stops cleanly (2470.062167ms)
+✔ revoked team access removes remote records from the local view while retaining pending intent (1730.194273ms)
+✔ discard withdraws unsent writes without sending them to the server (1573.25487ms)
+✔ discard after a lost response retains writes already committed remotely (1669.053292ms)
+✔ discard clears a conflict so a newly entered update can synchronize (1818.22246ms)
+✔ watch stops promptly during a long interval and a pending network response (1489.904833ms)
+✔ concurrent project edits commit one version and replay it without another write (1221.492851ms)
+✔ concurrent member edits commit one version and replay it without another write (1172.663337ms)
+✔ concurrent comment edits commit one version and replay it without another write (1190.825391ms)
+✔ restarting a Worker preserves writes and replays receipts without duplicating changes (2381.957946ms)
+✔ deleted issues and private attachment bytes survive restart and restore (2348.230802ms)
+✔ used state types stay fixed while their display fields remain editable (1224.234871ms)
+✔ unused states accept supported types and reject unknown types (1187.270365ms)
+✔ applies and replays an issue update and comment in one batch (1191.257823ms)
+✔ stops at the first CAS conflict and preserves the successful prefix (1167.205124ms)
+✔ rejects a stable issue ID collision without overwriting the owner record (1188.091195ms)
+✔ snapshot keeps completed, archived and deleted issues with their comments (1178.002193ms)
+✔ snapshot applies the same private-team visibility to issues and comments (1180.8951ms)
+✔ one batch snapshot includes more than two hundred issues (1300.636383ms)
+✔ returns null at an unchanged sequence and refreshes after a remote write (1219.621555ms)
+✔ rejects an oversized sync request before parsing its JSON (1330.190466ms)
+✔ reusing a workspace slug cannot replay another workspace mutation (1215.764034ms)
+ℹ tests 88
+ℹ suites 0
+ℹ pass 88
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 131879.806322

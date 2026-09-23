@@ -18,7 +18,7 @@ export type {
 const id = z.string().uuid();
 const version = z.number().int().positive();
 const role = z.enum(['owner', 'admin', 'member']);
-export const editableStateTypeSchema = z.enum([
+const editableStateTypeSchema = z.enum([
   'triage',
   'backlog',
   'unstarted',

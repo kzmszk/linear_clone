@@ -15,7 +15,11 @@ import type {
 import type { Issue } from '../../../../packages/contracts/src/index.ts';
 
 import type { NewIssueInput, IssueEdit } from './inputs.ts';
-import { chooseState, validateReferences } from './references.ts';
+import {
+  chooseState,
+  validateParentReference,
+  validateReferences,
+} from './references.ts';
 import { updateStateDates, setLabels, addActivity } from './writes.ts';
 
 export function createIssue(
@@ -53,6 +57,8 @@ export function createIssue(
         input.stateId,
       );
       validateReferences(sql, workspaceId, input);
+      if (input.parentId !== null)
+        validateParentReference(sql, actor, workspaceId, input.parentId);
       const issueId = options.id ?? newId();
       const timestamp = now();
       sql.exec(
@@ -146,7 +152,9 @@ function applyIssuePatch(
     );
   const input = editToIssue(row, patch, issueLabelIds(sql, issueId));
   const stateId = chooseState(sql, workspaceId, row.team_id, input.stateId);
-  validateReferences(sql, workspaceId, input, issueId);
+  validateReferences(sql, workspaceId, input);
+  if (patch.parentId !== undefined && patch.parentId !== null)
+    validateParentReference(sql, actor, workspaceId, patch.parentId, issueId);
   const timestamp = now();
   sql.exec(
     'UPDATE issues SET title = ?, description = ?, state_id = ?, priority = ?, assignee_id = ?, project_id = ?, parent_id = ?, estimate = ?, due_date = ?, archived_at = ?, version = version + 1, updated_at = ? WHERE id = ? AND version = ?',

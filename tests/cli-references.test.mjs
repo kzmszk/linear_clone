@@ -138,6 +138,14 @@ test('CLI resolves mixed names and IDs and saves an assignee user rather than me
   const stored = await request(`${fixture.base}/issues/${child.id}`);
   assert.equal(stored.body.title, 'Assigned child');
   assert.equal(stored.body.assigneeId, owner.userId);
+  const cleared = (
+    await cli(['issue', 'update', child.identifier, '--clear-parent'])
+  ).current;
+  assert.equal(cleared.parentId, null);
+  assert.equal(
+    (await request(`${fixture.base}/issues/${child.id}`)).body.parentId,
+    null,
+  );
 });
 
 test('CLI rejects conflicting lifecycle switches', async () => {

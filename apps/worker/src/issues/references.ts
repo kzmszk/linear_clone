@@ -1,5 +1,6 @@
 import { one, rows } from '../db.ts';
-import { badRequest, notFound } from '../errors.ts';
+import { badRequest, conflict, notFound } from '../errors.ts';
+import { requireTeamAccess } from '../organization/authentication.ts';
 import {
   listMembers,
   listProjects,
@@ -251,7 +252,6 @@ export function validateReferences(
   sql: SqlDb,
   workspaceId: string,
   input: NewIssueInput,
-  issueId?: string,
 ): void {
   if (input.projectId !== null) {
     const project = one<{ project_id: string } & SqlRow>(
@@ -262,19 +262,6 @@ export function validateReferences(
     );
     if (project === null)
       throw notFound('Project is not associated with this team');
-  }
-  if (input.parentId !== null) {
-    const parent = one<{ id: string; workspace_id: string } & SqlRow>(
-      sql,
-      'SELECT id, workspace_id FROM issues WHERE id = ?',
-      input.parentId,
-    );
-    if (
-      parent === null ||
-      parent.workspace_id !== workspaceId ||
-      parent.id === issueId
-    )
-      throw notFound('Parent issue was not found');
   }
   if (input.assigneeId !== null) {
     const assignee = one<{ id: string } & SqlRow>(
@@ -295,4 +282,39 @@ export function validateReferences(
     if (labels.length !== new Set(input.labelIds).size)
       throw notFound('One or more labels were not found');
   }
+}
+
+export function validateParentReference(
+  sql: SqlDb,
+  actor: AuthActor,
+  workspaceId: string,
+  parentId: string,
+  issueId?: string,
+): void {
+  const parent = one<
+    { id: string; workspace_id: string; team_id: string } & SqlRow
+  >(sql, 'SELECT id, workspace_id, team_id FROM issues WHERE id = ?', parentId);
+  if (
+    parent === null ||
+    parent.workspace_id !== workspaceId ||
+    parent.id === issueId
+  )
+    throw notFound('Parent issue was not found');
+  requireTeamAccess(sql, actor, parent.team_id);
+  if (
+    issueId !== undefined &&
+    one<{ id: string } & SqlRow>(
+      sql,
+      `WITH RECURSIVE ancestors(id) AS (
+         SELECT id FROM issues WHERE id = ?
+         UNION
+         SELECT issues.parent_id FROM issues JOIN ancestors ON issues.id = ancestors.id
+         WHERE issues.parent_id IS NOT NULL
+       )
+       SELECT id FROM ancestors WHERE id = ? LIMIT 1`,
+      parentId,
+      issueId,
+    ) !== null
+  )
+    throw conflict('parent_cycle', 'Parent relationship would create a cycle');
 }

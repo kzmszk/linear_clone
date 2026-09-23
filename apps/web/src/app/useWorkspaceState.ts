@@ -5,7 +5,13 @@ export function useWorkspaceState() {
   const location = useWorkspaceLocation();
   const [view, setView] = useState<'issues' | 'settings'>('issues');
   const [settingsSection, setSettingsSection] = useState<
-    'overview' | 'workspaces' | 'teams' | 'projects' | 'members'
+    | 'overview'
+    | 'workspaces'
+    | 'teams'
+    | 'projects'
+    | 'members'
+    | 'labels'
+    | 'statuses'
   >('overview');
   const [teamId, setTeamId] = useState<string>();
   const [projectId, setProjectId] = useState<string>();

@@ -22,6 +22,7 @@
 | E11  | 初回bootstrap、再送、再起動、別本人の同時要求        | 指定本人だけが初期管理者になり、workspaceが重複せず初期化が閉じる         |
 | E12  | 招待受諾と再送、未招待本人、新workspace作成          | 検証済み本人への所属だけが作られ、作成権限と最後の管理者を守る            |
 | E13  | project・member・comment等の同じversionを並行更新    | 片方が成功し片方が競合、同じ操作の再送は重複効果を持たない                |
+| E14  | Webでラベル・ステータスを管理し、issueの親子を編集   | 再読込後も保存値が一致。使用中stateは削除不可。非公開の親子は見えない     |
 
 Playwrightは実際のブラウザーから、CLIテストは実行ファイルをsubprocessとして起動する。
 対象は本物のWorker runtimeとSQLite/R2 binding。

@@ -116,6 +116,33 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.issue-label-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 3px 0 7px;
+}
+.issue-label-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 4px 2px 7px;
+  border-radius: 5px;
+  background: var(--panel-subtle);
+  color: var(--text);
+  font-size: 11px;
+}
+.issue-label-chip .icon-button {
+  width: 18px;
+  height: 18px;
+}
+.label-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+}
 .inline-error {
   margin-top: 13px;
   padding: 8px 10px;

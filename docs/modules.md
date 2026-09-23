@@ -5,26 +5,25 @@
 
 ## 所有する知識で分割する
 
-| 予定パス                          | 所有する責任                                                | 持たせない責任                             |
-| --------------------------------- | ----------------------------------------------------------- | ------------------------------------------ |
-| `packages/contracts/src/`         | API入力schema、公開レコード、エラー、cursorとreceiptの型    | SQL、React、Linear SDK                     |
-| `packages/client/src/`            | HTTP呼び出し、認証付与、同じoperationIdでの再試行、応答検証 | キャッシュ、表示、業務ルール               |
-| `packages/linear-import/src/`     | Linear取得、原本export、mapping、ファイル取得、再開・照合   | 本番DBへ直接書き込む処理                   |
-| `apps/worker/src/http/`           | routes、入力parse、JWT検証、HTTPコード、body制限            | 採番、SQL、権限の最終判断                  |
-| `apps/worker/src/tracker.ts`      | Object寿命、transaction境界、初期migration、socket再開      | 個々のCRUDの全SQL                          |
-| `apps/worker/src/issues/`         | チケット、ラベル、親子・関連、コメントの規則とSQL           | HTTP、画面state                            |
-| `apps/worker/src/organization/`   | workspace/team/project、所属、招待、ロール、閲覧判定        | Linearユーザーをログイン可能にする自動変換 |
-| `apps/worker/src/imports/`        | 移行batchの適用、参照解決、source mapping、receipt          | 外部Linearへのアクセス                     |
-| `apps/worker/src/changes/`        | 変更cursor、通知、再接続、権限変更時の切断                  | 別DBへの複製                               |
-| `apps/worker/src/files/`          | R2 streaming、checksum、添付状態、閲覧判定                  | ユーザー指定URLへの自由なfetch             |
-| `apps/worker/migrations/`         | テーブル、複合FK、索引、schema version                      | JavaScriptからの場当たり的なDDL            |
-| `apps/web/src/features/issues/`   | 一覧・詳細・作成・プロパティ・draft                         | 独自のHTTP再試行規則                       |
-| `apps/web/src/features/settings/` | workspace/team/project/member管理                           | 認証サービス自体                           |
-| `apps/web/src/editor/`            | Markdown表示・編集・ファイルURL解決                         | Linearの内部データモデル全体               |
-| `apps/web/src/sync/`              | Query cacheと画面内draft、イベント適用、再接続              | 永続command queue、汎用offline同期基盤     |
-| `apps/web/src/ui/`                | 色・密度・dialog・menu・フォーカス・キーボード操作          | チケットの保存規則                         |
-| `apps/cli/src/`                   | コマンド引数、設定、table/JSON出力、終了コード              | Webのstate                                 |
-| `tests/e2e/`、`tests/load/`       | ブラウザーと実CLIからの受入試験                             | モックDB、関数の呼び出し回数の検証         |
+| パス                                          | 所有する責任                                                | 持たせない責任                             |
+| --------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------ |
+| `packages/contracts/src/`                     | API入力schema、公開レコード、エラー、cursorとreceiptの型    | SQL、React、Linear SDK                     |
+| `packages/client/src/`                        | HTTP呼び出し、認証付与、同じoperationIdでの再試行、応答検証 | キャッシュ、表示、業務ルール               |
+| `packages/linear-import/src/`                 | Linear取得、原本export、mapping、ファイル取得、再開・照合   | 本番DBへ直接書き込む処理                   |
+| `apps/worker/src/http/`                       | routes、入力parse、JWT検証、HTTPコード、body制限            | 採番、SQL、権限の最終判断                  |
+| `apps/worker/src/tracker.ts`                  | Object寿命、transaction境界、初期migration、socket再開      | 個々のCRUDの全SQL                          |
+| `apps/worker/src/issues/`                     | チケット、親子・関連、コメントの規則とSQL                   | HTTP、画面state                            |
+| `apps/worker/src/organization/`               | workspace/team/project、ラベル・ステータス、所属、閲覧判定  | Linearユーザーをログイン可能にする自動変換 |
+| `apps/worker/src/imports/`                    | 移行batchの適用、参照解決、source mapping、receipt          | 外部Linearへのアクセス                     |
+| `apps/worker/src/changes/`                    | 変更cursor、通知、再接続、権限変更時の切断                  | 別DBへの複製                               |
+| `apps/worker/src/files/`                      | R2 streaming、checksum、添付状態、閲覧判定                  | ユーザー指定URLへの自由なfetch             |
+| `apps/worker/migrations/`                     | テーブル、複合FK、索引、schema version                      | JavaScriptからの場当たり的なDDL            |
+| `apps/web/src/components/`                    | 一覧・詳細・作成・親子表示・画面部品                        | Workerの保存規則                           |
+| `apps/web/src/components/settings/`           | workspace/team/project/member、ラベル・ステータス管理       | 認証サービス自体                           |
+| `apps/web/src/app/`                           | Query cache、画面内draft、イベント適用、再接続              | 永続command queue、汎用offline同期基盤     |
+| `apps/web/src/api.ts`、`classificationApi.ts` | WebのHTTP呼び出しと応答検証                                 | 権限の最終判断                             |
+| `apps/cli/src/`                               | コマンド引数、設定、table/JSON出力、終了コード              | Webのstate                                 |
+| `tests/e2e/`、`tests/load/`                   | ブラウザーと実CLIからの受入試験                             | モックDB、関数の呼び出し回数の検証         |
 
 `apps/cli/src/local/` はローカルSQLite、未送信操作、ローカル表示と同期を所有します。`apps/worker/src/sync/` は同期バッチの適用順と権限付きsnapshotを所有し、書き込み規則は既存のissue・commentモジュールを呼び出します。同期用の入力・応答は `packages/contracts/src/sync.ts` に置きます。
 
@@ -75,12 +74,12 @@ importした人に権限を付けず、退会・削除済みの人の名前も�
 | workspace membership | workspaceId、userId、role、active。最後のownerを守る                                                                                              |
 | team                 | workspaceId、UUID、key、name、visibility、nextIssueNumber                                                                                         |
 | team membership      | workspaceId、teamId、userId                                                                                                                       |
-| workflow state       | workspaceId、teamId、UUID、name、type、color、position                                                                                            |
+| workflow state       | workspaceId、teamId、UUID、name、type、color、position、archivedAt                                                                                |
 | project              | workspaceId、UUID、name、summary、description、status、lead、dates                                                                                |
 | project teams        | workspaceId、projectId、teamId。projectは複数teamに所属可能                                                                                       |
 | issue                | workspaceId、teamId、UUID、number、title、description、stateId、priority、assigneeRef、projectId、parentId、estimate、dueDate、sortOrder、version |
 | issue lifecycle      | createdAt、updatedAt、completedAt、canceledAt、archivedAt、deletedAt。archiveとdeleteは独立                                                       |
-| labels               | workspaceまたはteam scope、name、color、parent。issue_labelsで多対多                                                                              |
+| labels               | workspace scope、name、color、archivedAt。issue_labelsで多対多                                                                                    |
 | comments             | issueId、body、authorRef、createdAt、updatedAt、parentCommentId、sourceRef                                                                        |
 | relations            | workspaceId、issueId、relatedIssueId、type。逆向き参照も照合                                                                                      |
 | attachment           | issueId、title、url、source metadata、fileRef。外部リンクと保存ファイルを区別                                                                     |

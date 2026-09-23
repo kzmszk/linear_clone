@@ -1,4 +1,5 @@
 import { api, ApiError } from '../api.ts';
+import type { QueryClient } from '@tanstack/react-query';
 import { IssueDetail } from '../components/IssueDetail.tsx';
 import { ErrorNotice, Loading } from '../components/ui.tsx';
 import type { useWorkspaceController } from './useWorkspaceController.ts';
@@ -14,6 +15,8 @@ export function SelectedIssueView({ controller }: { controller: Controller }) {
     activity,
     attachments,
     relations,
+    hierarchy,
+    queryClient,
     setSelectedIssueId,
     updateIssue,
     deleteIssue,
@@ -30,11 +33,10 @@ export function SelectedIssueView({ controller }: { controller: Controller }) {
       />
     );
   const actionError = issueActionError(deleteIssue.error, restoreIssue.error);
-  const lifecycleAction = deleteIssue.isPending
-    ? 'delete'
-    : restoreIssue.isPending
-      ? 'restore'
-      : undefined;
+  const lifecycleAction = pendingLifecycleAction(
+    deleteIssue.isPending,
+    restoreIssue.isPending,
+  );
   return (
     <IssueDetail
       key={issue.id}
@@ -44,6 +46,12 @@ export function SelectedIssueView({ controller }: { controller: Controller }) {
       activity={activity.data ?? []}
       attachments={attachments.data ?? []}
       relations={relations.data ?? []}
+      hierarchy={hierarchy.data}
+      hierarchyLoading={hierarchy.isLoading}
+      hierarchyError={
+        hierarchy.isError ? 'Could not load issue hierarchy' : undefined
+      }
+      workspaceId={workspace.id}
       onSelectIssue={setSelectedIssueId}
       loading={comments.isLoading || activity.isLoading}
       actionError={actionError}
@@ -57,6 +65,9 @@ export function SelectedIssueView({ controller }: { controller: Controller }) {
             expectedVersion: expectedVersion ?? issue.version,
           })
           .then(() => undefined)
+      }
+      onSetChildParent={(child, parentId) =>
+        updateChildParent(queryClient, workspace.id, child, parentId)
       }
       onDelete={() => {
         void deleteIssue.mutateAsync().catch(() => undefined);
@@ -73,6 +84,35 @@ export function SelectedIssueView({ controller }: { controller: Controller }) {
       }
     />
   );
+}
+
+function pendingLifecycleAction(
+  deleting: boolean,
+  restoring: boolean,
+): 'delete' | 'restore' | undefined {
+  if (deleting) return 'delete';
+  if (restoring) return 'restore';
+  return undefined;
+}
+
+async function updateChildParent(
+  queryClient: QueryClient,
+  workspaceId: string,
+  child: { id: string; version: number },
+  parentId: string | null,
+): Promise<void> {
+  await api.updateIssue(workspaceId, child.id, {
+    parentId,
+    expectedVersion: child.version,
+  });
+  await Promise.all([
+    queryClient.invalidateQueries({ queryKey: ['hierarchy', workspaceId] }),
+    queryClient.invalidateQueries({ queryKey: ['issues', workspaceId] }),
+    queryClient.invalidateQueries({ queryKey: ['issue-picker', workspaceId] }),
+    queryClient.invalidateQueries({
+      queryKey: ['issue', workspaceId, child.id],
+    }),
+  ]);
 }
 
 function isUnavailableIssueError(error: unknown): boolean {

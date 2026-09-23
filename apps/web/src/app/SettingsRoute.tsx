@@ -1,4 +1,5 @@
 import { api } from '../api.ts';
+import { classificationApi } from '../classificationApi.ts';
 import type { SettingsSection } from '../components/Sidebar.tsx';
 import { SettingsView } from '../components/SettingsView.tsx';
 import type { useWorkspaceController } from './useWorkspaceController.ts';
@@ -30,6 +31,26 @@ export function SettingsRoute({ controller }: { controller: Controller }) {
       teams={metadata.data.teams}
       projects={metadata.data.projects}
       members={metadata.data.members}
+      labels={metadata.data.labels}
+      states={metadata.data.states}
+      classificationActions={{
+        onCreateLabel: (input) =>
+          classificationApi.createLabel(workspace.id, input).then(refresh),
+        onUpdateLabel: (id, input) =>
+          classificationApi.updateLabel(workspace.id, id, input).then(refresh),
+        onDeleteLabel: (id, expectedVersion) =>
+          classificationApi
+            .deleteLabel(workspace.id, id, expectedVersion)
+            .then(refresh),
+        onCreateState: (input) =>
+          classificationApi.createState(workspace.id, input).then(refresh),
+        onUpdateState: (id, input) =>
+          classificationApi.updateState(workspace.id, id, input).then(refresh),
+        onDeleteState: (id, expectedVersion) =>
+          classificationApi
+            .deleteState(workspace.id, id, expectedVersion)
+            .then(refresh),
+      }}
       onCreateWorkspace={(input) =>
         createWorkspace.mutateAsync(input).then(() => undefined)
       }

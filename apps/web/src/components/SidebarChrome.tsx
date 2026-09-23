@@ -9,6 +9,8 @@ const settingsSections: SettingsSection[] = [
   'teams',
   'projects',
   'members',
+  'labels',
+  'statuses',
 ];
 
 export function SidebarSettings({

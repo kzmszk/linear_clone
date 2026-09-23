@@ -6,27 +6,25 @@ import {
   commentSchema,
   fileUploadSchema,
   issuePageSchema,
+  issueHierarchySchema,
   issuePatchSchema,
   issueRelationSchema,
   issueSchema,
-  labelSchema,
   metadataSchema,
   meSchema,
   memberSchema,
   mutationSchema,
   newCommentSchema,
   newIssueSchema,
-  newLabelSchema,
   newMemberSchema,
   newProjectSchema,
-  newStateSchema,
   newTeamSchema,
   newWorkspaceSchema,
   projectSchema,
-  stateSchema,
   teamSchema,
   workspaceSchema,
 } from '../../../packages/contracts/src/index.ts';
+import { classificationApi } from './classificationApi.ts';
 import type {
   Comment,
   Issue,
@@ -36,6 +34,7 @@ import type {
   NewIssue,
   Project,
   Team,
+  WorkflowState,
   Workspace,
 } from '../../../packages/contracts/src/index.ts';
 
@@ -44,6 +43,7 @@ const client = createClient();
 export type Activity = z.infer<typeof activitySchema>;
 export type Attachment = z.infer<typeof attachmentSchema>;
 export type IssueRelation = z.infer<typeof issueRelationSchema>;
+export type IssueHierarchy = z.infer<typeof issueHierarchySchema>;
 export type FileUpload = z.infer<typeof fileUploadSchema>;
 export type IssueFilters = {
   teamId?: string;
@@ -87,6 +87,7 @@ function queryPath(workspaceId: string, filters: IssueFilters): string {
 }
 
 export const api = {
+  ...classificationApi,
   getMe: () => client.request('/me', meSchema),
   bootstrap: (input: { name: string; slug: string }) =>
     client.request('/bootstrap', mutationSchema(workspaceSchema), {
@@ -125,6 +126,11 @@ export const api = {
     client.request(queryPath(workspaceId, filters), issuePageSchema),
   getIssue: (workspaceId: string, issueId: string) =>
     client.request(resourcePath(workspaceId, 'issues', issueId), issueSchema),
+  getIssueHierarchy: (workspaceId: string, issueId: string) =>
+    client.request(
+      resourcePath(workspaceId, 'issues', `${issueId}/hierarchy`),
+      issueHierarchySchema,
+    ),
   createIssue: (workspaceId: string, input: NewIssue) =>
     client.request(
       resourcePath(workspaceId, 'issues'),
@@ -311,35 +317,6 @@ export const api = {
         operationId: crypto.randomUUID(),
       },
     ),
-  createState: (
-    workspaceId: string,
-    input: {
-      teamId: string;
-      name: string;
-      type: string;
-      color: string;
-      position: number;
-    },
-  ) =>
-    client.request(
-      resourcePath(workspaceId, 'states'),
-      mutationSchema(stateSchema),
-      {
-        method: 'POST',
-        body: newStateSchema.parse(input),
-        operationId: crypto.randomUUID(),
-      },
-    ),
-  createLabel: (workspaceId: string, input: { name: string; color: string }) =>
-    client.request(
-      resourcePath(workspaceId, 'labels'),
-      mutationSchema(labelSchema),
-      {
-        method: 'POST',
-        body: newLabelSchema.parse(input),
-        operationId: crypto.randomUUID(),
-      },
-    ),
 };
 
 export { ApiError };
@@ -352,5 +329,7 @@ export type {
   NewIssue,
   Project,
   Team,
+  WorkflowState,
   Workspace,
 };
+export type Label = Metadata['labels'][number];

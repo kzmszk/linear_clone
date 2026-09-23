@@ -3,6 +3,7 @@ import { Archive, CalendarDays } from 'lucide-react';
 import type { Issue, IssuePatch, Metadata } from '../api.ts';
 import { Avatar, PriorityIcon, StatusIcon } from './ui.tsx';
 import { PropertySelect } from './PropertySelect.tsx';
+import { IssueLabels } from './IssueLabels.tsx';
 
 type SaveProperty = (
   patch: Omit<IssuePatch, 'expectedVersion'>,
@@ -42,6 +43,11 @@ export function IssueProperties({
         metadata={metadata}
         teamStates={teamStates}
         onSave={save}
+      />
+      <IssueLabels
+        issue={issue}
+        labels={metadata.labels}
+        onSave={(labelIds) => save({ labelIds })}
       />
       <ReadonlyProperties issue={issue} />
     </div>

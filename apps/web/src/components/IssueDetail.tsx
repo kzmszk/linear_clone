@@ -6,6 +6,7 @@ import type {
   Comment,
   FileUpload,
   Issue,
+  IssueHierarchy as Hierarchy,
   IssuePatch,
   IssueRelation,
   Metadata,
@@ -18,6 +19,7 @@ import { IssueDescriptionEditor } from './IssueDescriptionEditor.tsx';
 import { IssueDetailHeader } from './IssueDetailHeader.tsx';
 import { IssueProperties } from './IssueProperties.tsx';
 import { IssueRelations } from './IssueRelations.tsx';
+import { IssueHierarchy } from './IssueHierarchy.tsx';
 
 type IssueDetailProps = {
   issue: Issue;
@@ -26,6 +28,10 @@ type IssueDetailProps = {
   activity: Activity[];
   attachments: Attachment[];
   relations: IssueRelation[];
+  hierarchy?: Hierarchy;
+  hierarchyLoading: boolean;
+  hierarchyError?: string;
+  workspaceId: string;
   loading: boolean;
   actionError?: string;
   lifecycleAction?: 'delete' | 'restore';
@@ -40,27 +46,23 @@ type IssueDetailProps = {
   onUploadFile: (file: Blob) => Promise<FileUpload>;
   onCopyIdentifier: () => void;
   onSelectIssue: (issueId: string) => void;
+  onSetChildParent: (
+    child: { id: string; version: number },
+    parentId: string | null,
+  ) => Promise<void>;
 };
 
-export function IssueDetail({
-  issue,
-  metadata,
-  comments,
-  activity,
-  attachments,
-  relations,
-  loading,
-  actionError,
-  lifecycleAction,
-  onClose,
-  onSavePatch,
-  onDelete,
-  onRestore,
-  onAddComment,
-  onUploadFile,
-  onCopyIdentifier,
-  onSelectIssue,
-}: IssueDetailProps) {
+export function IssueDetail(props: IssueDetailProps) {
+  const {
+    issue,
+    metadata,
+    actionError,
+    lifecycleAction,
+    onClose,
+    onDelete,
+    onRestore,
+    onCopyIdentifier,
+  } = props;
   const [deleteOpen, setDeleteOpen] = useState(false);
   const project = metadata.projects.find((item) => item.id === issue.projectId);
   return (
@@ -85,19 +87,7 @@ export function IssueDetail({
               pending={Boolean(lifecycleAction)}
             />
           ) : null}
-          <IssueDetailBody
-            issue={issue}
-            metadata={metadata}
-            comments={comments}
-            activity={activity}
-            attachments={attachments}
-            relations={relations}
-            loading={loading}
-            onSavePatch={onSavePatch}
-            onAddComment={onAddComment}
-            onUploadFile={onUploadFile}
-            onSelectIssue={onSelectIssue}
-          />
+          <IssueDetailBody {...props} />
         </div>
       </aside>
       {deleteOpen ? (
@@ -121,11 +111,16 @@ function IssueDetailBody({
   activity,
   attachments,
   relations,
+  hierarchy,
+  hierarchyLoading,
+  hierarchyError,
+  workspaceId,
   loading,
   onSavePatch,
   onAddComment,
   onUploadFile,
   onSelectIssue,
+  onSetChildParent,
 }: Pick<
   IssueDetailProps,
   | 'issue'
@@ -134,19 +129,17 @@ function IssueDetailBody({
   | 'activity'
   | 'attachments'
   | 'relations'
+  | 'hierarchy'
+  | 'hierarchyLoading'
+  | 'hierarchyError'
+  | 'workspaceId'
   | 'loading'
   | 'onSavePatch'
   | 'onAddComment'
   | 'onUploadFile'
   | 'onSelectIssue'
+  | 'onSetChildParent'
 >) {
-  const [propertyError, setPropertyError] = useState('');
-  async function saveProperty(
-    patch: Omit<IssuePatch, 'expectedVersion'>,
-  ): Promise<void> {
-    setPropertyError('');
-    await onSavePatch(patch);
-  }
   return (
     <div className="detail-main">
       <div className="detail-content">
@@ -156,6 +149,22 @@ function IssueDetailBody({
           onUploadFile={onUploadFile}
         />
         <IssueAttachments attachments={attachments} />
+        {hierarchyError ? (
+          <div className="inline-error" role="alert">
+            {hierarchyError}
+          </div>
+        ) : hierarchyLoading && !hierarchy ? (
+          <p className="hierarchy-empty">Loading relationships…</p>
+        ) : (
+          <IssueHierarchy
+            issue={issue}
+            hierarchy={hierarchy}
+            workspaceId={workspaceId}
+            onSetParent={(parentId) => onSavePatch({ parentId })}
+            onSetChildParent={onSetChildParent}
+            onSelectIssue={onSelectIssue}
+          />
+        )}
         <IssueRelations relations={relations} onSelectIssue={onSelectIssue} />
         <IssueActivity
           comments={comments}
@@ -164,21 +173,40 @@ function IssueDetailBody({
           onAddComment={onAddComment}
         />
       </div>
-      <aside className="detail-properties" aria-label="Properties">
-        <h3>Properties</h3>
-        <IssueProperties
-          issue={issue}
-          metadata={metadata}
-          onSave={saveProperty}
-          onError={setPropertyError}
-        />
-        {propertyError ? (
-          <div className="inline-error" role="alert">
-            {propertyError}
-          </div>
-        ) : null}
-      </aside>
+      <IssuePropertySidebar
+        issue={issue}
+        metadata={metadata}
+        onSavePatch={onSavePatch}
+      />
     </div>
+  );
+}
+
+function IssuePropertySidebar({
+  issue,
+  metadata,
+  onSavePatch,
+}: Pick<IssueDetailProps, 'issue' | 'metadata' | 'onSavePatch'>) {
+  const [error, setError] = useState('');
+  async function save(patch: Omit<IssuePatch, 'expectedVersion'>) {
+    setError('');
+    await onSavePatch(patch);
+  }
+  return (
+    <aside className="detail-properties" aria-label="Properties">
+      <h3>Properties</h3>
+      <IssueProperties
+        issue={issue}
+        metadata={metadata}
+        onSave={save}
+        onError={setError}
+      />
+      {error ? (
+        <div className="inline-error" role="alert">
+          {error}
+        </div>
+      ) : null}
+    </aside>
   );
 }
 

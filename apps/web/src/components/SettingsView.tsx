@@ -1,10 +1,18 @@
-import type { Member, Project, Team, Workspace } from '../api.ts';
+import type {
+  Label,
+  Member,
+  Project,
+  Team,
+  WorkflowState,
+  Workspace,
+} from '../api.ts';
 import type { SettingsSection } from './Sidebar.tsx';
 import { ErrorNotice } from './ui.tsx';
 import { EditResourceDialog } from './settings/EditResourceDialog.tsx';
 import { SettingsSectionContent } from './settings/SettingsSectionContent.tsx';
 import { useSettingsActions } from './settings/useSettingsActions.ts';
 import { useSettingsForm } from './settings/useSettingsForm.ts';
+import type { ClassificationSettingsActions } from './settings/classificationTypes.ts';
 
 export type SettingsViewProps = {
   section: SettingsSection;
@@ -13,6 +21,9 @@ export type SettingsViewProps = {
   teams: Team[];
   projects: Project[];
   members: Member[];
+  labels: Label[];
+  states: WorkflowState[];
+  classificationActions: ClassificationSettingsActions;
   onCreateWorkspace: (input: { name: string; slug: string }) => Promise<void>;
   onUpdateWorkspace: (
     id: string,
@@ -67,6 +78,9 @@ export function SettingsView({
   teams,
   projects,
   members,
+  labels,
+  states,
+  classificationActions,
   onCreateWorkspace,
   onUpdateWorkspace,
   onCreateTeam,
@@ -104,6 +118,9 @@ export function SettingsView({
         teams={teams}
         projects={projects}
         members={members}
+        labels={labels}
+        states={states}
+        classificationActions={classificationActions}
         form={form}
         actions={actions}
       />

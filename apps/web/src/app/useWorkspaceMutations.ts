@@ -120,6 +120,7 @@ export function useUpdateIssueMutation(
       queryClient.invalidateQueries({
         queryKey: ['activity', workspaceId, variables.issueId],
       });
+      queryClient.invalidateQueries({ queryKey: ['hierarchy', workspaceId] });
     },
   });
 }

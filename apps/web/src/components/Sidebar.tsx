@@ -13,7 +13,9 @@ export type SettingsSection =
   | 'workspaces'
   | 'teams'
   | 'projects'
-  | 'members';
+  | 'members'
+  | 'labels'
+  | 'statuses';
 type SidebarProps = {
   workspace: Workspace;
   workspaces: Workspace[];

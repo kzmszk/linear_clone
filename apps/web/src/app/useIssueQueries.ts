@@ -49,5 +49,20 @@ export function useIssueQueries(
     refetchInterval: fallbackInterval,
     enabled: Boolean(workspaceId && selectedIssueId),
   });
-  return { issues, selectedIssue, comments, activity, attachments, relations };
+  const hierarchy = useQuery({
+    queryKey: ['hierarchy', workspaceId, selectedIssueId],
+    queryFn: () =>
+      api.getIssueHierarchy(workspaceId ?? '', selectedIssueId ?? ''),
+    refetchInterval: fallbackInterval,
+    enabled: Boolean(workspaceId && selectedIssueId),
+  });
+  return {
+    issues,
+    selectedIssue,
+    comments,
+    activity,
+    attachments,
+    relations,
+    hierarchy,
+  };
 }

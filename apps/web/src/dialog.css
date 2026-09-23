@@ -41,6 +41,15 @@
   gap: 15px;
   padding: 19px 21px 21px;
 }
+.classification-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
 .form-field {
   display: flex;
   flex-direction: column;

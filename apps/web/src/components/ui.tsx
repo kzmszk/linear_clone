@@ -52,20 +52,24 @@ export function Dialog({
   onClose,
   children,
   wide = false,
+  dismissible = true,
 }: {
   title: string;
   description?: string;
   onClose: () => void;
   children: ReactNode;
   wide?: boolean;
+  dismissible?: boolean;
 }) {
-  const { initialFocus, dialogRef } = useDialogBehavior(onClose);
+  const { initialFocus, dialogRef } = useDialogBehavior(
+    dismissible ? onClose : () => undefined,
+  );
   return (
     <div
       className="dialog-backdrop"
       role="presentation"
       onMouseDown={(event) => {
-        if (event.target === event.currentTarget) onClose();
+        if (dismissible && event.target === event.currentTarget) onClose();
       }}
     >
       <section
@@ -80,7 +84,12 @@ export function Dialog({
             <h2 id="dialog-title">{title}</h2>
             {description ? <p>{description}</p> : null}
           </div>
-          <IconButton ref={initialFocus} label="Close" onClick={onClose}>
+          <IconButton
+            ref={initialFocus}
+            label="Close"
+            onClick={onClose}
+            disabled={!dismissible}
+          >
             <X size={17} />
           </IconButton>
         </header>

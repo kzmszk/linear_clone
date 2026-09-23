@@ -145,6 +145,14 @@ function applyMemberPatch(
       memberCurrent(sql, membershipId),
     );
   if (isOwnerDemotion(row, patch)) protectLastOwner(sql, workspaceId, row);
+  const nextTeamIds = patch.teamIds;
+  const previousTeamIds =
+    nextTeamIds === undefined
+      ? []
+      : memberTeamIds(sql, row.user_id, workspaceId);
+  const teamAccessRevoked =
+    nextTeamIds !== undefined &&
+    previousTeamIds.some((teamId) => !nextTeamIds.includes(teamId));
   const timestamp = now();
   sql.exec(
     'UPDATE workspace_memberships SET role = ?, active = ?, version = version + 1, updated_at = ? WHERE id = ? AND version = ?',
@@ -154,8 +162,8 @@ function applyMemberPatch(
     membershipId,
     patch.expectedVersion,
   );
-  if (patch.teamIds !== undefined)
-    setTeamMemberships(sql, workspaceId, row.user_id, patch.teamIds, timestamp);
+  if (nextTeamIds !== undefined)
+    setTeamMemberships(sql, workspaceId, row.user_id, nextTeamIds, timestamp);
   const updated = membershipRow(sql, membershipId);
   if (updated === null) throw new Error('member update failed');
   const user = one<UserRow>(
@@ -165,7 +173,9 @@ function applyMemberPatch(
   );
   if (user === null) throw new Error('member user missing');
   return {
-    entityKind: 'member.updated',
+    entityKind: teamAccessRevoked
+      ? 'member.team_access_revoked'
+      : 'member.updated',
     entityId: membershipId,
     version: updated.version,
     current: memberRecord(

@@ -2,13 +2,14 @@ import type { QueryClient } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import type { Comment } from '../api.ts';
 import { api } from '../api.ts';
+import { accessGeneration } from './workspaceAccess.ts';
 
 type CommentSubmission = {
   body: string;
   operationId: string;
 };
 
-type CommentContext = { optimisticId: string };
+type CommentContext = { optimisticId: string; accessGeneration: number };
 
 export function useCommentMutation(
   queryClient: QueryClient,
@@ -26,6 +27,7 @@ export function useCommentMutation(
       }),
     onMutate: async ({ body }) => {
       await queryClient.cancelQueries({ queryKey: commentsKey });
+      const generation = accessGeneration(queryClient, workspaceId);
       const optimisticId = crypto.randomUUID();
       const timestamp = new Date().toISOString();
       const optimisticComment: Comment = {
@@ -44,15 +46,26 @@ export function useCommentMutation(
         ...(current ?? []),
         optimisticComment,
       ]);
-      return { optimisticId } satisfies CommentContext;
+      return {
+        optimisticId,
+        accessGeneration: generation,
+      } satisfies CommentContext;
     },
     onError: (_error, _variables, context) => {
-      if (!context) return;
+      if (
+        !context ||
+        context.accessGeneration !== accessGeneration(queryClient, workspaceId)
+      )
+        return;
       queryClient.setQueryData<Comment[]>(commentsKey, (current) =>
         current?.filter((comment) => comment.id !== context.optimisticId),
       );
     },
     onSuccess: (result, _variables, context) => {
+      if (
+        context?.accessGeneration !== accessGeneration(queryClient, workspaceId)
+      )
+        return;
       queryClient.setQueryData<Comment[]>(commentsKey, (current) => {
         const existing = (current ?? []).filter(
           (comment) =>

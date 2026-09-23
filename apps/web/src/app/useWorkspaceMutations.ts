@@ -2,6 +2,7 @@ import type { QueryClient, QueryKey } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import type { Issue, IssuePatch, NewIssue } from '../api.ts';
 import { api } from '../api.ts';
+import { accessGeneration } from './workspaceAccess.ts';
 
 type DraftPatch = Omit<IssuePatch, 'expectedVersion'>;
 type IssuePage = Awaited<ReturnType<typeof api.listIssues>>;
@@ -60,7 +61,9 @@ export function useCreateIssueMutation(
 ) {
   return useMutation({
     mutationFn: (input: NewIssue) => api.createIssue(workspaceId ?? '', input),
-    onSuccess: (result) => {
+    onMutate: () => accessGeneration(queryClient, workspaceId),
+    onSuccess: (result, _input, generation) => {
+      if (generation !== accessGeneration(queryClient, workspaceId)) return;
       queryClient.setQueryData(
         ['issue', workspaceId, result.current.id],
         result.current,
@@ -92,13 +95,23 @@ export function useUpdateIssueMutation(
       }),
     onMutate: (variables) =>
       optimisticIssueUpdate(queryClient, workspaceId, filters, variables),
-    onError: (_error, _variables, context) =>
-      restoreIssueUpdate(queryClient, workspaceId, filters, context),
-    onSuccess: (result, variables) =>
+    onError: (_error, _variables, context) => {
+      if (
+        context?.accessGeneration !== accessGeneration(queryClient, workspaceId)
+      )
+        return;
+      restoreIssueUpdate(queryClient, workspaceId, filters, context);
+    },
+    onSuccess: (result, variables, context) => {
+      if (
+        context?.accessGeneration !== accessGeneration(queryClient, workspaceId)
+      )
+        return;
       queryClient.setQueryData(
         ['issue', workspaceId, variables.issueId],
         result.current,
-      ),
+      );
+    },
     onSettled: (_data, _error, variables) => {
       queryClient.invalidateQueries({ queryKey: ['issues', workspaceId] });
       queryClient.invalidateQueries({
@@ -117,6 +130,7 @@ type UpdateVariables = {
   expectedVersion: number;
 };
 type UpdateContext = {
+  accessGeneration: number;
   previousList: IssueInfiniteData | undefined;
   previousIssue: Issue | undefined;
   issueId: string;
@@ -132,6 +146,7 @@ async function optimisticIssueUpdate(
   await queryClient.cancelQueries({
     queryKey: ['issue', workspaceId, variables.issueId],
   });
+  const generation = accessGeneration(queryClient, workspaceId);
   const previousList = queryClient.getQueryData<IssueInfiniteData>([
     'issues',
     workspaceId,
@@ -162,7 +177,12 @@ async function optimisticIssueUpdate(
       ...previousIssue,
       ...variables.patch,
     });
-  return { previousList, previousIssue, issueId: variables.issueId };
+  return {
+    accessGeneration: generation,
+    previousList,
+    previousIssue,
+    issueId: variables.issueId,
+  };
 }
 
 function restoreIssueUpdate(
@@ -193,9 +213,18 @@ export function useIssueLifecycleMutations(
     mutationFn: () =>
       api.deleteIssue(workspaceId ?? '', issueId ?? '', version ?? 1),
     onMutate: () => optimisticIssueDelete(queryClient, workspaceId, issueId),
-    onError: (_error, _variables, context) =>
-      restoreIssueDelete(queryClient, workspaceId, issueId, context),
-    onSuccess: (result) => {
+    onError: (_error, _variables, context) => {
+      if (
+        context?.accessGeneration !== accessGeneration(queryClient, workspaceId)
+      )
+        return;
+      restoreIssueDelete(queryClient, workspaceId, issueId, context);
+    },
+    onSuccess: (result, _variables, context) => {
+      if (
+        context?.accessGeneration !== accessGeneration(queryClient, workspaceId)
+      )
+        return;
       queryClient.setQueryData(['issue', workspaceId, issueId], result.current);
     },
     onSettled: () => {
@@ -208,7 +237,9 @@ export function useIssueLifecycleMutations(
   const restoreIssue = useMutation({
     mutationFn: () =>
       api.restoreIssue(workspaceId ?? '', issueId ?? '', version ?? 1),
-    onSuccess: (result) => {
+    onMutate: () => accessGeneration(queryClient, workspaceId),
+    onSuccess: (result, _variables, generation) => {
+      if (generation !== accessGeneration(queryClient, workspaceId)) return;
       queryClient.setQueryData(['issue', workspaceId, issueId], result.current);
       queryClient.invalidateQueries({ queryKey: ['issues', workspaceId] });
     },
@@ -217,6 +248,7 @@ export function useIssueLifecycleMutations(
 }
 
 type DeleteContext = {
+  accessGeneration: number;
   previousLists: Array<[QueryKey, IssueInfiniteData | undefined]>;
   previousIssue: Issue | undefined;
 };
@@ -230,6 +262,7 @@ async function optimisticIssueDelete(
   await queryClient.cancelQueries({
     queryKey: ['issue', workspaceId, issueId],
   });
+  const generation = accessGeneration(queryClient, workspaceId);
   const previousLists = queryClient.getQueriesData<IssueInfiniteData>({
     queryKey: ['issues', workspaceId],
   });
@@ -254,7 +287,7 @@ async function optimisticIssueDelete(
       deletedAt: new Date().toISOString(),
     });
   }
-  return { previousLists, previousIssue };
+  return { accessGeneration: generation, previousLists, previousIssue };
 }
 
 function restoreIssueDelete(

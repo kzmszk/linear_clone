@@ -22,7 +22,13 @@ export function SelectedIssueView({ controller }: { controller: Controller }) {
   } = controller;
   const issue = selectedIssue.data;
   if (!workspace || !metadata.data) return null;
-  if (!issue) return <SelectedIssueState query={selectedIssue} />;
+  if (!issue || isUnavailableIssueError(selectedIssue.error))
+    return (
+      <SelectedIssueState
+        query={selectedIssue}
+        onClose={() => setSelectedIssueId(undefined)}
+      />
+    );
   const actionError = issueActionError(deleteIssue.error, restoreIssue.error);
   const lifecycleAction = deleteIssue.isPending
     ? 'delete'
@@ -69,7 +75,17 @@ export function SelectedIssueView({ controller }: { controller: Controller }) {
   );
 }
 
-function SelectedIssueState({ query }: { query: Controller['selectedIssue'] }) {
+function isUnavailableIssueError(error: unknown): boolean {
+  return error instanceof ApiError && [401, 403, 404].includes(error.status);
+}
+
+function SelectedIssueState({
+  query,
+  onClose,
+}: {
+  query: Controller['selectedIssue'];
+  onClose: () => void;
+}) {
   if (query.isLoading)
     return (
       <main className="detail-pane detail-state">
@@ -86,6 +102,9 @@ function SelectedIssueState({ query }: { query: Controller['selectedIssue'] }) {
         }
         onRetry={() => void query.refetch()}
       />
+      <button className="button button-quiet" onClick={onClose}>
+        Back to issues
+      </button>
     </main>
   );
 }

@@ -116,6 +116,87 @@ test('recovers missed updates after reconnecting and resumes live updates', asyn
   }
 });
 
+test('removes cached issue content when team access changes during a network cut', async ({
+  browser,
+  request,
+}) => {
+  const suffix = crypto.randomUUID().slice(0, 8);
+  const teamResponse = await request.post(
+    `/api/v1/workspaces/${workspaceId}/teams`,
+    {
+      headers: { 'Idempotency-Key': crypto.randomUUID() },
+      data: { name: `Revoke ${suffix}`, key: `RV${suffix.toUpperCase()}` },
+    },
+  );
+  expect(teamResponse.status()).toBe(201);
+  const team = (await teamResponse.json()).current;
+  const title = `Missed revocation ${suffix}`;
+  const description = `Only while public ${suffix}`;
+  const issueResponse = await request.post(
+    `/api/v1/workspaces/${workspaceId}/issues`,
+    {
+      headers: { 'Idempotency-Key': crypto.randomUUID() },
+      data: { teamId: team.id, title, description },
+    },
+  );
+  expect(issueResponse.status()).toBe(201);
+  const viewerEmail = `offline-${suffix}@example.test`;
+  const invitation = await request.post(
+    `/api/v1/workspaces/${workspaceId}/members`,
+    {
+      headers: { 'Idempotency-Key': crypto.randomUUID() },
+      data: {
+        email: viewerEmail,
+        name: 'Offline viewer',
+        role: 'member',
+        teamIds: [],
+      },
+    },
+  );
+  expect(invitation.status()).toBe(201);
+  const context = await browser.newContext({
+    extraHTTPHeaders: { 'x-test-email': viewerEmail },
+  });
+  const page = await context.newPage();
+  const transport = await setupReconnectTransport(
+    page,
+    context,
+    `/api/v1/workspaces/${workspaceId}/events`,
+  );
+  try {
+    const initialSocket = waitForWorkspaceSocket(page);
+    await page.goto(`/?workspace=${workspaceId}`);
+    await page.getByText(title, { exact: true }).click();
+    await expect(page.getByText(description, { exact: true })).toBeVisible();
+    await initialSocket;
+    transport.setNetworkCut(true);
+    await transport.closeSocket();
+    await expect
+      .poll(transport.disconnectedRetries, { timeout: 15_000 })
+      .toBeGreaterThan(0);
+
+    const privacyChange = await request.patch(
+      `/api/v1/workspaces/${workspaceId}/teams/${team.id}`,
+      {
+        headers: { 'Idempotency-Key': crypto.randomUUID() },
+        data: { private: true, expectedVersion: team.version },
+      },
+    );
+    expect(privacyChange.status()).toBe(200);
+    await expect(page.getByText(description, { exact: true })).toBeVisible();
+    transport.setNetworkCut(false);
+    await waitForWorkspaceSocket(page);
+    await expect(page.getByText(description, { exact: true })).toHaveCount(0);
+    await expect(
+      page.getByRole('textbox', { name: 'Issue title' }),
+    ).toHaveCount(0);
+    await page.getByRole('button', { name: 'Back to issues' }).click();
+    await expect(page.getByText(title, { exact: true })).toHaveCount(0);
+  } finally {
+    await context.close();
+  }
+});
+
 test('an expired session hides cached workspace content', async ({
   page,
   request,

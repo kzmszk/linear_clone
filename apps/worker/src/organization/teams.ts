@@ -115,7 +115,10 @@ export function patchTeam(
       const updated = teamRow(sql, teamId);
       if (updated === null) throw new Error('team update failed');
       return {
-        entityKind: 'team.updated',
+        entityKind:
+          row.private === 0 && updated.private === 1
+            ? 'team.privatized'
+            : 'team.updated',
         entityId: teamId,
         version: updated.version,
         current: teamRecord(updated),

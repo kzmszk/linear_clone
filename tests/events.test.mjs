@@ -81,6 +81,73 @@ test('events deliver visible changes and close a removed member connection', asy
   }
 });
 
+test('a public-to-private team change closes only a viewer who loses access', async () => {
+  const runtime = await startRuntime(8915);
+  const browser = await chromium.launch();
+  const viewerEmail = 'privacy-viewer@example.test';
+  const ownerPage = await browser.newPage();
+  const viewerContext = await browser.newContext({
+    extraHTTPHeaders: { 'x-test-email': viewerEmail },
+  });
+  const viewerPage = await viewerContext.newPage();
+  try {
+    const owner = api(runtime.url);
+    const fixture = await seed(owner);
+    const invitation = await owner(`${fixture.base}/members`, {
+      method: 'POST',
+      body: {
+        email: viewerEmail,
+        name: 'Privacy viewer',
+        role: 'member',
+        teamIds: [],
+      },
+    });
+    assert.equal(invitation.status, 201);
+    const viewer = api(runtime.url, viewerEmail);
+    assert.equal((await viewer('/me')).status, 200);
+    await openEventStream(ownerPage, runtime.url, fixture.base);
+    await openEventStream(viewerPage, runtime.url, fixture.base);
+
+    const privatized = await owner(`${fixture.base}/teams/${fixture.team.id}`, {
+      method: 'PATCH',
+      body: { private: true, expectedVersion: fixture.team.version },
+    });
+    assert.equal(privatized.status, 200);
+    await viewerPage.waitForFunction(() => window.eventCloseCode !== null);
+    assert.equal(await viewerPage.evaluate(() => window.eventCloseCode), 1008);
+    await ownerPage.waitForFunction(
+      (teamId) =>
+        window.eventMessages.some((event) => event.entityId === teamId),
+      fixture.team.id,
+    );
+    const ownerEvents = await ownerPage.evaluate(() => window.eventMessages);
+    assert.ok(
+      ownerEvents.some(
+        (event) =>
+          event.entityKind === 'team.privatized' &&
+          event.entityId === fixture.team.id,
+      ),
+    );
+    const viewerEvents = await viewerPage.evaluate(() => window.eventMessages);
+    assert.deepEqual(
+      viewerEvents.map((event) => event.kind),
+      ['ready'],
+    );
+    const viewerChanges = await viewer(`${fixture.base}/changes`);
+    assert.equal(viewerChanges.status, 200);
+    assert.ok(
+      viewerChanges.body.items.every(
+        (event) => event.entityId !== fixture.team.id,
+      ),
+    );
+  } catch (error) {
+    throw new Error(runtime.output().slice(-5000), { cause: error });
+  } finally {
+    await browser.close();
+    await runtime.stop();
+  }
+});
+
 async function openEventStream(page, origin, base) {
   await page.goto(`${origin}/api/v1/me`);
   await page.evaluate(

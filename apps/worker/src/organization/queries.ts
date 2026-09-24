@@ -125,13 +125,15 @@ export function listTeams(
   sql: SqlDb,
   actor: AuthActor,
   workspaceId: string,
+  includeArchived = false,
 ): ReturnType<typeof teamRecord>[] {
   const user = requireUser(sql, actor);
   requireMembership(sql, actor, workspaceId);
   return rows<TeamRow>(
     sql,
-    'SELECT * FROM teams WHERE workspace_id = ? AND archived_at IS NULL ORDER BY team_key',
+    'SELECT * FROM teams WHERE workspace_id = ? AND (? OR archived_at IS NULL) ORDER BY team_key',
     workspaceId,
+    includeArchived ? 1 : 0,
   )
     .filter((team) => canAccessTeam(sql, user.id, team.id))
     .map(teamRecord);
@@ -216,13 +218,15 @@ export function listStates(
   sql: SqlDb,
   actor: AuthActor,
   workspaceId: string,
+  includeArchived = false,
 ): ReturnType<typeof stateRecord>[] {
   const user = requireUser(sql, actor);
   requireMembership(sql, actor, workspaceId);
   return rows<StateRow>(
     sql,
-    'SELECT * FROM workflow_states WHERE workspace_id = ? AND archived_at IS NULL ORDER BY team_id, position, id',
+    'SELECT * FROM workflow_states WHERE workspace_id = ? AND (? OR archived_at IS NULL) ORDER BY team_id, position, id',
     workspaceId,
+    includeArchived ? 1 : 0,
   )
     .filter((state) => canAccessTeam(sql, user.id, state.team_id))
     .map(stateRecord);
@@ -232,12 +236,14 @@ export function listLabels(
   sql: SqlDb,
   actor: AuthActor,
   workspaceId: string,
+  includeArchived = false,
 ): ReturnType<typeof labelRecord>[] {
   requireMembership(sql, actor, workspaceId);
   return rows<LabelRow>(
     sql,
-    'SELECT * FROM labels WHERE workspace_id = ? AND archived_at IS NULL ORDER BY name, id',
+    'SELECT * FROM labels WHERE workspace_id = ? AND (? OR archived_at IS NULL) ORDER BY name, id',
     workspaceId,
+    includeArchived ? 1 : 0,
   ).map(labelRecord);
 }
 
@@ -248,7 +254,7 @@ export function getMetadata(
 ): Metadata {
   return {
     teams: listTeams(sql, actor, workspaceId),
-    projects: listProjects(sql, actor, workspaceId, true),
+    projects: listProjects(sql, actor, workspaceId),
     members: listMembers(sql, actor, workspaceId),
     states: listStates(sql, actor, workspaceId),
     labels: listLabels(sql, actor, workspaceId),

@@ -54,7 +54,14 @@ export async function teams(
   rest: string[],
 ): Promise<Response> {
   if (rest.length === 0 && request.method === 'GET')
-    return response(listTeams(sql, actor, workspaceId));
+    return response(
+      listTeams(
+        sql,
+        actor,
+        workspaceId,
+        new URL(request.url).searchParams.get('includeArchived') === 'true',
+      ),
+    );
   if (rest.length === 0 && request.method === 'POST') {
     const body = await parseBody(request, newTeamSchema);
     const operationId = requireOperationId(

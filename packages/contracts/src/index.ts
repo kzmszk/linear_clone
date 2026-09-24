@@ -80,6 +80,7 @@ export const labelSchema = z.object({
   workspaceId: id,
   name: z.string(),
   color: z.string(),
+  archivedAt: z.string().nullable(),
 });
 export const issueSchema = z.object({
   ...base,
@@ -211,6 +212,7 @@ export const statePatchSchema = z.object({
   type: editableStateTypeSchema.optional(),
   color: z.string().optional(),
   position: z.number().optional(),
+  archivedAt: z.null().optional(),
   expectedVersion: version,
 });
 export const newLabelSchema = z.object({

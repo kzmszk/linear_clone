@@ -165,7 +165,7 @@ function applyStatePatch(
   stateId: string,
   patch: StatePatch,
 ): StateRow {
-  const row = editableState(sql, workspaceId, stateId, patch.expectedVersion);
+  const row = stateForPatch(sql, workspaceId, stateId, patch);
   if (
     patch.type !== undefined &&
     patch.type !== row.type &&
@@ -177,11 +177,12 @@ function applyStatePatch(
     );
   const timestamp = now();
   sql.exec(
-    'UPDATE workflow_states SET name = ?, type = ?, color = ?, position = ?, version = version + 1, updated_at = ? WHERE id = ? AND version = ?',
+    'UPDATE workflow_states SET name = ?, type = ?, color = ?, position = ?, archived_at = ?, version = version + 1, updated_at = ? WHERE id = ? AND version = ?',
     patch.name ?? row.name,
     patch.type ?? row.type,
     patch.color ?? row.color,
     patch.position ?? row.position,
+    patch.archivedAt === null ? null : row.archived_at,
     timestamp,
     stateId,
     patch.expectedVersion,
@@ -189,6 +190,21 @@ function applyStatePatch(
   const updated = stateRow(sql, stateId);
   if (updated === null) throw new Error('state update failed');
   return updated;
+}
+
+function stateForPatch(
+  sql: SqlDb,
+  workspaceId: string,
+  stateId: string,
+  patch: StatePatch,
+): StateRow {
+  const row = stateRow(sql, stateId);
+  if (row === null || row.workspace_id !== workspaceId) throw notFound();
+  if (row.version !== patch.expectedVersion)
+    throw conflict('version_conflict', 'State was changed', stateRecord(row));
+  if (row.archived_at !== null && patch.archivedAt !== null)
+    throw conflict('state_archived', 'State is archived', stateRecord(row));
+  return row;
 }
 
 function archiveState(
@@ -201,7 +217,7 @@ function archiveState(
   if (stateHasIssues(sql, workspaceId, stateId))
     throw conflict(
       'state_in_use',
-      'Move issues to another state before deleting it',
+      'Move issues to another state before archiving it',
     );
   if (activeStateCount(sql, row.team_id) <= 1)
     throw conflict(

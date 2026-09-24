@@ -31,7 +31,14 @@ export async function states(
   rest: string[],
 ): Promise<Response> {
   if (rest.length === 0 && request.method === 'GET')
-    return response(listStates(sql, actor, workspaceId));
+    return response(
+      listStates(
+        sql,
+        actor,
+        workspaceId,
+        new URL(request.url).searchParams.get('includeArchived') === 'true',
+      ),
+    );
   if (rest.length === 0 && request.method === 'POST') {
     const body = await parseBody(request, newStateSchema);
     const operationId = requireOperationId(
@@ -103,7 +110,14 @@ export async function labels(
   rest: string[],
 ): Promise<Response> {
   if (rest.length === 0 && request.method === 'GET')
-    return response(listLabels(sql, actor, workspaceId));
+    return response(
+      listLabels(
+        sql,
+        actor,
+        workspaceId,
+        new URL(request.url).searchParams.get('includeArchived') === 'true',
+      ),
+    );
   if (rest.length === 0 && request.method === 'POST') {
     const body = await parseBody(request, newLabelSchema);
     const operationId = requireOperationId(

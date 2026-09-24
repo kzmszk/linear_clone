@@ -104,5 +104,6 @@ export function labelRecord(row: LabelRow): Label {
     workspaceId: row.workspace_id,
     name: row.name,
     color: row.color,
+    archivedAt: row.archived_at,
   };
 }

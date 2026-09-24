@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useWorkspaceQueries } from './useWorkspaceQueries.ts';
 import { useQueryClient } from '@tanstack/react-query';
 import type { Issue } from '../api.ts';
@@ -23,8 +24,20 @@ export function useWorkspaceController() {
   useWorkspaceSelection(
     state.workspaceId,
     state.setWorkspaceId,
-    me.data?.workspaces,
+    me.data?.workspaces.filter((item) => !item.archivedAt),
   );
+  useEffect(() => {
+    const issue = issueQueries.selectedIssue.data;
+    if (!state.selectedIssueId || !issue) return;
+    if (issue.archivedAt && state.archiveSection !== 'issues') {
+      state.setArchiveSection('issues');
+    }
+  }, [
+    issueQueries.selectedIssue.data,
+    state.selectedIssueId,
+    state.setArchiveSection,
+    state.archiveSection,
+  ]);
   useTheme(state.darkMode);
   useKeyboardShortcuts(
     state.view,

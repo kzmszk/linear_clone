@@ -5,7 +5,7 @@ const firstIssueCursor: string | null = null;
 
 export function useIssueQueries(
   workspaceId: string | undefined,
-  view: 'issues' | 'settings',
+  issuesEnabled: boolean,
   filters: IssueFilters,
   selectedIssueId: string | undefined,
   fallbackInterval: number | false,
@@ -17,7 +17,7 @@ export function useIssueQueries(
     initialPageParam: firstIssueCursor,
     getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
     refetchInterval: fallbackInterval,
-    enabled: Boolean(workspaceId) && view === 'issues',
+    enabled: Boolean(workspaceId) && issuesEnabled,
   });
   const selectedIssue = useQuery({
     queryKey: ['issue', workspaceId, selectedIssueId],

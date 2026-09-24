@@ -1,8 +1,8 @@
-import { Pencil, Plus, Trash2 } from 'lucide-react';
+import { Archive, Pencil, Plus } from 'lucide-react';
 import { useState } from 'react';
 import type { Team, WorkflowState } from '../../api.ts';
 import { Button, IconButton, StatusIcon } from '../ui.tsx';
-import { ConfirmDeleteDialog } from './ConfirmDeleteDialog.tsx';
+import { ConfirmArchiveDialog } from './ConfirmArchiveDialog.tsx';
 import {
   editableStateType,
   StateDialog,
@@ -28,7 +28,7 @@ export type StateActions = {
       expectedVersion: number;
     },
   ) => Promise<void>;
-  onDelete: (id: string, expectedVersion: number) => Promise<void>;
+  onArchive: (id: string, expectedVersion: number) => Promise<void>;
 };
 
 export function StatePanel({
@@ -57,7 +57,7 @@ export function StatePanel({
         states={states}
         teams={teams}
         onEdit={panel.openEdit}
-        onDelete={panel.openDelete}
+        onArchive={panel.openArchive}
       />
       {panel.draft ? (
         <StateDialog
@@ -70,15 +70,15 @@ export function StatePanel({
           onSubmit={() => void panel.save()}
         />
       ) : null}
-      {panel.deleting ? (
-        <ConfirmDeleteDialog
-          title="Delete status"
-          description={`Delete ${panel.deleting.name}. Statuses used by issues cannot be deleted.`}
-          confirmLabel="Delete status"
+      {panel.archiving ? (
+        <ConfirmArchiveDialog
+          title="Archive status"
+          description={`Remove ${panel.archiving.name} from the active workflow. Restore it from Archived.`}
+          confirmLabel="Archive status"
           error={panel.error}
           submitting={panel.submitting}
-          onClose={panel.closeDelete}
-          onConfirm={() => void panel.remove()}
+          onClose={panel.closeArchive}
+          onConfirm={() => void panel.archive()}
         />
       ) : null}
     </div>
@@ -91,7 +91,7 @@ function useStatePanel(
   actions: StateActions,
 ) {
   const [draft, setDraft] = useState<StateDraft>();
-  const [deleting, setDeleting] = useState<WorkflowState>();
+  const [archiving, setArchiving] = useState<WorkflowState>();
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const openCreate = () => {
@@ -117,9 +117,9 @@ function useStatePanel(
       position: item.position,
     });
   };
-  const openDelete = (item: WorkflowState) => {
+  const openArchive = (item: WorkflowState) => {
     setError('');
-    setDeleting(item);
+    setArchiving(item);
   };
   async function save() {
     if (!draft || submitting) return;
@@ -137,26 +137,26 @@ function useStatePanel(
       setDraft(undefined);
     });
   }
-  async function remove() {
-    if (!deleting || submitting) return;
+  async function archive() {
+    if (!archiving || submitting) return;
     await submit(setSubmitting, setError, async () => {
-      await actions.onDelete(deleting.id, deleting.version);
-      setDeleting(undefined);
+      await actions.onArchive(archiving.id, archiving.version);
+      setArchiving(undefined);
     });
   }
   return {
     draft,
-    deleting,
+    archiving,
     error,
     submitting,
     setDraft,
     openCreate,
     openEdit,
-    openDelete,
+    openArchive,
     closeDraft: () => setDraft(undefined),
-    closeDelete: () => setDeleting(undefined),
+    closeArchive: () => setArchiving(undefined),
     save,
-    remove,
+    archive,
   };
 }
 
@@ -164,12 +164,12 @@ function StateRows({
   states,
   teams,
   onEdit,
-  onDelete,
+  onArchive,
 }: {
   states: WorkflowState[];
   teams: Team[];
   onEdit: (item: WorkflowState) => void;
-  onDelete: (item: WorkflowState) => void;
+  onArchive: (item: WorkflowState) => void;
 }) {
   const ordered = [...states].sort(
     (left, right) =>
@@ -197,10 +197,10 @@ function StateRows({
             <Pencil size={14} />
           </IconButton>
           <IconButton
-            label={`Delete ${item.name}`}
-            onClick={() => onDelete(item)}
+            label={`Archive ${item.name}`}
+            onClick={() => onArchive(item)}
           >
-            <Trash2 size={14} />
+            <Archive size={14} />
           </IconButton>
         </div>
       ))}

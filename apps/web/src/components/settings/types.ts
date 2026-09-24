@@ -5,6 +5,10 @@ export type EditTarget =
   | { kind: 'team'; item: Team }
   | { kind: 'project'; item: Project }
   | { kind: 'member'; item: Member };
+export type ArchivableTarget = Extract<
+  EditTarget,
+  { kind: 'workspace' | 'team' | 'project' }
+>;
 
 export type EditDraft =
   | {

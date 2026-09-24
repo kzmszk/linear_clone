@@ -12,8 +12,8 @@ type WorkspaceSelection = Pick<
   | 'projectId'
   | 'search'
   | 'view'
+  | 'issueScope'
   | 'selectedIssueId'
-  | 'showTrash'
 >;
 
 export function useWorkspaceQueries(
@@ -21,27 +21,59 @@ export function useWorkspaceQueries(
   queryClient: QueryClient,
 ) {
   const me = useAccountQuery();
+  const activeWorkspaces = me.data?.workspaces.filter(
+    (item) => !item.archivedAt,
+  );
   const workspace =
-    me.data?.workspaces.find((item) => item.id === state.workspaceId) ??
-    me.data?.workspaces[0];
+    activeWorkspaces?.find((item) => item.id === state.workspaceId) ??
+    activeWorkspaces?.[0];
   const connected = useWorkspaceEvents(workspace?.id, queryClient);
   const fallbackInterval = connected ? false : 60_000;
-  const metadata = useWorkspaceMetadata(workspace?.id, fallbackInterval);
-  const filters = useMemo(
+  const metadataQuery = useWorkspaceMetadata(workspace?.id, fallbackInterval);
+  const metadata = useMemo(
     () => ({
-      deleted: state.showTrash,
-      teamId: state.teamId,
-      projectId: state.projectId,
-      q: state.search.trim() || undefined,
+      ...metadataQuery,
+      data: metadataQuery.data
+        ? {
+            ...metadataQuery.data,
+            teams: metadataQuery.data.teams.filter((item) => !item.archivedAt),
+            projects: metadataQuery.data.projects.filter(
+              (item) => !item.archivedAt,
+            ),
+            states: metadataQuery.data.states.filter(
+              (item) => !item.archivedAt,
+            ),
+            labels: metadataQuery.data.labels.filter(
+              (item) => !item.archivedAt,
+            ),
+          }
+        : undefined,
     }),
-    [state.projectId, state.search, state.teamId, state.showTrash],
+    [metadataQuery],
   );
+  const filters = useMemo(() => {
+    const active = state.issueScope === 'active';
+    return {
+      deleted: state.issueScope === 'trash',
+      archived: state.issueScope === 'archived',
+      teamId: active ? state.teamId : undefined,
+      projectId: active ? state.projectId : undefined,
+      q: active ? state.search.trim() || undefined : undefined,
+    };
+  }, [state.issueScope, state.projectId, state.search, state.teamId]);
   const issueQueries = useIssueQueries(
     workspace?.id,
-    state.view,
+    state.view === 'issues',
     filters,
     state.selectedIssueId,
     fallbackInterval,
   );
-  return { me, workspace, metadata, filters, ...issueQueries };
+  return {
+    me,
+    workspace,
+    activeWorkspaces,
+    metadata,
+    filters,
+    ...issueQueries,
+  };
 }

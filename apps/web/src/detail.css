@@ -151,22 +151,32 @@
   color: var(--danger);
   font-size: 12px;
 }
-.deleted-banner {
+.deleted-banner,
+.archived-banner {
   display: flex;
   align-items: center;
   gap: 9px;
   margin: 16px 34px -5px;
   padding: 9px 11px;
-  border: 1px solid rgb(211 75 88 / 22%);
   border-radius: 7px;
-  background: rgb(211 75 88 / 6%);
-  color: var(--danger);
   font-size: 12px;
 }
-.deleted-banner span {
+.deleted-banner {
+  border: 1px solid rgb(211 75 88 / 22%);
+  background: rgb(211 75 88 / 6%);
+  color: var(--danger);
+}
+.archived-banner {
+  border: 1px solid rgb(116 105 223 / 24%);
+  background: rgb(116 105 223 / 7%);
+  color: var(--accent);
+}
+.deleted-banner span,
+.archived-banner span {
   flex: 1;
 }
-.deleted-banner .button {
+.deleted-banner .button,
+.archived-banner .button {
   min-height: 25px;
   padding: 3px 8px;
   color: inherit;

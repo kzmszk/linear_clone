@@ -56,7 +56,7 @@ export const classificationApi = {
         operationId: crypto.randomUUID(),
       },
     ),
-  deleteState: (
+  archiveState: (
     workspaceId: string,
     stateId: string,
     expectedVersion: number,
@@ -90,7 +90,7 @@ export const classificationApi = {
         operationId: crypto.randomUUID(),
       },
     ),
-  deleteLabel: (
+  archiveLabel: (
     workspaceId: string,
     labelId: string,
     expectedVersion: number,

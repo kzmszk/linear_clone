@@ -4,20 +4,21 @@
 
 ## 検証する操作
 
-| 対象               | 確認する結果                                                                                                                                            | 主なテスト                                                      |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| issueの基本操作    | 日本語とMarkdown、作成・更新・削除・復元、版番号、変更競合                                                                                              | `api.test.mjs`、`cli.test.mjs`、`e2e/issues.spec.ts`            |
-| CLIコメント操作    | 作成・一覧・更新・削除、古い版の更新拒否、別issueのID拒否、拒否後も元の本文を維持                                                                       | `cli-comments.test.mjs`                                         |
-| コメント読取の権限 | 更新用キーなしで取得可能、別issueや非公開teamのコメントは取得不可                                                                                       | `comment-access.test.mjs`                                       |
-| プロジェクト移動   | CLIで所属先変更後に元の一覧から消え、移動先だけに現れる。プロジェクトstatusも保存                                                                       | `cli-organization.test.mjs`                                     |
-| issue一覧と検索    | team・project・state・assignee・タイトル検索の積集合、識別子検索、アーカイブとごみ箱の分離、team加入前後の可視性                                        | `issue-queries.test.mjs`                                        |
-| ページング         | 405件を3ページで取得し、重複・欠落なく終了。不正cursorは400                                                                                             | `api.test.mjs`                                                  |
-| 同時更新           | issueは100要求で1成功・99競合。project・招待member・commentは2要求で1成功・1競合。再読込で勝った値と版番号を確認                                        | `load.test.mjs`、`mutation-conflicts.test.mjs`                  |
-| 再送と再起動       | Worker停止・再起動後も本文・削除状態・添付bytesを保持。同一操作の再送で処理記録を再利用し、履歴・件数を増やさない。異なるpayloadでキーを再利用すると409 | `recovery.test.mjs`                                             |
-| 認証と認可         | JWT署名・期限・audience、未招待ユーザー、private team、他workspace参照、最後のowner保護、招待変更と取消                                                 | `auth.test.mjs`、`api.test.mjs`                                 |
-| 画面の失敗処理     | 保存失敗時の入力保持と再試行、削除失敗・キャンセル・復元、コメントの重複防止                                                                            | `e2e/detail-behavior.spec.ts`、`e2e/management-failure.spec.ts` |
-| 同期と再接続       | 2画面で更新を受信し、競合時にdraftを保持。接続中断時に受け取れなかった更新を再接続で取得し、その後の更新も表示                                          | `e2e/sync.spec.ts`、`e2e/reconnect.spec.ts`                     |
-| インポート         | 本文・階層・コメント作者と日時・関連issueを保持。再importで移行先の編集を上書きしない。不正な元データと添付メタデータを拒否                             | `import.test.mjs`、`import-contract.test.mjs`                   |
+| 対象               | 確認する結果                                                                                                                                            | 主なテスト                                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| issueの基本操作    | 日本語とMarkdown、作成・更新・削除・復元、版番号、変更競合                                                                                              | `api.test.mjs`、`cli.test.mjs`、`e2e/issues.spec.ts`                                                       |
+| CLIコメント操作    | 作成・一覧・更新・削除、古い版の更新拒否、別issueのID拒否、拒否後も元の本文を維持                                                                       | `cli-comments.test.mjs`                                                                                    |
+| コメント読取の権限 | 更新用キーなしで取得可能、別issueや非公開teamのコメントは取得不可                                                                                       | `comment-access.test.mjs`                                                                                  |
+| プロジェクト移動   | CLIで所属先変更後に元の一覧から消え、移動先だけに現れる。プロジェクトstatusも保存                                                                       | `cli-organization.test.mjs`                                                                                |
+| issue一覧と検索    | team・project・state・assignee・タイトル検索の積集合、識別子検索、アーカイブとごみ箱の分離、team加入前後の可視性                                        | `issue-queries.test.mjs`                                                                                   |
+| Archive表示と復元  | workspace・team・project・label・status・issueの通常表示からの除外、Archivedでの再表示と復元、ごみ箱との分離                                            | `archive-lists.test.mjs`、`issue-queries.test.mjs`、`e2e/archive.spec.ts`、`e2e/archive-resources.spec.ts` |
+| ページング         | 405件を3ページで取得し、重複・欠落なく終了。不正cursorは400                                                                                             | `api.test.mjs`                                                                                             |
+| 同時更新           | issueは100要求で1成功・99競合。project・招待member・commentは2要求で1成功・1競合。再読込で勝った値と版番号を確認                                        | `load.test.mjs`、`mutation-conflicts.test.mjs`                                                             |
+| 再送と再起動       | Worker停止・再起動後も本文・削除状態・添付bytesを保持。同一操作の再送で処理記録を再利用し、履歴・件数を増やさない。異なるpayloadでキーを再利用すると409 | `recovery.test.mjs`                                                                                        |
+| 認証と認可         | JWT署名・期限・audience、未招待ユーザー、private team、他workspace参照、最後のowner保護、招待変更と取消                                                 | `auth.test.mjs`、`api.test.mjs`                                                                            |
+| 画面の失敗処理     | 保存失敗時の入力保持と再試行、削除失敗・キャンセル・復元、コメントの重複防止                                                                            | `e2e/detail-behavior.spec.ts`、`e2e/management-failure.spec.ts`                                            |
+| 同期と再接続       | 2画面で更新を受信し、競合時にdraftを保持。接続中断時に受け取れなかった更新を再接続で取得し、その後の更新も表示                                          | `e2e/sync.spec.ts`、`e2e/reconnect.spec.ts`                                                                |
+| インポート         | 本文・階層・コメント作者と日時・関連issueを保持。再importで移行先の編集を上書きしない。不正な元データと添付メタデータを拒否                             | `import.test.mjs`、`import-contract.test.mjs`                                                              |
 
 CLIの性能改善では、以下の振る舞いも実Workerとコンパイル済みCLIで検証します。
 

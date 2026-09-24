@@ -3,16 +3,18 @@ import { useEffect } from 'react';
 export function useWorkspaceSelection(
   workspaceId: string,
   setWorkspaceId: (id: string, replace?: boolean) => void,
-  workspaces: Array<{ id: string }> | undefined,
+  workspaces: Array<{ id: string; archivedAt: string | null }> | undefined,
 ) {
   useEffect(() => {
-    if (!workspaceId && workspaces?.[0]) setWorkspaceId(workspaces[0].id, true);
+    const activeWorkspaces = workspaces?.filter((item) => !item.archivedAt);
+    if (!workspaceId && activeWorkspaces?.[0])
+      setWorkspaceId(activeWorkspaces[0].id, true);
     if (
       workspaceId &&
-      workspaces &&
-      !workspaces.some((item) => item.id === workspaceId)
+      activeWorkspaces &&
+      !activeWorkspaces.some((item) => item.id === workspaceId)
     )
-      setWorkspaceId(workspaces[0]?.id ?? '', true);
+      setWorkspaceId(activeWorkspaces[0]?.id ?? '', true);
   }, [setWorkspaceId, workspaceId, workspaces]);
 }
 
@@ -27,7 +29,7 @@ export function useTheme(darkMode: boolean) {
 }
 
 export function useKeyboardShortcuts(
-  view: 'issues' | 'settings',
+  view: 'issues' | 'settings' | 'archive',
   setCreateOpen: (open: boolean) => void,
   setWorkspaceOpen: (open: boolean) => void,
   setIssueId: (id: string | undefined) => void,

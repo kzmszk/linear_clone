@@ -4,11 +4,12 @@ import { ErrorNotice, Loading } from './components/ui.tsx';
 import { ApiError } from './api.ts';
 import { useWorkspaceController } from './app/useWorkspaceController.ts';
 import { WorkspaceLayout } from './app/WorkspaceLayout.tsx';
+import { ArchivedWorkspaceLanding } from './app/ArchivedWorkspaceLanding.tsx';
 import './styles.css';
 
 export function App() {
   const controller = useWorkspaceController();
-  const { me, workspace, metadata, bootstrap } = controller;
+  const { me } = controller;
   if (me.isLoading)
     return (
       <div className="app-loading">
@@ -34,7 +35,18 @@ export function App() {
         <Loading label="Loading account" />
       </div>
     );
-  if (me.data.canBootstrap && me.data.workspaces.length === 0)
+  return <ReadyApp controller={controller} account={me.data} />;
+}
+
+function ReadyApp({
+  controller,
+  account,
+}: {
+  controller: ReturnType<typeof useWorkspaceController>;
+  account: NonNullable<ReturnType<typeof useWorkspaceController>['me']['data']>;
+}) {
+  const { workspace, metadata, bootstrap } = controller;
+  if (account.canBootstrap && account.workspaces.length === 0)
     return (
       <BootstrapScreen
         onBootstrap={async (input) => {
@@ -42,8 +54,18 @@ export function App() {
         }}
       />
     );
-  if (me.data.workspaces.length === 0)
-    return <NoWorkspaceAccess email={me.data.principal.email} />;
+  const activeWorkspaces = account.workspaces.filter(
+    (item) => !item.archivedAt,
+  );
+  if (activeWorkspaces.length === 0 && account.workspaces.length > 0)
+    return (
+      <ArchivedWorkspaceLanding
+        workspaces={account.workspaces}
+        controller={controller}
+      />
+    );
+  if (activeWorkspaces.length === 0)
+    return <NoWorkspaceAccess email={account.principal.email} />;
   if (!workspace || !metadata.data)
     return (
       <div className="app-loading">

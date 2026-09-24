@@ -4,8 +4,8 @@ import type { StateActions } from './StatePanel.tsx';
 export type ClassificationSettingsActions = {
   onCreateLabel: LabelActions['onCreate'];
   onUpdateLabel: LabelActions['onUpdate'];
-  onDeleteLabel: LabelActions['onDelete'];
+  onArchiveLabel: LabelActions['onArchive'];
   onCreateState: StateActions['onCreate'];
   onUpdateState: StateActions['onUpdate'];
-  onDeleteState: StateActions['onDelete'];
+  onArchiveState: StateActions['onArchive'];
 };

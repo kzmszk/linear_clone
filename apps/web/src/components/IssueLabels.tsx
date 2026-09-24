@@ -12,7 +12,10 @@ export function IssueLabels({
   labels: Metadata['labels'];
   onSave: (labelIds: string[]) => Promise<void>;
 }) {
-  const active = labels.filter((label) => !issue.labelIds.includes(label.id));
+  const visible = labels.filter((label) => issue.labelIds.includes(label.id));
+  const active = labels.filter(
+    (label) => !label.archivedAt && !issue.labelIds.includes(label.id),
+  );
   return (
     <div className="issue-labels">
       <div className="property-field">
@@ -30,21 +33,20 @@ export function IssueLabels({
           onChange={(labelId) => void onSave([...issue.labelIds, labelId])}
         />
       </div>
-      {issue.labelIds.length > 0 ? (
+      {visible.length > 0 ? (
         <div className="issue-label-chips">
-          {issue.labelIds.map((labelId) => {
-            const label = labels.find((item) => item.id === labelId);
+          {visible.map((label) => {
             return (
-              <span className="issue-label-chip" key={labelId}>
+              <span className="issue-label-chip" key={label.id}>
                 <span
                   className="label-dot"
-                  style={{ background: label?.color ?? '#9095a2' }}
+                  style={{ background: label.color }}
                 />
-                {label?.name ?? 'Archived label'}
+                {label.name}
                 <IconButton
-                  label={`Remove ${label?.name ?? 'archived label'}`}
+                  label={`Remove ${label.name}`}
                   onClick={() =>
-                    void onSave(issue.labelIds.filter((id) => id !== labelId))
+                    void onSave(issue.labelIds.filter((id) => id !== label.id))
                   }
                 >
                   <X size={12} />

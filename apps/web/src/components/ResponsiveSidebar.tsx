@@ -27,11 +27,11 @@ export function ResponsiveSidebar({ controller }: { controller: Controller }) {
     if (!sidebarOpen && wasOpen.current) menuButtonRef.current?.focus();
     wasOpen.current = sidebarOpen;
   }, [sidebarOpen]);
-  const { workspace, metadata, me } = controller;
+  const { workspace, metadata, me, activeWorkspaces } = controller;
   if (!workspace || !metadata.data || !me.data) return null;
   const data = {
     workspace,
-    workspaces: me.data.workspaces,
+    workspaces: activeWorkspaces ?? [],
     teams: metadata.data.teams,
     projects: metadata.data.projects,
   } satisfies SidebarData;
@@ -84,15 +84,18 @@ function sidebarProps({
   closeSidebar: () => void;
   data: SidebarData;
 }): SidebarProps {
-  const { teamId, projectId, view, settingsSection } = controller;
+  const { teamId, projectId, view, issueScope, settingsSection } = controller;
   return {
     ...data,
     activeTeamId: teamId,
     activeProjectId: projectId,
     view,
-    showTrash: controller.showTrash,
-    onTrashChange: (show) => {
-      controller.setShowTrash(show);
+    issueScope,
+    onIssueScopeChange: (scope) => {
+      controller.setIssueScope(scope);
+    },
+    onArchiveSectionChange: (section) => {
+      controller.setArchiveSection(section);
       closeSidebar();
     },
     settingsSection,
@@ -112,7 +115,7 @@ function sidebarProps({
     onViewChange: (next) => {
       controller.setSelectedIssueId(undefined);
       controller.setView(next);
-      controller.setShowTrash(false);
+      if (next === 'issues') controller.setIssueScope('active');
       closeSidebar();
     },
     onSettingsChange: controller.setSettingsSection,

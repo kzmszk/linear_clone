@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { RotateCcw, Trash2 } from 'lucide-react';
+import { Archive, RotateCcw, Trash2 } from 'lucide-react';
 import type {
   Activity,
   Attachment,
@@ -35,6 +35,7 @@ type IssueDetailProps = {
   loading: boolean;
   actionError?: string;
   lifecycleAction?: 'delete' | 'restore';
+  archivePending: boolean;
   onClose: () => void;
   onSavePatch: (
     patch: Omit<IssuePatch, 'expectedVersion'>,
@@ -42,6 +43,8 @@ type IssueDetailProps = {
   ) => Promise<void>;
   onDelete: () => void;
   onRestore: () => void;
+  onArchive: () => void;
+  onRestoreArchived: () => void;
   onAddComment: (body: string, operationId: string) => Promise<void>;
   onUploadFile: (file: Blob) => Promise<FileUpload>;
   onCopyIdentifier: () => void;
@@ -61,6 +64,8 @@ export function IssueDetail(props: IssueDetailProps) {
     onClose,
     onDelete,
     onRestore,
+    onArchive,
+    onRestoreArchived,
     onCopyIdentifier,
   } = props;
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -72,11 +77,21 @@ export function IssueDetail(props: IssueDetailProps) {
           identifier={issue.identifier}
           projectName={project?.name ?? 'Issue'}
           deleted={Boolean(issue.deletedAt)}
-          lifecyclePending={Boolean(lifecycleAction)}
-          lifecycleStatus={lifecycleStatus(lifecycleAction)}
+          archived={Boolean(issue.archivedAt)}
+          lifecyclePending={Boolean(lifecycleAction || props.archivePending)}
+          archivePending={props.archivePending}
+          lifecycleStatus={
+            props.archivePending
+              ? issue.archivedAt
+                ? 'Restoring…'
+                : 'Archiving…'
+              : lifecycleStatus(lifecycleAction)
+          }
           onClose={onClose}
           onDelete={() => setDeleteOpen(true)}
           onRestore={onRestore}
+          onArchive={onArchive}
+          onRestoreArchived={onRestoreArchived}
           onCopy={onCopyIdentifier}
         />
         <div className="detail-scroll">
@@ -85,6 +100,12 @@ export function IssueDetail(props: IssueDetailProps) {
             <DeletedBanner
               onRestore={onRestore}
               pending={Boolean(lifecycleAction)}
+            />
+          ) : null}
+          {issue.archivedAt && !issue.deletedAt ? (
+            <ArchivedBanner
+              onRestore={onRestoreArchived}
+              pending={props.archivePending}
             />
           ) : null}
           <IssueDetailBody {...props} />
@@ -101,6 +122,24 @@ export function IssueDetail(props: IssueDetailProps) {
         />
       ) : null}
     </>
+  );
+}
+
+function ArchivedBanner({
+  onRestore,
+  pending,
+}: {
+  onRestore: () => void;
+  pending: boolean;
+}) {
+  return (
+    <div className="archived-banner">
+      <Archive size={15} />
+      <span>This issue is archived.</span>
+      <Button onClick={onRestore} disabled={pending} aria-busy={pending}>
+        <RotateCcw size={14} /> Restore
+      </Button>
+    </div>
   );
 }
 

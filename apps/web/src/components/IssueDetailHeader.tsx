@@ -1,25 +1,33 @@
-import { ArrowLeft, Copy, RotateCcw, Trash2 } from 'lucide-react';
+import { Archive, ArrowLeft, Copy, RotateCcw, Trash2 } from 'lucide-react';
 import { IconButton } from './ui.tsx';
 
 export function IssueDetailHeader({
   identifier,
   projectName,
   deleted,
+  archived,
   lifecyclePending,
+  archivePending,
   lifecycleStatus,
   onClose,
   onDelete,
   onRestore,
+  onArchive,
+  onRestoreArchived,
   onCopy,
 }: {
   identifier: string;
   projectName: string;
   deleted: boolean;
+  archived: boolean;
   lifecyclePending: boolean;
+  archivePending: boolean;
   lifecycleStatus?: string;
   onClose: () => void;
   onDelete: () => void;
   onRestore: () => void;
+  onArchive: () => void;
+  onRestoreArchived: () => void;
   onCopy: () => void;
 }) {
   return (
@@ -41,14 +49,26 @@ export function IssueDetailHeader({
             {lifecycleStatus}
           </span>
         ) : null}
-        <IconButton
-          label={deleted ? 'Restore issue' : 'Delete issue'}
-          onClick={deleted ? onRestore : onDelete}
-          disabled={lifecyclePending}
-          aria-busy={lifecyclePending}
-        >
-          {deleted ? <RotateCcw size={16} /> : <Trash2 size={16} />}
-        </IconButton>
+        {!deleted ? (
+          <IconButton
+            label={archived ? 'Restore archived issue' : 'Archive issue'}
+            onClick={archived ? onRestoreArchived : onArchive}
+            disabled={archivePending}
+            aria-busy={archivePending}
+          >
+            {archived ? <RotateCcw size={16} /> : <Archive size={16} />}
+          </IconButton>
+        ) : null}
+        {!archived ? (
+          <IconButton
+            label={deleted ? 'Restore issue' : 'Delete issue'}
+            onClick={deleted ? onRestore : onDelete}
+            disabled={lifecyclePending}
+            aria-busy={lifecyclePending}
+          >
+            {deleted ? <RotateCcw size={16} /> : <Trash2 size={16} />}
+          </IconButton>
+        ) : null}
       </div>
     </header>
   );

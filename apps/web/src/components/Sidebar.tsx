@@ -1,5 +1,18 @@
-import { ChevronDown, Layers3, Moon, Plus, Sun, Trash2 } from 'lucide-react';
+import {
+  Archive,
+  ChevronDown,
+  Layers3,
+  Moon,
+  Plus,
+  Sun,
+  Trash2,
+} from 'lucide-react';
 import type { Project, Team, Workspace } from '../api.ts';
+import type {
+  ArchiveSection,
+  IssueScope,
+  WorkspaceView,
+} from '../app/useWorkspaceState.ts';
 import { IconButton } from './ui.tsx';
 import {
   ResourceSection,
@@ -7,7 +20,7 @@ import {
   SidebarSettings,
 } from './SidebarChrome.tsx';
 
-export type SidebarView = 'issues' | 'settings';
+export type SidebarView = WorkspaceView;
 export type SettingsSection =
   | 'overview'
   | 'workspaces'
@@ -24,8 +37,9 @@ type SidebarProps = {
   activeTeamId: string | undefined;
   activeProjectId: string | undefined;
   view: SidebarView;
-  showTrash: boolean;
-  onTrashChange: (show: boolean) => void;
+  issueScope: IssueScope;
+  onIssueScopeChange: (scope: IssueScope) => void;
+  onArchiveSectionChange: (section: ArchiveSection) => void;
   settingsSection: SettingsSection;
   darkMode: boolean;
   onWorkspaceChange: (id: string) => void;
@@ -55,8 +69,9 @@ export function Sidebar(props: SidebarProps) {
       />
       <MainNav
         view={view}
-        showTrash={props.showTrash}
-        onTrashChange={props.onTrashChange}
+        issueScope={props.issueScope}
+        onIssueScopeChange={props.onIssueScopeChange}
+        onArchiveSectionChange={props.onArchiveSectionChange}
         activeTeamId={props.activeTeamId}
         activeProjectId={props.activeProjectId}
         onViewChange={props.onViewChange}
@@ -165,8 +180,9 @@ function SidebarActions({
 
 function MainNav({
   view,
-  showTrash,
-  onTrashChange,
+  issueScope,
+  onIssueScopeChange,
+  onArchiveSectionChange,
   activeTeamId,
   activeProjectId,
   onViewChange,
@@ -174,8 +190,9 @@ function MainNav({
   onProjectChange,
 }: {
   view: SidebarView;
-  showTrash: boolean;
-  onTrashChange: (show: boolean) => void;
+  issueScope: IssueScope;
+  onIssueScopeChange: (scope: IssueScope) => void;
+  onArchiveSectionChange: (section: ArchiveSection) => void;
   activeTeamId: string | undefined;
   activeProjectId: string | undefined;
   onViewChange: (view: SidebarView) => void;
@@ -186,12 +203,16 @@ function MainNav({
     <nav className="sidebar-nav" aria-label="Main navigation">
       <button
         className={
-          view === 'issues' && !showTrash && !activeTeamId && !activeProjectId
+          view === 'issues' &&
+          issueScope === 'active' &&
+          !activeTeamId &&
+          !activeProjectId
             ? 'nav-item active'
             : 'nav-item'
         }
         onClick={() => {
           onViewChange('issues');
+          onIssueScopeChange('active');
           onTeamChange(undefined);
           onProjectChange(undefined);
         }}
@@ -200,12 +221,25 @@ function MainNav({
         <span>All issues</span>
       </button>
       <button
-        className={`nav-item ${showTrash && view === 'issues' ? 'active' : ''}`}
+        className={`nav-item ${view === 'archive' || (view === 'issues' && issueScope === 'archived') ? 'active' : ''}`}
         onClick={() => {
-          onViewChange('issues');
+          onViewChange('archive');
+          onIssueScopeChange('archived');
+          onArchiveSectionChange('issues');
           onTeamChange(undefined);
           onProjectChange(undefined);
-          onTrashChange(true);
+        }}
+      >
+        <Archive size={16} />
+        <span>Archived</span>
+      </button>
+      <button
+        className={`nav-item ${issueScope === 'trash' && view === 'issues' ? 'active' : ''}`}
+        onClick={() => {
+          onViewChange('issues');
+          onIssueScopeChange('trash');
+          onTeamChange(undefined);
+          onProjectChange(undefined);
         }}
       >
         <Trash2 size={16} />

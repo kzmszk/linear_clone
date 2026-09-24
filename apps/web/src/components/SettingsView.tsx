@@ -9,8 +9,10 @@ import type {
 import type { SettingsSection } from './Sidebar.tsx';
 import { ErrorNotice } from './ui.tsx';
 import { EditResourceDialog } from './settings/EditResourceDialog.tsx';
+import { ConfirmArchiveDialog } from './settings/ConfirmArchiveDialog.tsx';
 import { SettingsSectionContent } from './settings/SettingsSectionContent.tsx';
 import { useSettingsActions } from './settings/useSettingsActions.ts';
+import { useSettingsArchive } from './settings/useSettingsArchive.ts';
 import { useSettingsForm } from './settings/useSettingsForm.ts';
 import type { ClassificationSettingsActions } from './settings/classificationTypes.ts';
 
@@ -29,6 +31,7 @@ export type SettingsViewProps = {
     id: string,
     input: { name?: string; slug?: string; expectedVersion: number },
   ) => Promise<void>;
+  onArchiveWorkspace: (id: string, expectedVersion: number) => Promise<void>;
   onCreateTeam: (input: {
     key: string;
     name: string;
@@ -38,6 +41,7 @@ export type SettingsViewProps = {
     id: string,
     input: { name?: string; private?: boolean; expectedVersion: number },
   ) => Promise<void>;
+  onArchiveTeam: (id: string, expectedVersion: number) => Promise<void>;
   onCreateProject: (input: {
     name: string;
     description: string | null;
@@ -54,6 +58,7 @@ export type SettingsViewProps = {
       expectedVersion: number;
     },
   ) => Promise<void>;
+  onArchiveProject: (id: string, expectedVersion: number) => Promise<void>;
   onCreateMember: (input: {
     email: string;
     name: string;
@@ -83,10 +88,13 @@ export function SettingsView({
   classificationActions,
   onCreateWorkspace,
   onUpdateWorkspace,
+  onArchiveWorkspace,
   onCreateTeam,
   onUpdateTeam,
+  onArchiveTeam,
   onCreateProject,
   onUpdateProject,
+  onArchiveProject,
   onCreateMember,
   onUpdateMember,
 }: SettingsViewProps) {
@@ -100,6 +108,11 @@ export function SettingsView({
     onUpdateProject,
     onCreateMember,
     onUpdateMember,
+  });
+  const archive = useSettingsArchive({
+    onArchiveWorkspace,
+    onArchiveTeam,
+    onArchiveProject,
   });
   const sectionTitle =
     section === 'overview'
@@ -124,6 +137,33 @@ export function SettingsView({
         form={form}
         actions={actions}
       />
+      <SettingsResourceDialogs
+        teams={teams}
+        form={form}
+        actions={actions}
+        archive={archive}
+      />
+    </main>
+  );
+}
+
+type SettingsForm = ReturnType<typeof useSettingsForm>;
+type SettingsActions = ReturnType<typeof useSettingsActions>;
+type SettingsArchive = ReturnType<typeof useSettingsArchive>;
+
+function SettingsResourceDialogs({
+  teams,
+  form,
+  actions,
+  archive,
+}: {
+  teams: Team[];
+  form: SettingsForm;
+  actions: SettingsActions;
+  archive: SettingsArchive;
+}) {
+  return (
+    <>
       {form.editDraft ? (
         <EditResourceDialog
           draft={form.editDraft}
@@ -134,10 +174,33 @@ export function SettingsView({
           onDraftChange={form.setEditDraft}
           onSubmit={() => void actions.submitEdit()}
           onDeactivate={() => void actions.submitEdit(true)}
+          onArchive={(target) => {
+            form.closeEdit();
+            archive.request(target);
+          }}
         />
       ) : null}
-    </main>
+      {archive.target ? (
+        <ConfirmArchiveDialog
+          title={`Archive ${archive.target.kind}`}
+          description={archiveDescription(archive.target.kind)}
+          confirmLabel={`Archive ${archive.target.kind}`}
+          error={archive.error}
+          submitting={archive.submitting}
+          onClose={archive.close}
+          onConfirm={() => void archive.confirm()}
+        />
+      ) : null}
+    </>
   );
+}
+
+function archiveDescription(kind: 'workspace' | 'team' | 'project') {
+  if (kind === 'workspace')
+    return 'This workspace will leave the workspace picker. Restore it from Archived.';
+  if (kind === 'team')
+    return 'This team will leave normal team views and issue selectors. Restore it from Archived.';
+  return 'This project will leave normal project views and issue selectors. Restore it from Archived.';
 }
 
 function SettingsHeader({

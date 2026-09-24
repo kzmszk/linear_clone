@@ -31,7 +31,7 @@ test.beforeAll(async ({ request }) => {
   teamId = (await team.json()).current.id;
 });
 
-test('creates, edits, and deletes a label in settings', async ({
+test('creates, edits, and archives a label in settings', async ({
   page,
   request,
 }) => {
@@ -57,26 +57,19 @@ test('creates, edits, and deletes a label in settings', async ({
   ).toBeVisible();
 
   await page
-    .getByRole('button', { name: `Delete ${updated}`, exact: true })
+    .getByRole('button', { name: `Archive ${updated}`, exact: true })
     .click();
   dialog = page.getByRole('dialog');
-  await dialog.getByRole('button', { name: 'Delete label' }).click();
+  await dialog.getByRole('button', { name: 'Archive label' }).click();
   await expect(
     page.getByRole('main').getByText(updated, { exact: true }),
   ).toHaveCount(0);
   expect((await metadata(request)).labels).not.toEqual(
     expect.arrayContaining([expect.objectContaining({ name: updated })]),
   );
-  await page.getByRole('button', { name: 'New label', exact: true }).click();
-  dialog = page.getByRole('dialog');
-  await dialog.getByLabel('Label name').fill(updated);
-  await dialog.getByRole('button', { name: 'Create label' }).click();
-  await expect(
-    page.getByRole('main').getByText(updated, { exact: true }),
-  ).toBeVisible();
 });
 
-test('creates, edits, and deletes an unused status in settings', async ({
+test('creates, edits, and archives an unused status in settings', async ({
   page,
   request,
 }) => {
@@ -106,10 +99,10 @@ test('creates, edits, and deletes an unused status in settings', async ({
   ).toBeVisible();
 
   await page
-    .getByRole('button', { name: `Delete ${updated}`, exact: true })
+    .getByRole('button', { name: `Archive ${updated}`, exact: true })
     .click();
   dialog = page.getByRole('dialog');
-  await dialog.getByRole('button', { name: 'Delete status' }).click();
+  await dialog.getByRole('button', { name: 'Archive status' }).click();
   await expect(
     page.getByRole('main').getByText(updated, { exact: true }),
   ).toHaveCount(0);
@@ -118,7 +111,7 @@ test('creates, edits, and deletes an unused status in settings', async ({
   );
 });
 
-test('keeps a status when an issue uses it and shows the server error', async ({
+test('keeps a status when an issue uses it and shows the archive error', async ({
   page,
   request,
 }) => {
@@ -139,12 +132,12 @@ test('keeps a status when an issue uses it and shows the server error', async ({
   expect(issue.status()).toBe(201);
 
   await page
-    .getByRole('button', { name: `Delete ${name}`, exact: true })
+    .getByRole('button', { name: `Archive ${name}`, exact: true })
     .click();
   dialog = page.getByRole('dialog');
-  await dialog.getByRole('button', { name: 'Delete status' }).click();
+  await dialog.getByRole('button', { name: 'Archive status' }).click();
   await expect(dialog.getByRole('alert')).toContainText(
-    'Move issues to another state before deleting it',
+    'Move issues to another state before archiving it',
   );
   await dialog.getByRole('button', { name: 'Cancel' }).click();
   await expect(

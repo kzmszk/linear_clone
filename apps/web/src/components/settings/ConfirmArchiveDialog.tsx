@@ -1,6 +1,6 @@
 import { Button, Dialog, ErrorNotice } from '../ui.tsx';
 
-export function ConfirmDeleteDialog({
+export function ConfirmArchiveDialog({
   title,
   description,
   confirmLabel,
@@ -30,7 +30,7 @@ export function ConfirmDeleteDialog({
           Cancel
         </Button>
         <Button tone="danger" onClick={onConfirm} disabled={submitting}>
-          {submitting ? 'Deleting…' : confirmLabel}
+          {submitting ? 'Archiving…' : confirmLabel}
         </Button>
       </footer>
     </Dialog>

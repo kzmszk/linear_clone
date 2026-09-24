@@ -207,8 +207,9 @@ function ProjectField({
             ...metadata.projects
               .filter(
                 (item) =>
-                  item.id === issue.projectId ||
-                  item.teamIds.includes(issue.teamId),
+                  !item.archivedAt &&
+                  (item.id === issue.projectId ||
+                    item.teamIds.includes(issue.teamId)),
               )
               .map((item) => ({
                 value: item.id,

@@ -1,8 +1,8 @@
-import { Pencil, Plus, Trash2 } from 'lucide-react';
+import { Archive, Pencil, Plus } from 'lucide-react';
 import { useState } from 'react';
 import type { Label } from '../../api.ts';
 import { Button, Dialog, ErrorNotice, IconButton } from '../ui.tsx';
-import { ConfirmDeleteDialog } from './ConfirmDeleteDialog.tsx';
+import { ConfirmArchiveDialog } from './ConfirmArchiveDialog.tsx';
 
 type LabelDraft = {
   item?: Label;
@@ -16,7 +16,7 @@ export type LabelActions = {
     id: string,
     input: { name: string; color: string; expectedVersion: number },
   ) => Promise<void>;
-  onDelete: (id: string, expectedVersion: number) => Promise<void>;
+  onArchive: (id: string, expectedVersion: number) => Promise<void>;
 };
 
 export function LabelPanel({
@@ -37,7 +37,7 @@ export function LabelPanel({
       <LabelRows
         labels={labels}
         onEdit={panel.openEdit}
-        onDelete={panel.openDelete}
+        onArchive={panel.openArchive}
       />
       {panel.draft ? (
         <LabelDialog
@@ -49,15 +49,15 @@ export function LabelPanel({
           onSubmit={() => void panel.save()}
         />
       ) : null}
-      {panel.deleting ? (
-        <ConfirmDeleteDialog
-          title="Delete label"
-          description={`Remove ${panel.deleting.name} from the active label list.`}
-          confirmLabel="Delete label"
+      {panel.archiving ? (
+        <ConfirmArchiveDialog
+          title="Archive label"
+          description={`Remove ${panel.archiving.name} from the active label list. Restore it from Archived.`}
+          confirmLabel="Archive label"
           error={panel.error}
           submitting={panel.submitting}
-          onClose={panel.closeDelete}
-          onConfirm={() => void panel.remove()}
+          onClose={panel.closeArchive}
+          onConfirm={() => void panel.archive()}
         />
       ) : null}
     </div>
@@ -66,7 +66,7 @@ export function LabelPanel({
 
 function useLabelPanel(actions: LabelActions) {
   const [draft, setDraft] = useState<LabelDraft>();
-  const [deleting, setDeleting] = useState<Label>();
+  const [archiving, setArchiving] = useState<Label>();
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const openCreate = () => {
@@ -77,9 +77,9 @@ function useLabelPanel(actions: LabelActions) {
     setError('');
     setDraft({ item, name: item.name, color: item.color });
   };
-  const openDelete = (item: Label) => {
+  const openArchive = (item: Label) => {
     setError('');
-    setDeleting(item);
+    setArchiving(item);
   };
   async function save() {
     if (!draft || submitting) return;
@@ -95,26 +95,26 @@ function useLabelPanel(actions: LabelActions) {
       setDraft(undefined);
     });
   }
-  async function remove() {
-    if (!deleting || submitting) return;
+  async function archive() {
+    if (!archiving || submitting) return;
     await submit(setSubmitting, setError, async () => {
-      await actions.onDelete(deleting.id, deleting.version);
-      setDeleting(undefined);
+      await actions.onArchive(archiving.id, archiving.version);
+      setArchiving(undefined);
     });
   }
   return {
     draft,
-    deleting,
+    archiving,
     error,
     submitting,
     setDraft,
     openCreate,
     openEdit,
-    openDelete,
+    openArchive,
     closeDraft: () => setDraft(undefined),
-    closeDelete: () => setDeleting(undefined),
+    closeArchive: () => setArchiving(undefined),
     save,
-    remove,
+    archive,
   };
 }
 
@@ -140,11 +140,11 @@ function ClassificationHeader({
 function LabelRows({
   labels,
   onEdit,
-  onDelete,
+  onArchive,
 }: {
   labels: Label[];
   onEdit: (item: Label) => void;
-  onDelete: (item: Label) => void;
+  onArchive: (item: Label) => void;
 }) {
   return (
     <div className="settings-table">
@@ -160,10 +160,10 @@ function LabelRows({
             <Pencil size={14} />
           </IconButton>
           <IconButton
-            label={`Delete ${item.name}`}
-            onClick={() => onDelete(item)}
+            label={`Archive ${item.name}`}
+            onClick={() => onArchive(item)}
           >
-            <Trash2 size={14} />
+            <Archive size={14} />
           </IconButton>
         </div>
       ))}

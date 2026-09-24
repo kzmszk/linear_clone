@@ -216,7 +216,9 @@ function ProjectField({
   const options: PropertySelectOption[] = [
     { value: '', label: 'No project', icon: <Archive size={14} /> },
     ...metadata.projects
-      .filter((project) => project.teamIds.includes(teamId))
+      .filter(
+        (project) => !project.archivedAt && project.teamIds.includes(teamId),
+      )
       .map((project) => ({
         value: project.id,
         label: project.name,

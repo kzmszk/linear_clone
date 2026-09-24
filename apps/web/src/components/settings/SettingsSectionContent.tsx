@@ -119,7 +119,7 @@ function ClassificationSettings({
         actions={{
           onCreate: actions.onCreateLabel,
           onUpdate: actions.onUpdateLabel,
-          onDelete: actions.onDeleteLabel,
+          onArchive: actions.onArchiveLabel,
         }}
       />
     );
@@ -130,7 +130,7 @@ function ClassificationSettings({
       actions={{
         onCreate: actions.onCreateState,
         onUpdate: actions.onUpdateState,
-        onDelete: actions.onDeleteState,
+        onArchive: actions.onArchiveState,
       }}
     />
   );

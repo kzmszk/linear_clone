@@ -279,6 +279,12 @@ bootstrapとworkspace作成のreceiptはinstallation scopeの `/operations/:id` 
 一時的な容量超過・過負荷は成功扱いにせず、再試行可能性を構造化したエラーで返す。
 CLIは競合を通常成功と異なる終了コードで返し、現在値を `--json` でも取得できる。
 
+## Archiveの表示範囲
+
+archiveは削除ではなく、各レコードの`archivedAt`で表す。通常のWeb画面・選択欄・一覧には、archivedなworkspace、team、project、workflow state、label、issueを出さない。Archived画面では種類ごとに確認・復元できる。ごみ箱は`deletedAt`を持つissue専用で、Archiveとは別に扱う。
+
+Workerのteam・project・state・label・issue一覧は通常利用を既定としてarchivedレコードを除外し、Archived画面だけが明示的なfilterで取得する。`/me`と`/workspaces`はarchived workspaceも返し、Web側が通常のworkspace選択欄をfilterする。これにより、すべてのworkspaceがarchivedでもArchived画面へ進んで復元できる。個別GETとPATCHは、権限を確認したうえで復元対象を扱える。archiveしたteamやprojectのissueを連鎖的にarchiveせず、それぞれのレコードのarchive状態で表示を判断する。issueに残るarchived labelとの関連は保存し、通常の詳細画面ではラベルを隠す。復元後は同じ関連が再び見える。
+
 ## インポートの契約
 
 `export → plan → apply → verify` を別コマンドにする。

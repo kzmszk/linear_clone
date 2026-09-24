@@ -1,8 +1,8 @@
-import { Check } from 'lucide-react';
+import { Archive, Check } from 'lucide-react';
 import type { Team } from '../../api.ts';
 import { Button, Dialog, ErrorNotice } from '../ui.tsx';
 import { TeamMultiSelect } from './TeamMultiSelect.tsx';
-import type { EditDraft } from './types.ts';
+import type { ArchivableTarget, EditDraft } from './types.ts';
 import { MemberFields } from './MemberEditFields.tsx';
 
 export type EditResourceDialogProps = {
@@ -14,6 +14,7 @@ export type EditResourceDialogProps = {
   onDraftChange: (draft: EditDraft) => void;
   onSubmit: () => void;
   onDeactivate: () => void;
+  onArchive: (target: ArchivableTarget) => void;
 };
 
 export function EditResourceDialog(props: EditResourceDialogProps) {
@@ -35,6 +36,7 @@ function EditResourceForm({
   onDraftChange,
   onSubmit,
   onDeactivate,
+  onArchive,
 }: EditResourceDialogProps) {
   const valid = isEditFormValid(draft);
   return (
@@ -59,6 +61,7 @@ function EditResourceForm({
           valid={valid}
           onClose={onClose}
           onDeactivate={onDeactivate}
+          onArchive={onArchive}
         />
       </form>
     </>
@@ -178,15 +181,18 @@ function EditFooter({
   valid,
   onClose,
   onDeactivate,
+  onArchive,
 }: {
   draft: EditDraft;
   submitting: boolean;
   valid: boolean;
   onClose: () => void;
   onDeactivate: () => void;
+  onArchive: (target: ArchivableTarget) => void;
 }) {
   const member = draft.kind === 'member' ? draft : undefined;
   const pending = member?.item.userId === null;
+  const archiveTarget = targetForArchive(draft);
   return (
     <footer className="dialog-footer">
       {member && (member.active || pending) ? (
@@ -199,6 +205,16 @@ function EditFooter({
           {pending ? 'Revoke invitation' : 'Deactivate member'}
         </Button>
       ) : null}
+      {archiveTarget ? (
+        <Button
+          type="button"
+          tone="danger"
+          onClick={() => onArchive(archiveTarget)}
+          disabled={submitting}
+        >
+          <Archive size={14} /> Archive {archiveTarget.kind}
+        </Button>
+      ) : null}
       <span className="row-spacer" />
       <Button type="button" onClick={onClose}>
         Cancel
@@ -208,6 +224,19 @@ function EditFooter({
       </Button>
     </footer>
   );
+}
+
+function targetForArchive(draft: EditDraft): ArchivableTarget | undefined {
+  switch (draft.kind) {
+    case 'workspace':
+      return { kind: 'workspace', item: draft.item };
+    case 'team':
+      return { kind: 'team', item: draft.item };
+    case 'project':
+      return { kind: 'project', item: draft.item };
+    case 'member':
+      return undefined;
+  }
 }
 
 function TeamFields({
